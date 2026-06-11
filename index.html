@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia ISO/IEC 27001:2022 — DataCoLAB | SGSI Cloud & DevSecOps</title>
+<style>
+  /* ============================== RESET & BASE ============================== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root{
+    --azul-900:#0b2545;
+    --azul-800:#13315c;
+    --azul-700:#1e3a8a;
+    --azul-600:#1e40af;
+    --azul-500:#2563eb;
+    --azul-400:#3b82f6;
+    --azul-100:#dbeafe;
+    --azul-50:#eff6ff;
+    --branco:#ffffff;
+    --cinza-50:#f8fafc;
+    --cinza-100:#f1f5f9;
+    --cinza-200:#e2e8f0;
+    --cinza-300:#cbd5e1;
+    --cinza-400:#94a3b8;
+    --cinza-500:#64748b;
+    --cinza-600:#475569;
+    --cinza-700:#334155;
+    --cinza-800:#1e293b;
+    --cinza-900:#0f172a;
+    --verde-500:#10b981;
+    --verde-100:#d1fae5;
+    --laranja-500:#f59e0b;
+    --laranja-100:#fef3c7;
+    --vermelho-500:#ef4444;
+    --vermelho-100:#fee2e2;
+    --roxo-500:#8b5cf6;
+    --sombra-sm:0 1px 2px rgba(15,23,42,.06);
+    --sombra-md:0 4px 12px rgba(15,23,42,.08);
+    --sombra-lg:0 12px 32px rgba(15,23,42,.12);
+    --raio:8px;
+  }
+  html,body{height:100%;}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--cinza-50);
+    color: var(--cinza-800);
+    line-height: 1.55;
+    font-size: 15px;
+  }
+  a{color:var(--azul-600);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  h1,h2,h3,h4{color:var(--cinza-900);letter-spacing:-.01em;}
+  code{font-family:"SF Mono",Menlo,Consolas,monospace;background:var(--cinza-100);padding:1px 6px;border-radius:4px;font-size:.88em;}
+
+  /* ============================== LAYOUT GLOBAL ============================== */
+  .topo{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(90deg,var(--azul-900),var(--azul-700));
+    color:var(--branco);
+    padding:14px 24px;
+    box-shadow:var(--sombra-md);
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+  }
+  .topo .marca{display:flex;align-items:center;gap:14px;}
+  .topo .marca .logo{
+    width:42px;height:42px;border-radius:10px;
+    background:linear-gradient(135deg,#3b82f6,#06b6d4);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:18px;letter-spacing:.5px;
+    box-shadow:0 0 0 2px rgba(255,255,255,.18) inset;
+  }
+  .topo .marca .nome{font-weight:700;font-size:18px;}
+  .topo .marca .sub{font-size:12px;opacity:.78;letter-spacing:.3px;}
+  .topo .pesquisa{flex:1;max-width:420px;min-width:240px;position:relative;}
+  .topo .pesquisa input{
+    width:100%;padding:10px 14px 10px 38px;border:none;border-radius:999px;
+    background:rgba(255,255,255,.14);color:var(--branco);
+    font-size:14px;outline:none;border:1px solid rgba(255,255,255,.18);
+  }
+  .topo .pesquisa input::placeholder{color:rgba(255,255,255,.7);}
+  .topo .pesquisa input:focus{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.45);}
+  .topo .pesquisa .icone{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.8;}
+  .topo .acoes{display:flex;gap:8px;align-items:center;}
+  .botao{
+    cursor:pointer;border:none;font-family:inherit;font-weight:600;font-size:13px;
+    padding:9px 16px;border-radius:var(--raio);transition:transform .15s,box-shadow .15s,background .15s;
+  }
+  .botao:hover{transform:translateY(-1px);}
+  .botao-primario{background:var(--branco);color:var(--azul-800);}
+  .botao-primario:hover{background:var(--azul-50);}
+  .botao-fantasma{background:rgba(255,255,255,.12);color:var(--branco);border:1px solid rgba(255,255,255,.25);}
+  .botao-fantasma:hover{background:rgba(255,255,255,.22);}
+  .botao-perigo{background:var(--vermelho-100);color:var(--vermelho-500);}
+  .botao-perigo:hover{background:#fecaca;}
+
+  /* Barra de progresso global */
+  .progresso-global{
+    background:rgba(255,255,255,.1);height:6px;width:100%;overflow:hidden;border-radius:999px;
+    min-width:120px;flex:0 0 180px;
+  }
+  .progresso-global > span{display:block;height:100%;background:linear-gradient(90deg,#10b981,#34d399);width:0;transition:width .4s;}
+  .progresso-rotulo{font-size:12px;opacity:.85;min-width:80px;text-align:right;}
+
+  .area{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 70px);}
+  .barra-lateral{
+    background:var(--branco);
+    border-right:1px solid var(--cinza-200);
+    padding:18px 12px;
+    position:sticky;top:70px;
+    height:calc(100vh - 70px);
+    overflow-y:auto;
+  }
+  .barra-lateral h4{
+    font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--cinza-500);margin:14px 10px 6px;
+  }
+  .barra-lateral a.link{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:9px 12px;border-radius:6px;color:var(--cinza-700);
+    font-size:13.5px;margin-bottom:2px;border-left:3px solid transparent;
+  }
+  .barra-lateral a.link:hover{background:var(--azul-50);color:var(--azul-700);text-decoration:none;}
+  .barra-lateral a.link.ativo{background:var(--azul-50);color:var(--azul-700);border-left-color:var(--azul-500);font-weight:600;}
+  .barra-lateral a.link .contagem{
+    background:var(--cinza-100);color:var(--cinza-600);
+    font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600;
+  }
+  .barra-lateral a.link.ativo .contagem{background:var(--azul-100);color:var(--azul-700);}
+
+  .conteudo{padding:28px 36px 80px;max-width:1200px;}
+
+  /* ============================== CARTÕES & SECÇÕES ============================== */
+  .seccao{margin-bottom:42px;scroll-margin-top:90px;}
+  .seccao > .cabeca{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+    padding-bottom:14px;margin-bottom:18px;border-bottom:2px solid var(--cinza-200);
+  }
+  .seccao > .cabeca h2{font-size:24px;font-weight:700;color:var(--azul-900);}
+  .seccao > .cabeca .descricao{color:var(--cinza-600);font-size:14px;margin-top:4px;max-width:760px;}
+  .seccao .barra-prog-grupo{
+    background:var(--cinza-100);height:8px;width:240px;border-radius:999px;overflow:hidden;
+  }
+  .seccao .barra-prog-grupo > span{display:block;height:100%;background:linear-gradient(90deg,var(--azul-500),var(--azul-400));width:0;transition:width .4s;}
+
+  /* Dashboard */
+  .grelha-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;}
+  .kpi{
+    background:var(--branco);border-radius:var(--raio);padding:18px 20px;
+    border:1px solid var(--cinza-200);box-shadow:var(--sombra-sm);
+    display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;
+  }
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--azul-500);}
+  .kpi.verde::before{background:var(--verde-500);}
+  .kpi.laranja::before{background:var(--laranja-500);}
+  .kpi.roxo::before{background:var(--roxo-500);}
+  .kpi .rotulo{font-size:12px;color:var(--cinza-500);text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+  .kpi .valor{font-size:30px;font-weight:800;color:var(--cinza-900);line-height:1;}
+  .kpi .sub{font-size:13px;color:var(--cinza-600);}
+
+  .grelha-grupos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+  .cartao-grupo{
+    background:var(--branco);border-radius:var(--raio);padding:18px;
+    border:1px solid var(--cinza-200);box-shadow:var(--sombra-sm);
+    cursor:pointer;transition:transform .15s,box-shadow .15s;
+  }
+  .cartao-grupo:hover{transform:translateY(-2px);box-shadow:var(--sombra-md);}
+  .cartao-grupo h3{font-size:15px;margin-bottom:6px;color:var(--azul-800);}
+  .cartao-grupo .num{font-size:24px;font-weight:800;color:var(--cinza-900);}
+  .cartao-grupo .bar{background:var(--cinza-100);height:6px;border-radius:999px;overflow:hidden;margin-top:10px;}
+  .cartao-grupo .bar>span{display:block;height:100%;background:var(--azul-500);width:0;transition:width .4s;}
+
+  /* Cláusula */
+  .clausula{
+    background:var(--branco);border:1px solid var(--cinza-200);border-radius:var(--raio);
+    margin-bottom:16px;overflow:hidden;box-shadow:var(--sombra-sm);
+  }
+  .clausula .cab{
+    padding:16px 20px;background:linear-gradient(180deg,var(--azul-50),var(--branco));
+    border-bottom:1px solid var(--cinza-200);display:flex;justify-content:space-between;align-items:center;gap:12px;
+  }
+  .clausula .cab .titulo{font-size:17px;font-weight:700;color:var(--azul-800);}
+  .clausula .cab .titulo .num{display:inline-block;background:var(--azul-600);color:var(--branco);padding:2px 10px;border-radius:6px;margin-right:8px;font-size:14px;}
+  .clausula .corpo{padding:18px 22px;}
+  .bloco{margin-bottom:18px;}
+  .bloco h4{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--azul-700);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .bloco ul{padding-left:22px;color:var(--cinza-700);}
+  .bloco ul li{margin-bottom:6px;}
+  .nota-cloud{
+    background:linear-gradient(135deg,#ecfdf5,#f0fdf4);
+    border-left:4px solid var(--verde-500);
+    padding:12px 14px;border-radius:6px;font-size:13.5px;color:var(--cinza-700);
+  }
+  .nota-cloud strong{color:#065f46;}
+
+  /* Checklist */
+  .checklist{display:flex;flex-direction:column;gap:6px;}
+  .item-check{
+    display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:6px;
+    background:var(--cinza-50);border:1px solid var(--cinza-200);
+    transition:background .15s;
+  }
+  .item-check:hover{background:var(--azul-50);}
+  .item-check input[type="checkbox"]{
+    margin-top:3px;width:18px;height:18px;cursor:pointer;accent-color:var(--azul-600);flex:0 0 auto;
+  }
+  .item-check label{cursor:pointer;color:var(--cinza-800);font-size:14px;flex:1;}
+  .item-check.feito{background:#ecfdf5;border-color:#a7f3d0;}
+  .item-check.feito label{color:var(--cinza-500);text-decoration:line-through;}
+
+  /* Etiquetas */
+  .eti{
+    display:inline-flex;align-items:center;gap:4px;
+    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    padding:3px 8px;border-radius:999px;
+  }
+  .eti-novo{background:var(--roxo-500);color:#fff;}
+  .eti-critico{background:linear-gradient(90deg,#f59e0b,#ef4444);color:#fff;}
+  .eti-obrig{background:var(--azul-600);color:#fff;}
+  .eti-grupo{background:var(--cinza-100);color:var(--cinza-700);}
+
+  /* Controlo (acordeão) */
+  .controlo{
+    background:var(--branco);border:1px solid var(--cinza-200);border-radius:var(--raio);
+    margin-bottom:10px;overflow:hidden;
+  }
+  .controlo.critico{border-left:4px solid var(--laranja-500);}
+  .controlo.feito-tudo{background:#f0fdf4;}
+  .controlo > .cab{
+    padding:12px 16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    user-select:none;
+  }
+  .controlo > .cab:hover{background:var(--cinza-50);}
+  .controlo > .cab .esquerda{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;}
+  .controlo > .cab .num-c{
+    font-weight:800;color:var(--azul-700);font-size:14px;
+    background:var(--azul-50);padding:3px 10px;border-radius:6px;min-width:54px;text-align:center;
+  }
+  .controlo > .cab .titulo-c{font-weight:600;color:var(--cinza-900);font-size:14.5px;}
+  .controlo > .cab .seta{transition:transform .2s;color:var(--cinza-400);font-size:14px;}
+  .controlo.aberto > .cab .seta{transform:rotate(90deg);}
+  .controlo .corpo-c{display:none;padding:0 16px 16px;border-top:1px solid var(--cinza-100);}
+  .controlo.aberto .corpo-c{display:block;}
+  .controlo .descricao{color:var(--cinza-700);font-size:14px;margin:14px 0 12px;}
+  .controlo .relev{
+    background:#eff6ff;border-left:3px solid var(--azul-500);
+    padding:10px 12px;border-radius:6px;font-size:13.5px;color:var(--cinza-700);margin-top:10px;
+  }
+  .controlo .relev strong{color:var(--azul-800);}
+  .controlo .mini-bar{
+    background:var(--cinza-100);height:4px;border-radius:999px;overflow:hidden;
+    width:80px;flex:0 0 80px;
+  }
+  .controlo .mini-bar > span{display:block;height:100%;background:var(--azul-500);width:0;transition:width .3s;}
+
+  /* Filtros */
+  .filtros{
+    background:var(--branco);border:1px solid var(--cinza-200);border-radius:var(--raio);
+    padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  }
+  .filtros .grupo{display:flex;align-items:center;gap:6px;}
+  .filtros label{font-size:13px;color:var(--cinza-600);font-weight:600;}
+  .filtros select, .filtros input[type="text"]{
+    padding:7px 12px;border:1px solid var(--cinza-300);border-radius:6px;font-size:13px;
+    background:var(--branco);color:var(--cinza-800);font-family:inherit;
+  }
+
+  /* Rodapé */
+  .rodape{
+    margin-top:60px;padding:24px 36px;text-align:center;
+    color:var(--cinza-500);font-size:12.5px;border-top:1px solid var(--cinza-200);
+    background:var(--branco);
+  }
+
+  /* Esconder controlos filtrados */
+  .controlo.escondido{display:none;}
+  .seccao.escondida{display:none;}
+
+  /* Responsivo */
+  @media (max-width: 980px){
+    .area{grid-template-columns:1fr;}
+    .barra-lateral{position:static;height:auto;border-right:none;border-bottom:1px solid var(--cinza-200);}
+    .conteudo{padding:20px;}
+  }
+  @media (max-width: 640px){
+    .topo{padding:12px 16px;}
+    .topo .pesquisa{order:3;width:100%;max-width:none;}
+    .seccao > .cabeca{flex-direction:column;}
+  }
+  /* Scrollbar discreta */
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--cinza-300);border-radius:999px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--cinza-400);}
+
+  /* Modal de partilha */
+  .modal-fundo{
+    display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);
+    z-index:100;align-items:center;justify-content:center;padding:20px;
+    backdrop-filter:blur(4px);
+  }
+  .modal-fundo.aberto{display:flex;}
+  .modal{
+    background:var(--branco);border-radius:12px;max-width:620px;width:100%;
+    box-shadow:var(--sombra-lg);overflow:hidden;animation:surgir .2s ease-out;
+  }
+  @keyframes surgir{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .modal .cab-m{padding:18px 22px;border-bottom:1px solid var(--cinza-200);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .modal .cab-m h3{font-size:17px;color:var(--azul-800);}
+  .modal .fechar{cursor:pointer;background:none;border:none;font-size:22px;color:var(--cinza-500);}
+  .modal .fechar:hover{color:var(--cinza-800);}
+  .modal .corpo-m{padding:20px 22px;}
+  .modal .info{color:var(--cinza-600);font-size:13.5px;margin-bottom:14px;}
+  .modal .info .resumo{display:inline-block;background:var(--azul-50);color:var(--azul-800);font-weight:600;padding:3px 10px;border-radius:999px;font-size:12.5px;margin-left:4px;}
+  .modal .caixa-url{
+    display:flex;gap:8px;align-items:stretch;background:var(--cinza-50);
+    border:1px solid var(--cinza-200);border-radius:8px;padding:6px;
+  }
+  .modal .caixa-url input{
+    flex:1;border:none;background:transparent;padding:8px 10px;
+    font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;
+    color:var(--cinza-800);outline:none;
+  }
+  .modal .caixa-url button{
+    border:none;background:var(--azul-600);color:#fff;border-radius:6px;
+    padding:8px 14px;font-weight:600;cursor:pointer;font-size:13px;
+  }
+  .modal .caixa-url button:hover{background:var(--azul-700);}
+  .modal .caixa-url button.copiado{background:var(--verde-500);}
+  .modal .aviso{
+    margin-top:14px;padding:10px 14px;border-radius:6px;font-size:13px;
+    background:#fef3c7;color:#92400e;border-left:3px solid var(--laranja-500);
+  }
+  .modal .acoes-m{padding:14px 22px;background:var(--cinza-50);border-top:1px solid var(--cinza-200);display:flex;gap:10px;justify-content:flex-end;}
+
+  /* Banner de importação */
+  .banner-importar{
+    display:none;background:linear-gradient(90deg,#fef3c7,#fde68a);
+    border-bottom:1px solid #fbbf24;padding:12px 24px;
+    align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  .banner-importar.visivel{display:flex;}
+  .banner-importar .txt{color:#92400e;font-size:13.5px;font-weight:500;}
+  .banner-importar .btns{display:flex;gap:8px;}
+  .banner-importar button{border:none;cursor:pointer;font-weight:600;font-size:12.5px;padding:7px 14px;border-radius:6px;font-family:inherit;}
+  .banner-importar .btn-aceitar{background:var(--azul-600);color:#fff;}
+  .banner-importar .btn-rejeitar{background:#fff;color:var(--cinza-700);border:1px solid var(--cinza-300);}
+</style>
+</head>
+<body>
+
+<!-- ============================== BANNER DE IMPORTAÇÃO ============================== -->
+<div class="banner-importar" id="bannerImportar">
+  <div class="txt">🔗 <strong>Esta hiperligação contém um estado partilhado</strong> (<span id="bannerResumo"></span>). Deseja importá-lo? <em>O seu progresso atual será substituído.</em></div>
+  <div class="btns">
+    <button class="btn-aceitar" id="btnAceitarImport" data-testid="btn-aceitar-import">✓ Importar e substituir</button>
+    <button class="btn-rejeitar" id="btnRejeitarImport" data-testid="btn-rejeitar-import">✖ Manter meu progresso</button>
+  </div>
+</div>
+
+<!-- ============================== MODAL DE PARTILHA ============================== -->
+<div class="modal-fundo" id="modalPartilhar">
+  <div class="modal">
+    <div class="cab-m">
+      <h3>🔗 Partilhar progresso por URL</h3>
+      <button class="fechar" id="fecharModal" data-testid="fechar-modal" aria-label="Fechar">✕</button>
+    </div>
+    <div class="corpo-m">
+      <div class="info">O estado de todos os checkboxes está codificado de forma compacta no fragmento da URL (não é enviado para qualquer servidor). Quem abrir a hiperligação verá o mesmo progresso.<span class="resumo" id="resumoPartilha"></span></div>
+      <div class="caixa-url">
+        <input type="text" id="campoUrl" readonly data-testid="campo-url-partilha">
+        <button id="btnCopiar" data-testid="btn-copiar-url">📋 Copiar</button>
+      </div>
+      <div class="aviso">⚠ <strong>Privacidade:</strong> a URL contém o estado da checklist mas não dados pessoais. Partilhe apenas com pessoas autorizadas a ver o nível de implementação do SGSI.</div>
+    </div>
+    <div class="acoes-m">
+      <button class="botao botao-fantasma" id="btnLimparHash" style="background:var(--cinza-100);color:var(--cinza-700);border:1px solid var(--cinza-300);" data-testid="btn-limpar-hash">Limpar URL desta página</button>
+      <button class="botao botao-primario" id="btnFecharModal" style="background:var(--azul-600);color:#fff;">Fechado</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== CABEÇALHO ============================== -->
+<header class="topo">
+  <div class="marca">
+    <div class="logo">DC</div>
+    <div>
+      <div class="nome">DataCoLAB</div>
+      <div class="sub">Guia ISO/IEC 27001:2022 — SGSI Cloud & DevSecOps</div>
+    </div>
+  </div>
+  <div class="pesquisa">
+    <span class="icone">🔍</span>
+    <input type="text" id="campoPesquisa" placeholder="Pesquisar controlo (ex: 8.25, codificação segura, cloud)…" data-testid="campo-pesquisa">
+  </div>
+  <div class="acoes">
+    <div class="progresso-rotulo" id="rotuloProgresso">0% concluído</div>
+    <div class="progresso-global"><span id="barraProgresso"></span></div>
+    <button class="botao botao-primario" id="btnExportar" data-testid="btn-exportar">📄 Exportar Relatório</button>
+    <button class="botao botao-fantasma" id="btnPartilhar" data-testid="btn-partilhar">🔗 Partilhar</button>
+    <button class="botao botao-fantasma" id="btnExpandir" data-testid="btn-expandir">⊞ Expandir tudo</button>
+    <button class="botao botao-perigo" id="btnRepor" data-testid="btn-repor">↺ Repor</button>
+  </div>
+</header>
+
+<div class="area">
+  <!-- ============================== NAVEGAÇÃO LATERAL ============================== -->
+  <nav class="barra-lateral" id="barraLateral">
+    <h4>Dashboard</h4>
+    <a href="#dashboard" class="link" data-alvo="dashboard">📊 Visão Geral</a>
+
+    <h4>Cláusulas (Esqueleto do SGSI)</h4>
+    <a href="#clausula-4" class="link" data-alvo="clausula-4">4. Contexto da Organização <span class="contagem" id="cnt-c4"></span></a>
+    <a href="#clausula-5" class="link" data-alvo="clausula-5">5. Liderança <span class="contagem" id="cnt-c5"></span></a>
+    <a href="#clausula-6" class="link" data-alvo="clausula-6">6. Planeamento <span class="contagem" id="cnt-c6"></span></a>
+    <a href="#clausula-7" class="link" data-alvo="clausula-7">7. Suporte <span class="contagem" id="cnt-c7"></span></a>
+    <a href="#clausula-8" class="link" data-alvo="clausula-8">8. Operação <span class="contagem" id="cnt-c8"></span></a>
+    <a href="#clausula-9" class="link" data-alvo="clausula-9">9. Avaliação do Desempenho <span class="contagem" id="cnt-c9"></span></a>
+    <a href="#clausula-10" class="link" data-alvo="clausula-10">10. Melhoria <span class="contagem" id="cnt-c10"></span></a>
+
+    <h4>Anexo A — 93 Controlos</h4>
+    <a href="#grupo-org" class="link" data-alvo="grupo-org">🏛 Organizacionais (5.1–5.37) <span class="contagem" id="cnt-org"></span></a>
+    <a href="#grupo-pes" class="link" data-alvo="grupo-pes">👥 Pessoas (6.1–6.8) <span class="contagem" id="cnt-pes"></span></a>
+    <a href="#grupo-fis" class="link" data-alvo="grupo-fis">🏢 Físicos (7.1–7.14) <span class="contagem" id="cnt-fis"></span></a>
+    <a href="#grupo-tec" class="link" data-alvo="grupo-tec">⚙ Tecnológicos (8.1–8.34) <span class="contagem" id="cnt-tec"></span></a>
+
+    <h4>Filtros Rápidos</h4>
+    <a href="#" class="link" id="filtroNovo">⭐ Apenas Novos 2022</a>
+    <a href="#" class="link" id="filtroCritico">⚡ Apenas Críticos Cloud/DevSecOps</a>
+    <a href="#" class="link" id="filtroPendentes">⏳ Apenas Pendentes</a>
+    <a href="#" class="link" id="filtroLimpar">✖ Limpar filtros</a>
+  </nav>
+
+  <!-- ============================== CONTEÚDO ============================== -->
+  <main class="conteudo">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="seccao" id="dashboard">
+      <div class="cabeca">
+        <div>
+          <h2>📊 Dashboard de Conformidade</h2>
+          <p class="descricao">Visão consolidada do progresso de implementação do SGSI no âmbito certificável do DataCoLAB: <em>desenvolvimento, implementação e manutenção de software em ambiente Cloud (AWS, Google Cloud, Render, Vercel) e ferramentas DevSecOps associadas</em>.</p>
+        </div>
+      </div>
+
+      <div class="grelha-kpi">
+        <div class="kpi"><span class="rotulo">Total de Itens</span><span class="valor" id="kpiTotal">0</span><span class="sub">checklist agregada (cláusulas + 93 controlos)</span></div>
+        <div class="kpi verde"><span class="rotulo">Concluídos</span><span class="valor" id="kpiFeitos">0</span><span class="sub">marcados como implementados</span></div>
+        <div class="kpi laranja"><span class="rotulo">Pendentes</span><span class="valor" id="kpiPendentes">0</span><span class="sub">ainda por implementar / evidenciar</span></div>
+        <div class="kpi roxo"><span class="rotulo">Progresso Global</span><span class="valor" id="kpiPercent">0%</span><span class="sub">percentagem de conformidade</span></div>
+      </div>
+
+      <h3 style="margin:18px 0 12px;color:var(--azul-800);font-size:16px;">Progresso por Grupo</h3>
+      <div class="grelha-grupos" id="grelhaGrupos">
+        <!-- preenchido por JS -->
+      </div>
+    </section>
+
+    <!-- ===== FILTROS ===== -->
+    <div class="filtros">
+      <div class="grupo">
+        <label>Filtrar:</label>
+        <select id="filtroEstado" data-testid="filtro-estado">
+          <option value="todos">Todos os itens</option>
+          <option value="pendente">Apenas pendentes</option>
+          <option value="feito">Apenas concluídos</option>
+        </select>
+      </div>
+      <div class="grupo">
+        <label>Etiqueta:</label>
+        <select id="filtroEtiqueta" data-testid="filtro-etiqueta">
+          <option value="todos">Todas</option>
+          <option value="novo">Novos 2022</option>
+          <option value="critico">Críticos Cloud/DevSecOps</option>
+        </select>
+      </div>
+      <div class="grupo" style="margin-left:auto;color:var(--cinza-500);font-size:12px;">
+        Estado guardado localmente no navegador (localStorage)
+      </div>
+    </div>
+
+    <!-- ===== CLÁUSULAS ===== -->
+    <section class="seccao" id="seccao-clausulas">
+      <div class="cabeca">
+        <div>
+          <h2>📘 Componente 1 — Cláusulas 4 a 10 (Esqueleto do SGSI) <span class="eti eti-obrig" style="vertical-align:middle;">Obrigatório para Certificação</span></h2>
+          <p class="descricao">As cláusulas 4 a 10 constituem o corpo normativo obrigatório da ISO/IEC 27001:2022. Toda a organização certificável tem de demonstrar conformidade plena com estas cláusulas, independentemente do âmbito.</p>
+        </div>
+      </div>
+      <div id="containerClausulas"></div>
+    </section>
+
+    <!-- ===== ANEXO A ===== -->
+    <section class="seccao" id="seccao-anexo">
+      <div class="cabeca">
+        <div>
+          <h2>📚 Componente 2 — Anexo A (ISO/IEC 27002:2022): 93 Controlos</h2>
+          <p class="descricao">Catálogo de referência para a Declaração de Aplicabilidade (DdA / SoA). Cada controlo aplicado ao DataCoLAB deve estar justificado pelo resultado da apreciação de riscos.</p>
+        </div>
+      </div>
+
+      <div class="seccao" id="grupo-org">
+        <div class="cabeca">
+          <div>
+            <h2>🏛 A.5 Controlos Organizacionais (5.1–5.37) <span class="eti eti-grupo">37 controlos</span></h2>
+            <p class="descricao">Políticas, papéis, gestão de fornecedores, gestão de incidentes, conformidade legal e continuidade.</p>
+          </div>
+          <div class="barra-prog-grupo"><span id="bar-org"></span></div>
+        </div>
+        <div id="container-org"></div>
+      </div>
+
+      <div class="seccao" id="grupo-pes">
+        <div class="cabeca">
+          <div>
+            <h2>👥 A.6 Controlos de Pessoas (6.1–6.8) <span class="eti eti-grupo">8 controlos</span></h2>
+            <p class="descricao">Triagem, sensibilização, formação, NDA e reporte de eventos.</p>
+          </div>
+          <div class="barra-prog-grupo"><span id="bar-pes"></span></div>
+        </div>
+        <div id="container-pes"></div>
+      </div>
+
+      <div class="seccao" id="grupo-fis">
+        <div class="cabeca">
+          <div>
+            <h2>🏢 A.7 Controlos Físicos (7.1–7.14) <span class="eti eti-grupo">14 controlos</span></h2>
+            <p class="descricao">Perímetros físicos, equipamento, suportes de armazenamento e eliminação segura.</p>
+          </div>
+          <div class="barra-prog-grupo"><span id="bar-fis"></span></div>
+        </div>
+        <div id="container-fis"></div>
+      </div>
+
+      <div class="seccao" id="grupo-tec">
+        <div class="cabeca">
+          <div>
+            <h2>⚙ A.8 Controlos Tecnológicos (8.1–8.34) <span class="eti eti-grupo">34 controlos</span></h2>
+            <p class="descricao">Núcleo técnico do SGSI — autenticação, criptografia, vulnerabilidades, registos, redes, ciclo de vida de desenvolvimento seguro, gestão de mudança e separação de ambientes.</p>
+          </div>
+          <div class="barra-prog-grupo"><span id="bar-tec"></span></div>
+        </div>
+        <div id="container-tec"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="rodape">
+  Guia ISO/IEC 27001:2022 — gerado para o âmbito certificável do <strong>DataCoLAB</strong>.<br>
+  Conteúdo baseado nas normas ISO/IEC 27001:2022 e ISO/IEC 27002:2022. Documento de apoio à implementação — não substitui o texto normativo oficial.<br>
+  Estado de progresso guardado no navegador (localStorage). Use o botão <em>Exportar Relatório</em> para evidência documental.
+</footer>
+
+<script>
+/* ============================================================================
+   DADOS — CLÁUSULAS 4–10 e CONTROLOS DO ANEXO A (93)
+   ============================================================================ */
+
+const CLAUSULAS = [
+  {
+    id:"clausula-4", num:"4", titulo:"Contexto da Organização",
+    requisitos:[
+      "Determinar as questões internas e externas relevantes para o SGSI do DataCoLAB (cláusula 4.1).",
+      "Identificar as partes interessadas (clientes, parceiros cloud, reguladores, equipa) e os seus requisitos relevantes (4.2).",
+      "Determinar o âmbito do SGSI documentado, incluindo interfaces e dependências com serviços cloud externos (4.3).",
+      "Estabelecer, implementar, manter e melhorar continuamente o SGSI (4.4)."
+    ],
+    artefactos:[
+      "Documento de Âmbito do SGSI (referindo AWS, Google Cloud, Render, Vercel e DevSecOps).",
+      "Análise de contexto SWOT/PESTEL adaptada ao setor de desenvolvimento de software.",
+      "Matriz de partes interessadas com requisitos de segurança identificados.",
+      "Mapa de processos do SGSI."
+    ],
+    checklist:[
+      "Âmbito do SGSI documentado e aprovado pela Direção.",
+      "Lista de questões internas (estrutura, recursos, cultura DevSecOps) documentada.",
+      "Lista de questões externas (RGPD, NIS2, ameaças cloud, expectativas de clientes) documentada.",
+      "Matriz de partes interessadas com requisitos identificados e atualizada anualmente.",
+      "Interfaces e dependências com fornecedores cloud (AWS, GCP, Render, Vercel) explicitamente mapeadas no âmbito.",
+      "Exclusões do âmbito (se existirem) justificadas e documentadas."
+    ],
+    nota:"O âmbito tem de identificar claramente quais ambientes cloud (AWS, GCP, Render, Vercel) estão incluídos, quais ferramentas DevSecOps (CI/CD, SAST, DAST, SCA, IaC scanners) e quais repositórios/pipelines. Modelos de responsabilidade partilhada com cada fornecedor cloud devem ser documentados."
+  },
+  {
+    id:"clausula-5", num:"5", titulo:"Liderança",
+    requisitos:[
+      "A Direção demonstra liderança e compromisso com o SGSI (5.1).",
+      "Estabelecer uma Política de Segurança da Informação aprovada, comunicada e disponível (5.2).",
+      "Atribuir, comunicar e documentar papéis, responsabilidades e autoridades para a segurança da informação (5.3)."
+    ],
+    artefactos:[
+      "Política de Segurança da Informação (assinada pela Direção, versionada).",
+      "Organograma do SGSI com nomeação do Responsável de Segurança (CISO/DPO).",
+      "Atas de Conselho de Segurança / Comité do SGSI.",
+      "Matriz RACI de segurança aplicada a equipas de produto, plataforma e DevSecOps."
+    ],
+    checklist:[
+      "Política de Segurança da Informação aprovada, datada, versionada e assinada pela Direção.",
+      "Política comunicada a toda a equipa (evidência: assinatura, newsletter, plataforma de e-learning).",
+      "Política revista, no mínimo, anualmente ou quando ocorrem alterações relevantes.",
+      "Papel de CISO (ou equivalente) atribuído por escrito.",
+      "Responsabilidades de segurança incluídas nas descrições de funções das equipas de engenharia.",
+      "Recursos (humanos, financeiros, tecnológicos) alocados ao SGSI e formalizados em orçamento.",
+      "Comité do SGSI com reuniões periódicas (mínimo trimestrais) e atas registadas."
+    ],
+    nota:"Em organizações DevSecOps, a liderança tem de patrocinar visivelmente a integração de segurança no pipeline (shift-left). Recomenda-se que a equipa de segurança seja independente da equipa de desenvolvimento mas integrada nos rituais ágeis."
+  },
+  {
+    id:"clausula-6", num:"6", titulo:"Planeamento",
+    requisitos:[
+      "Determinar riscos e oportunidades que afetam os resultados do SGSI (6.1.1).",
+      "Definir e aplicar um processo formal de apreciação de riscos de segurança da informação (6.1.2).",
+      "Definir e aplicar um processo de tratamento de riscos, produzindo a Declaração de Aplicabilidade (SoA) (6.1.3).",
+      "Estabelecer objetivos de segurança da informação mensuráveis e planeados (6.2).",
+      "Planear alterações ao SGSI de forma controlada (6.3)."
+    ],
+    artefactos:[
+      "Metodologia documentada de apreciação de riscos (critérios de aceitação, escalas, periodicidade).",
+      "Registo de Riscos atualizado.",
+      "Plano de Tratamento de Riscos (PTR).",
+      "Declaração de Aplicabilidade (SoA) referenciando os 93 controlos do Anexo A.",
+      "Plano anual de objetivos de segurança com KPIs."
+    ],
+    checklist:[
+      "Metodologia de apreciação de riscos aprovada e aplicada.",
+      "Identificados ativos de informação críticos (código-fonte, segredos, dados de clientes, configurações de IaC).",
+      "Identificadas ameaças específicas cloud (configuração incorreta, exposição de buckets, fuga de chaves, supply chain).",
+      "Riscos com proprietários nomeados e níveis aceitáveis definidos.",
+      "Plano de tratamento de riscos com prazos, responsáveis e estado.",
+      "SoA atualizada que indica: aplicável / não aplicável e justificação para cada um dos 93 controlos.",
+      "Objetivos de segurança SMART definidos (ex: <5% de findings críticos em SAST por release).",
+      "Alterações significativas (novo serviço cloud, nova região, novo fornecedor) sujeitas a análise de impacto no SGSI."
+    ],
+    nota:"A apreciação de riscos deve considerar explicitamente o modelo de responsabilidade partilhada de cada fornecedor (AWS, GCP, Render, Vercel) e os riscos da supply chain de software (dependências open-source, imagens de contentor, providers Terraform)."
+  },
+  {
+    id:"clausula-7", num:"7", titulo:"Suporte",
+    requisitos:[
+      "Determinar e prover recursos necessários ao SGSI (7.1).",
+      "Garantir competências apropriadas das pessoas que influenciam o desempenho do SGSI (7.2).",
+      "Promover a sensibilização das pessoas (7.3).",
+      "Determinar a necessidade de comunicação interna e externa (7.4).",
+      "Controlar a informação documentada: criação, atualização, acesso e retenção (7.5)."
+    ],
+    artefactos:[
+      "Plano anual de formação e sensibilização (incluindo OWASP Top 10, codificação segura, phishing, cloud security).",
+      "Registos de competências e formação (LMS, certificações).",
+      "Plano de Comunicação do SGSI (interno e externo).",
+      "Sistema de gestão documental com controlo de versões, aprovação e acessos.",
+      "Política de Controlo de Documentos e Registos."
+    ],
+    checklist:[
+      "Recursos humanos, financeiros e tecnológicos atribuídos ao SGSI e revistos anualmente.",
+      "Plano anual de formação aprovado e executado (incluindo formação específica de codificação segura para programadores).",
+      "Programa de sensibilização contínuo (phishing simulado, newsletters, cápsulas e-learning).",
+      "Registos de presença/conclusão de formação arquivados.",
+      "Matriz de comunicação interna e externa do SGSI definida.",
+      "Documentos do SGSI controlados (identificação, versão, autor, aprovador, data de revisão).",
+      "Repositório documental com controlo de acessos por papel.",
+      "Política de retenção e eliminação de documentos definida e aplicada."
+    ],
+    nota:"Para DevSecOps, a formação técnica em codificação segura (OWASP ASVS), segurança cloud (CSA CCM) e infrastructure-as-code seguro é essencial. Recomenda-se gamificação e capture-the-flag interno."
+  },
+  {
+    id:"clausula-8", num:"8", titulo:"Operação",
+    requisitos:[
+      "Planear, implementar e controlar os processos necessários para cumprir os requisitos do SGSI (8.1).",
+      "Executar apreciações de riscos de segurança da informação em intervalos planeados e quando ocorrem alterações significativas (8.2).",
+      "Implementar o plano de tratamento de riscos (8.3)."
+    ],
+    artefactos:[
+      "Procedimentos operacionais documentados (onboarding/offboarding, gestão de chaves, gestão de mudança, gestão de incidentes).",
+      "Registos de execução das apreciações de riscos periódicas.",
+      "Registos de execução do plano de tratamento de riscos.",
+      "Registos de subcontratação e controlo de fornecedores."
+    ],
+    checklist:[
+      "Processos operacionais críticos documentados e controlados (mínimo: onboarding, offboarding, gestão de acessos, gestão de chaves/segredos, gestão de mudança, gestão de incidentes, gestão de vulnerabilidades, backups).",
+      "Apreciações de riscos executadas em intervalos planeados (mínimo anuais) e ad-hoc para alterações significativas.",
+      "Resultados das apreciações de riscos documentados e comunicados.",
+      "Plano de tratamento de riscos executado conforme planeado; desvios documentados.",
+      "Processos contratados a terceiros (cloud, SaaS, prestadores) controlados e monitorizados.",
+      "Alterações significativas a processos passam por gestão de mudança (controlo 8.32)."
+    ],
+    nota:"A operação cloud-native exige automatização de controlos como código (policy-as-code com OPA/Conftest/Sentinel), runtime monitoring (CSPM, CWPP), e integração de gestão de riscos com pipelines CI/CD."
+  },
+  {
+    id:"clausula-9", num:"9", titulo:"Avaliação do Desempenho",
+    requisitos:[
+      "Determinar o que monitorizar e medir, métodos, frequência e quem analisa resultados (9.1).",
+      "Realizar auditorias internas em intervalos planeados (9.2).",
+      "Executar revisão pela gestão em intervalos planeados (9.3)."
+    ],
+    artefactos:[
+      "Plano de monitorização e medição com KPI/KRI definidos.",
+      "Programa de Auditorias Internas (anual) e relatórios de auditoria.",
+      "Atas e ações da Revisão pela Gestão.",
+      "Dashboards técnicos (vulnerabilidades, incidentes, MTTD/MTTR, cobertura SAST/DAST)."
+    ],
+    checklist:[
+      "Conjunto de métricas de segurança definido (ex.: número de vulnerabilidades críticas em produção, MTTR, % de pipelines com SAST/DAST/SCA, % de imagens com CVEs críticos).",
+      "Frequência, método e responsabilidade de cada métrica definidos por escrito.",
+      "Plano anual de auditorias internas cobre todos os requisitos da norma e controlos aplicáveis.",
+      "Auditorias internas executadas por auditores competentes e independentes do processo auditado.",
+      "Relatórios de auditoria com não conformidades, observações e recomendações.",
+      "Revisão pela Gestão realizada no mínimo anualmente cobrindo todas as entradas exigidas pela norma (9.3.2).",
+      "Decisões e ações da Revisão pela Gestão documentadas e seguidas."
+    ],
+    nota:"As entradas obrigatórias da Revisão pela Gestão (9.3.2) incluem: estado de ações anteriores, mudanças relevantes, feedback sobre desempenho de segurança, feedback de partes interessadas, riscos e oportunidades, e oportunidades de melhoria."
+  },
+  {
+    id:"clausula-10", num:"10", titulo:"Melhoria",
+    requisitos:[
+      "Identificar não conformidades, tomar ações para as controlar e corrigir e tratar as consequências (10.1).",
+      "Determinar causas e implementar ações corretivas para evitar recorrência (10.1).",
+      "Melhorar continuamente a adequação, suficiência e eficácia do SGSI (10.2)."
+    ],
+    artefactos:[
+      "Procedimento de Gestão de Não Conformidades e Ações Corretivas (NCAC).",
+      "Registo de não conformidades (auditorias internas/externas, incidentes, queixas).",
+      "Plano de Melhoria Contínua.",
+      "Registos de eficácia das ações corretivas."
+    ],
+    checklist:[
+      "Procedimento de NCAC documentado e aplicado.",
+      "Todas as não conformidades de auditorias e incidentes registadas e tratadas com análise de causa-raiz.",
+      "Ações corretivas com prazos, responsáveis e validação de eficácia.",
+      "Iniciativas de melhoria contínua identificadas, priorizadas e executadas.",
+      "Revisão da eficácia das ações corretivas evidenciada (post-mortem, métricas de redução)."
+    ],
+    nota:"Em ambientes DevSecOps, a análise de causa-raiz de incidentes deve resultar em controlos automatizados (testes adicionais no pipeline, regras IaC, policies) para evitar recorrência sistémica."
+  }
+];
+
+/* ----------------------------- ANEXO A — 93 CONTROLOS ----------------------------- */
+
+const NOVOS_2022 = new Set(["5.7","5.23","5.30","8.9","8.10","8.11","8.12","8.16","8.23","8.28"]);
+const CRITICOS = new Set(["5.23","8.9","8.25","8.28","8.31","8.8","8.29","8.32","6.8","5.7"]);
+
+const CONTROLOS = {
+  org:[
+    {n:"5.1", t:"Políticas de segurança da informação",
+      d:"Política de SI e políticas específicas por tema devem ser definidas, aprovadas pela Direção, publicadas, comunicadas e revistas em intervalos planeados ou quando ocorrem alterações significativas.",
+      a:["Política mestra de SI aprovada e versionada.","Políticas temáticas (acessos, criptografia, cloud, backups, desenvolvimento seguro, BYOD, teletrabalho) publicadas.","Plano de comunicação a colaboradores.","Revisão anual obrigatória registada."],
+      r:"O DataCoLAB deve ter políticas explícitas para uso de AWS/GCP/Render/Vercel e para o pipeline DevSecOps (SAST/DAST/SCA, gestão de segredos, IaC)."},
+    {n:"5.2", t:"Papéis e responsabilidades de segurança da informação",
+      d:"Papéis e responsabilidades de SI devem ser definidos e atribuídos de acordo com as necessidades da organização.",
+      a:["Matriz RACI de segurança.","Descrição de funções com responsabilidades de SI.","Nomeação formal de proprietários de ativos e riscos."],
+      r:"Definir papéis específicos: Cloud Security Engineer, DevSecOps Lead, AppSec Champion por equipa, SRE de Segurança."},
+    {n:"5.3", t:"Segregação de funções",
+      d:"Funções e áreas de responsabilidade conflituantes devem ser segregadas para reduzir oportunidades de modificação não autorizada/uso indevido.",
+      a:["Análise de conflitos de funções documentada.","Configurações IAM com separação (quem aprova ≠ quem implementa).","Workflows de pull request com revisão obrigatória por outro colaborador."],
+      r:"No pipeline CI/CD: separar permissões de merge para main vs deploy produção; aprovação de deploy produção fora do âmbito do programador do PR."},
+    {n:"5.4", t:"Responsabilidades da gestão",
+      d:"A gestão deve exigir a todos os colaboradores que apliquem a SI conforme políticas estabelecidas.",
+      a:["Compromisso documentado da Direção.","Reuniões periódicas de revisão.","Inclusão de SI nas avaliações de desempenho de chefias."],
+      r:"Patrocínio executivo visível: orçamento dedicado a DevSecOps, comunicação top-down sobre prioridade de segurança."},
+    {n:"5.5", t:"Contacto com autoridades",
+      d:"Manter contactos apropriados com autoridades relevantes.",
+      a:["Lista de contactos (CNPD, CNCS/CERT.PT, autoridades judiciais, reguladores setoriais).","Procedimento para acionar contactos em incidente.","Atualização anual."],
+      r:"Para o DataCoLAB: CNPD (RGPD), CNCS/CERT.PT (NIS2/incidentes), Polícia Judiciária (cibercrime)."},
+    {n:"5.6", t:"Contacto com grupos de interesse especial",
+      d:"Manter contactos apropriados com grupos de interesse especial, fóruns e associações profissionais.",
+      a:["Subscrição a CERT, OWASP, CSA, ISACA, ENISA.","Participação em comunidades técnicas (DevSecOps Lisboa, OWASP Portugal).","Partilha controlada de informação de ameaças."],
+      r:"Subscrever advisories da AWS, Google Cloud, Vercel, Render; integrar feeds CTI no SIEM."},
+    {n:"5.7", t:"Informações sobre ameaças",
+      d:"Informações relacionadas com ameaças de SI devem ser recolhidas e analisadas para produzir threat intelligence acionável.",
+      a:["Subscrição a feeds CTI (open-source e comerciais).","Processo de triagem e enriquecimento de IOC.","Integração de TI com SIEM/SOAR e WAF.","Boletins internos de ameaças para equipas de produto."],
+      r:"⚡ CRÍTICO: TI específica de cloud (TTPs MITRE ATT&CK Cloud, supply-chain, dependency confusion). Integrar com pipelines (bloquear deploy se IOC ativo na imagem)."},
+    {n:"5.8", t:"Segurança da informação na gestão de projetos",
+      d:"SI deve ser integrada na gestão de projetos, independentemente do tipo de projeto.",
+      a:["Checklist de SI obrigatória na abertura de projeto.","Apreciação de riscos por projeto.","Privacy/Security by Design documentado.","Sign-off de segurança em gates de projeto."],
+      r:"Threat modeling obrigatório (STRIDE/LINDDUN) para novas features com manipulação de dados sensíveis."},
+    {n:"5.9", t:"Inventário de informações e outros ativos associados",
+      d:"Inventário de informação e outros ativos associados, incluindo proprietários, deve ser desenvolvido e mantido.",
+      a:["CMDB/Inventário automatizado.","Descoberta automática em AWS/GCP (Config, Asset Inventory).","Repositórios de código e segredos inventariados.","Proprietários definidos."],
+      r:"Inventário deve incluir: contas AWS/GCP, projetos, repos GitHub/GitLab, pipelines, secrets em vault, domínios em Vercel/Render, integrações SaaS."},
+    {n:"5.10", t:"Uso aceitável de informações e outros ativos associados",
+      d:"Regras para o uso aceitável e procedimentos para o manuseamento de ativos devem ser identificadas, documentadas e implementadas.",
+      a:["Política de Uso Aceitável (AUP) assinada.","Regras de utilização de equipamento, e-mail, GenAI.","Política BYOD."],
+      r:"Definir uso aceitável de ferramentas GenAI no desenvolvimento (proibir submissão de código proprietário a LLM externos sem aprovação)."},
+    {n:"5.11", t:"Devolução de ativos",
+      d:"Pessoas e outras partes interessadas devem devolver todos os ativos quando termina o seu vínculo ou contrato.",
+      a:["Checklist de offboarding.","Procedimento de revogação imediata de acessos.","Retorno de portátil, tokens, smartcards.","Quitação assinada."],
+      r:"Revogação imediata em IdP central, AWS IAM, GCP IAM, GitHub Org, Vercel/Render, Slack, Jira; rotação de chaves partilhadas."},
+    {n:"5.12", t:"Classificação da informação",
+      d:"Informação deve ser classificada de acordo com as necessidades de SI da organização, com base em confidencialidade, integridade, disponibilidade e requisitos relevantes das partes interessadas.",
+      a:["Esquema de classificação (ex: Público / Interno / Confidencial / Restrito).","Critérios objetivos.","Formação a colaboradores.","Revisão periódica."],
+      r:"Aplicar classificação a repositórios de código, buckets S3/GCS, datasets, segredos. Etiquetas (tags) em recursos cloud."},
+    {n:"5.13", t:"Etiquetagem da informação",
+      d:"Procedimento adequado de etiquetagem da informação deve ser desenvolvido e implementado de acordo com o esquema de classificação adotado.",
+      a:["Convenção de etiquetagem.","Etiquetas em documentos e ficheiros.","Tags obrigatórias em recursos AWS/GCP (Confidentiality, Owner, Environment).","Bloqueio de deploy sem tags."],
+      r:"Tags obrigatórias em IaC (Terraform): data-classification, owner, environment, cost-center."},
+    {n:"5.14", t:"Transferência de informação",
+      d:"Regras, procedimentos ou acordos de transferência de informação devem estar em vigor para todos os tipos de transferência (eletrónica, física, verbal).",
+      a:["Política de transferência.","Cifragem em trânsito obrigatória (TLS 1.2+).","Canais aprovados (SFTP, SaaS de partilha).","NDA com terceiros."],
+      r:"Bloquear partilha de dados sensíveis por canais não aprovados; DLP para correio eletrónico; assinatura de NDA antes de partilhar code."},
+    {n:"5.15", t:"Controlo de acessos",
+      d:"Regras para controlar o acesso físico e lógico à informação e aos outros ativos associados devem ser estabelecidas e implementadas com base nos requisitos de SI e de negócio.",
+      a:["Política de Controlo de Acessos.","Princípio de menor privilégio.","Revisão periódica.","RBAC/ABAC implementado."],
+      r:"IAM unificado (IdP central como Okta/Azure AD), federação SAML/OIDC para AWS, GCP, GitHub, Vercel, Render. JIT (Just-In-Time) e PAM para acessos privilegiados."},
+    {n:"5.16", t:"Gestão de identidade",
+      d:"O ciclo de vida completo de identidades deve ser gerido.",
+      a:["Provisionamento automatizado via SCIM.","Identidades únicas (não partilhadas).","Identidades de serviço (workload identity) geridas.","Desativação imediata na saída."],
+      r:"Workload identity (AWS IAM Roles, GCP Service Accounts, OIDC GitHub Actions) sem chaves de longo prazo."},
+    {n:"5.17", t:"Informação de autenticação",
+      d:"Atribuição e gestão da informação de autenticação devem ser controladas por um processo de gestão, incluindo aconselhar pessoas sobre manuseamento correto.",
+      a:["Política de palavra-passe (NIST 800-63B).","MFA obrigatório.","Cofre de palavras-passe.","Proibição de partilha."],
+      r:"MFA obrigatório em todas as contas (AWS, GCP, GitHub, Vercel, Render). Hardware keys (FIDO2) para acessos privilegiados. Segredos em AWS Secrets Manager / GCP Secret Manager / HashiCorp Vault — nunca em código."},
+    {n:"5.18", t:"Direitos de acesso",
+      d:"Direitos de acesso à informação e outros ativos associados devem ser atribuídos, revistos, modificados e removidos de acordo com a política específica e regras de controlo de acessos.",
+      a:["Procedimento de pedido/aprovação.","Revisão trimestral de acessos privilegiados.","Revisão anual de acessos gerais.","Revogação imediata em offboarding."],
+      r:"Access Reviews automáticas (AWS Access Analyzer, GCP Policy Analyzer). Relatórios de quem tem acesso a produção."},
+    {n:"5.19", t:"Segurança da informação nas relações com fornecedores",
+      d:"Processos e procedimentos devem ser definidos e implementados para gerir os riscos de SI associados ao uso de produtos ou serviços de fornecedores.",
+      a:["Política de fornecedores.","Avaliação de risco do fornecedor.","Cláusulas contratuais de SI.","Monitorização do desempenho."],
+      r:"AWS/GCP/Render/Vercel são fornecedores críticos: SLAs, due diligence de SOC2/ISO 27001, modelo de responsabilidade partilhada documentado."},
+    {n:"5.20", t:"Abordar a segurança da informação em acordos com fornecedores",
+      d:"Requisitos relevantes de SI devem ser estabelecidos e acordados com cada fornecedor.",
+      a:["Cláusulas contratuais (confidencialidade, notificação de incidente, direito a auditoria, subprocessadores).","DPA RGPD.","SLA de segurança."],
+      r:"Verificar e arquivar DPA, SCC e atestados de conformidade (SOC 2 Type II, ISO 27001, ISO 27017, ISO 27018) de cada provedor cloud e SaaS."},
+    {n:"5.21", t:"Gestão da segurança da informação na cadeia de fornecimento de TIC",
+      d:"Processos e procedimentos devem ser definidos para gerir os riscos de SI associados à cadeia de fornecimento de produtos e serviços TIC.",
+      a:["Inventário de fornecedores TIC.","SBOM para componentes críticos.","Verificação de origem e integridade.","Avaliação de fornecedores n-ésimos."],
+      r:"SBOM (CycloneDX/SPDX) para cada release. Assinatura de artefactos (Sigstore/Cosign). Verificação de integridade de pacotes (npm/pip/maven)."},
+    {n:"5.22", t:"Monitorização, revisão e gestão de alterações de serviços de fornecedores",
+      d:"A organização deve monitorizar, rever, avaliar e gerir regularmente alterações nas práticas de SI dos fornecedores e na prestação dos serviços.",
+      a:["Reuniões periódicas com fornecedores estratégicos.","Acompanhamento de incidentes do fornecedor.","Revisão anual de KPIs/SLAs."],
+      r:"Subscrever boletins de status e segurança da AWS/GCP/Vercel/Render. Avaliar impacto de alterações de produto (deprecations, breaking changes)."},
+    {n:"5.23", t:"Segurança da informação para a utilização de serviços em nuvem",
+      d:"Processos para aquisição, utilização, gestão e saída de serviços em nuvem devem ser estabelecidos de acordo com os requisitos de SI da organização.",
+      a:["Política de Cloud Security.","Processo de aprovação de novo serviço cloud.","Configuração base segura (landing zone).","CSPM contínuo (AWS Security Hub, GCP SCC).","Plano de saída/portabilidade."],
+      r:"⚡ CRÍTICO: Landing zones AWS (Control Tower / Organizations) e GCP (Org policies, IAM hierarchy) com guardrails. Multi-account/multi-project. CSPM com remediação automática. Documentar matriz de responsabilidade partilhada por cada serviço (IaaS/PaaS/SaaS)."},
+    {n:"5.24", t:"Planeamento e preparação da gestão de incidentes de segurança da informação",
+      d:"A organização deve planear e preparar a gestão de incidentes definindo, estabelecendo e comunicando processos, papéis e responsabilidades.",
+      a:["Procedimento de Gestão de Incidentes.","Playbooks por tipo de incidente (fuga de chaves, ransomware, DDoS, fuga de dados).","Equipa de resposta (CSIRT) nomeada.","Exercícios tabletop anuais."],
+      r:"Playbooks específicos: comprometimento de chaves AWS/GCP, secret leak em GitHub, exposição S3/GCS, supply-chain compromise."},
+    {n:"5.25", t:"Avaliação e decisão sobre eventos de segurança da informação",
+      d:"A organização deve avaliar eventos de SI e decidir se devem ser classificados como incidentes.",
+      a:["Critérios de classificação (gravidade, impacto).","Procedimento de triagem.","Registo de eventos em SIEM/ticketing."],
+      r:"Integração de eventos de CloudTrail/Cloud Audit Logs, GitHub audit log, dependabot alerts, secret scanning, SAST/DAST em SIEM central."},
+    {n:"5.26", t:"Resposta a incidentes de segurança da informação",
+      d:"Incidentes de SI devem ser respondidos de acordo com procedimentos documentados.",
+      a:["Procedimento de resposta (contenção, erradicação, recuperação, lições aprendidas).","Canais de comunicação.","Notificação regulatória (RGPD 72h, NIS2).","Post-mortems."],
+      r:"Automatização (SOAR): isolar instâncias EC2/GCE comprometidas, rotacionar chaves automaticamente, revogar tokens GitHub."},
+    {n:"5.27", t:"Aprendizagem com incidentes de segurança da informação",
+      d:"Conhecimento adquirido a partir de incidentes deve ser usado para reforçar e melhorar os controlos.",
+      a:["Post-mortems sem culpa.","Atualização de playbooks e controlos.","Indicadores de Compromisso partilhados internamente.","Métricas (MTTD, MTTR)."],
+      r:"Cada incidente deve gerar pelo menos uma melhoria automatizada (regra IaC, teste no pipeline, alerta novo)."},
+    {n:"5.28", t:"Recolha de evidências",
+      d:"A organização deve estabelecer e implementar procedimentos para identificação, recolha, aquisição e preservação de evidências.",
+      a:["Procedimento de forensics.","Cadeia de custódia.","Logs imutáveis (write-once).","Snapshots forenses."],
+      r:"Logs CloudTrail/Cloud Audit em buckets imutáveis (Object Lock / Bucket Lock). Reter no mínimo 1 ano. Snapshots EBS/Persistent Disk para análise."},
+    {n:"5.29", t:"Segurança da informação durante a disrupção",
+      d:"A organização deve planear como manter a SI a um nível apropriado durante a disrupção.",
+      a:["BIA (Business Impact Analysis).","Plano de Continuidade integrado com SI.","Estratégias de failover multi-região.","Testes de BCP."],
+      r:"Arquiteturas multi-AZ ou multi-região em AWS/GCP para serviços críticos. Plano de migração entre fornecedores se necessário."},
+    {n:"5.30", t:"Prontidão TIC para a continuidade do negócio",
+      d:"A prontidão TIC deve ser planeada, implementada, mantida e testada com base nos objetivos de continuidade e nos requisitos de continuidade TIC.",
+      a:["Objetivos de RTO/RPO por serviço.","Arquitetura resiliente (multi-AZ/região, backups).","Procedimentos de DR.","Testes regulares de failover."],
+      r:"DR automatizado (IaC + GitOps): infraestrutura recuperável em minutos. Testes anuais de chaos engineering."},
+    {n:"5.31", t:"Requisitos legais, estatutários, regulatórios e contratuais",
+      d:"Requisitos legais, estatutários, regulatórios e contratuais relevantes para a SI devem ser identificados, documentados e mantidos atualizados.",
+      a:["Registo de obrigações legais.","Análise de novos requisitos.","RGPD, NIS2, contratos de cliente.","Cumprimento documentado."],
+      r:"Aplicáveis: RGPD, Lei 58/2019, NIS2 (DL 65/2021), Cibersegurança, contratos com clientes (B2B SLAs)."},
+    {n:"5.32", t:"Direitos de propriedade intelectual",
+      d:"A organização deve implementar procedimentos para proteger os direitos de propriedade intelectual.",
+      a:["Política de PI.","Conformidade com licenças open-source.","SCA (Software Composition Analysis).","Registo de software produzido."],
+      r:"SCA (Snyk, Mend, Black Duck) integrado em CI para detetar licenças incompatíveis (AGPL em produto SaaS, etc.)."},
+    {n:"5.33", t:"Proteção de registos",
+      d:"Registos devem ser protegidos contra perda, destruição, falsificação, acesso não autorizado e divulgação não autorizada.",
+      a:["Classificação dos registos.","Política de retenção.","Controlos de acesso e integridade (WORM).","Auditoria de acesso."],
+      r:"Logs de auditoria, faturação, contratos em armazenamento imutável (S3 Object Lock / GCS Bucket Lock) por períodos legais."},
+    {n:"5.34", t:"Privacidade e proteção de informações pessoais (PII)",
+      d:"A organização deve identificar e cumprir os requisitos relativos à preservação da privacidade e à proteção de PII.",
+      a:["Política de Privacidade.","DPIA para tratamentos de alto risco.","Procedimento para direitos dos titulares.","Designação de DPO.","Registo de tratamentos."],
+      r:"Minimização e pseudonimização em ambientes não-produtivos (controlo 8.11). Localização de dados em regiões EU. Gestão de subprocessadores."},
+    {n:"5.35", t:"Revisão independente da segurança da informação",
+      d:"A abordagem da organização à gestão de SI e sua implementação devem ser revistas de forma independente em intervalos planeados ou quando ocorrem alterações significativas.",
+      a:["Auditorias internas (cláusula 9.2).","Auditorias externas (ISO, SOC).","Pentests externos anuais.","Red team exercises."],
+      r:"Pentest externo anual sobre aplicações em produção (cobertura: auth, lógica de negócio, API). Cloud security review (CIS Benchmarks)."},
+    {n:"5.36", t:"Conformidade com políticas, regras e padrões para SI",
+      d:"Conformidade com a política de SI, políticas específicas, regras e padrões deve ser regularmente revista.",
+      a:["Auto-avaliações.","Auditorias internas temáticas.","Métricas de adesão.","Não conformidades tratadas."],
+      r:"Policy-as-code (OPA Conftest, Checkov, AWS Config Rules, GCP Org Policies) com bloqueio automático de violações."},
+    {n:"5.37", t:"Procedimentos operacionais documentados",
+      d:"Procedimentos operacionais para instalações de processamento de informação devem ser documentados e disponibilizados ao pessoal que deles necessita.",
+      a:["Runbooks por sistema.","Procedimentos de mudança, recuperação, monitorização.","Manutenção e atualização.","Acesso controlado."],
+      r:"Runbooks armazenados em wiki versionada (Notion, Confluence, GitHub Wiki). Atualização obrigatória após cada mudança."}
+  ],
+
+  pes:[
+    {n:"6.1", t:"Triagem (Screening)",
+      d:"Verificações de antecedentes de todos os candidatos a colaborador devem ser realizadas previamente à contratação e proporcionalmente aos requisitos de SI.",
+      a:["Procedimento de triagem.","Verificação de identidade, formação, referências.","Registo criminal quando aplicável.","Renovação para funções sensíveis."],
+      r:"Triagem reforçada para funções com acesso privilegiado a produção (SRE, DevOps, DBAs, AppSec)."},
+    {n:"6.2", t:"Termos e condições de emprego",
+      d:"Acordos contratuais de emprego devem estipular as responsabilidades do colaborador e da organização em matéria de SI.",
+      a:["Cláusulas contratuais de SI.","NDA assinado.","Reconhecimento das políticas.","Responsabilidades pós-cessação."],
+      r:"Cláusulas específicas sobre código produzido, dados de clientes acessíveis, uso de ferramentas e contas corporativas."},
+    {n:"6.3", t:"Sensibilização, educação e formação em SI",
+      d:"Colaboradores e, quando aplicável, terceiros devem receber sensibilização, educação e formação adequada e atualizações regulares.",
+      a:["Plano anual de formação.","Sensibilização no onboarding.","Cápsulas mensais.","Phishing simulado.","Métricas de cobertura."],
+      r:"Trilha técnica obrigatória para programadores: OWASP Top 10, codificação segura (linguagens usadas), segurança cloud (AWS/GCP), DevSecOps essentials."},
+    {n:"6.4", t:"Processo disciplinar",
+      d:"Processo disciplinar formal e comunicado deve estar implementado para atuar contra colaboradores que cometam uma violação de SI.",
+      a:["Procedimento disciplinar.","Comunicação clara.","Aplicação consistente.","Articulação com RH/Jurídico."],
+      r:"Tipificar violações: partilha de credenciais, deploy de código não revisto, uso indevido de dados, bypass de controlos do pipeline."},
+    {n:"6.5", t:"Responsabilidades pós-cessação ou alteração de vínculo",
+      d:"Responsabilidades e deveres de SI que permanecem válidos após a cessação ou alteração de vínculo devem ser definidos, aplicados e comunicados.",
+      a:["Cláusulas pós-contrato (confidencialidade).","Entrevista de saída.","Lembrete formal das obrigações.","Período de não concorrência se aplicável."],
+      r:"Confidencialidade sobre código-fonte, arquiteturas, dados de clientes mantida pós-saída."},
+    {n:"6.6", t:"Acordos de confidencialidade ou não divulgação (NDA)",
+      d:"NDAs que reflitam as necessidades da organização devem ser identificados, documentados, regularmente revistos e assinados.",
+      a:["Modelo de NDA.","NDA assinado por colaboradores e terceiros antes de acesso.","Revisão periódica do modelo."],
+      r:"NDA com freelancers, agências, estagiários antes de acesso a repositórios ou ambientes."},
+    {n:"6.7", t:"Trabalho remoto",
+      d:"Medidas de segurança devem ser implementadas quando colaboradores trabalham remotamente para proteger a informação acedida, processada ou armazenada fora das instalações.",
+      a:["Política de teletrabalho.","Equipamento corporativo / MDM.","VPN / Zero Trust Network Access.","Cifragem de disco.","Regras sobre ambiente físico."],
+      r:"ZTNA (Cloudflare Access, Tailscale, AWS Verified Access). MDM (Kandji, Jamf, Intune). FileVault/BitLocker obrigatórios."},
+    {n:"6.8", t:"Reporte de eventos de segurança da informação",
+      d:"A organização deve disponibilizar um mecanismo para o pessoal reportar eventos de SI observados ou suspeitados, através de canais apropriados em tempo hábil.",
+      a:["Canal de reporte (e-mail dedicado, formulário, Slack).","Procedimento simples e conhecido.","Reporte anónimo possível.","Tempo de resposta definido.","Não retaliação garantida."],
+      r:"⚡ CRÍTICO: Canal #security-incidents no Slack/Teams + e-mail seguranca@datacolab; cultura de blameless reporting. Bug bounty ou VDP (Vulnerability Disclosure Program) público para investigadores externos."}
+  ],
+
+  fis:[
+    {n:"7.1", t:"Perímetros de segurança física",
+      d:"Perímetros de segurança devem ser definidos e usados para proteger áreas que contenham informação e outros ativos associados.",
+      a:["Definição de perímetros (escritório, salas técnicas).","Controlo de entrada.","Sinalética.","Vigilância."],
+      r:"Mesmo cloud-first, o escritório aloja portáteis com acesso a produção; perímetro físico importa. Para os ambientes cloud, o perímetro é responsabilidade do CSP (verificar atestados SOC2/ISO 27001)."},
+    {n:"7.2", t:"Entrada física",
+      d:"Áreas seguras devem ser protegidas por controlos de entrada apropriados e pontos de acesso.",
+      a:["Cartões de acesso / biometria.","Registo de visitantes.","Acompanhamento de visitantes.","Revisão de direitos."],
+      r:"Acesso ao escritório por cartão; visitantes registados e acompanhados; áreas técnicas (se existirem) com acesso restrito."},
+    {n:"7.3", t:"Segurança de escritórios, salas e instalações",
+      d:"Segurança física para escritórios, salas e instalações deve ser projetada e implementada.",
+      a:["Salas de reunião com vidro tratado/persianas.","Armazenamento seguro de documentos.","Sinalética minimizada (sem indicar zonas críticas)."],
+      r:"Sala de servidores não aplicável (cloud-first); secretárias com gavetas trancáveis."},
+    {n:"7.4", t:"Monitorização de segurança física",
+      d:"Instalações devem ser continuamente monitorizadas para acesso físico não autorizado.",
+      a:["CCTV.","Sistema de alarme.","Logs de acesso analisados.","Conformidade com RGPD para CCTV."],
+      r:"CCTV nas entradas e zonas comuns; logs de cartões revistos mensalmente."},
+    {n:"7.5", t:"Proteção contra ameaças físicas e ambientais",
+      d:"Proteção contra ameaças físicas e ambientais (naturais, intencionais, acidentais) deve ser projetada e implementada.",
+      a:["Avaliação de risco ambiental.","Extintores, deteção de incêndio.","UPS para sistemas críticos no local.","Plano de evacuação."],
+      r:"Validar com fornecedores cloud (AWS/GCP) os respetivos controlos ambientais nas regiões usadas (eu-west-1, europe-west, etc.)."},
+    {n:"7.6", t:"Trabalho em áreas seguras",
+      d:"Medidas de segurança para trabalho em áreas seguras devem ser projetadas e implementadas.",
+      a:["Regras de uso de dispositivos pessoais.","Proibição de fotos.","Acompanhamento de visitantes."],
+      r:"Aplicável a reuniões com clientes/dados sensíveis: salas dedicadas com regras de gravação."},
+    {n:"7.7", t:"Secretária e ecrã limpos",
+      d:"Regras de secretária limpa para papéis e dispositivos amovíveis e regras de ecrã limpo devem ser definidas e implementadas.",
+      a:["Política de Clean Desk/Clean Screen.","Bloqueio automático após inatividade.","Audits surpresa.","Documentos sensíveis em gavetas/cofres."],
+      r:"Bloqueio de ecrã forçado por MDM (5 min). Não deixar dashboards de produção visíveis em espaços comuns."},
+    {n:"7.8", t:"Localização e proteção do equipamento",
+      d:"Equipamento deve estar localizado de forma segura e protegido.",
+      a:["Equipamento longe de fontes de risco (calor, água).","Proteção contra surtos.","Cuidado com partilhas (coworking)."],
+      r:"Em coworking: cabos de segurança, não deixar laptops sozinhos. Mascarar ecrãs com privacy filters."},
+    {n:"7.9", t:"Segurança de ativos fora das instalações",
+      d:"Ativos fora das instalações devem ser protegidos.",
+      a:["Cifragem obrigatória.","Inventário móvel.","Política de viagens (não trabalhar em redes WiFi públicas sem VPN).","Procedimento de roubo/perda."],
+      r:"Portáteis com FileVault/BitLocker + MDM remoto + Find My/Intune wipe. Yubikeys para autenticação."},
+    {n:"7.10", t:"Suportes de armazenamento",
+      d:"Suportes de armazenamento devem ser geridos durante todo o seu ciclo de vida.",
+      a:["Política sobre USB/HDDs externos.","Cifragem de suportes.","Procedimento de eliminação segura.","Inventário."],
+      r:"Proibição/restrição de USB; uso de armazenamento cloud aprovado (Google Drive corporativo)."},
+    {n:"7.11", t:"Serviços de apoio (utilities)",
+      d:"Instalações de processamento devem ser protegidas contra falhas de energia e outras disrupções.",
+      a:["UPS para equipamento local crítico.","Manutenção.","Acordos de SLA com fornecedores de utilities."],
+      r:"Para cloud: confiar em SLA do CSP; para o escritório: UPS para routers/switches."},
+    {n:"7.12", t:"Segurança do cabeamento",
+      d:"Cabos de energia, dados ou serviços devem ser protegidos contra interceção, interferência ou danos.",
+      a:["Cabos em condutas.","Separação energia/dados.","Etiquetagem.","Inspeção periódica."],
+      r:"No escritório: cabeamento estruturado; em casa dos colaboradores: WiFi WPA3 + VPN obrigatória."},
+    {n:"7.13", t:"Manutenção de equipamento",
+      d:"Equipamento deve ser mantido corretamente para garantir a integridade contínua, disponibilidade e confidencialidade da informação.",
+      a:["Plano de manutenção.","Fornecedores autorizados.","Limpeza/wipe antes de assistência externa.","Substituição preventiva."],
+      r:"Portáteis: substituição após 3-4 anos. Wipe antes de qualquer assistência externa."},
+    {n:"7.14", t:"Eliminação segura ou reutilização de equipamento",
+      d:"Itens de equipamento contendo suportes de armazenamento devem ser verificados para garantir que dados sensíveis e software licenciado foram removidos ou sobrescritos antes da eliminação ou reutilização.",
+      a:["Procedimento de wipe (NIST SP 800-88).","Certificado de destruição.","Inventário atualizado.","Cadeia de custódia."],
+      r:"Crypto-erase em SSDs cifrados; destruição física para suportes que falhem; contratos com empresas certificadas para descomissionamento."}
+  ],
+
+  tec:[
+    {n:"8.1", t:"Dispositivos de utilizador final (end point)",
+      d:"Informação armazenada, processada ou acessível através de dispositivos de utilizador final deve ser protegida.",
+      a:["MDM/EMM (Kandji, Jamf, Intune).","Cifragem de disco.","Antivírus/EDR.","Política de patching.","Bloqueio automático."],
+      r:"EDR (CrowdStrike, SentinelOne) + MDM em todos os endpoints. Inventário em tempo real. Compliance gates antes de aceder a SaaS críticos (device trust)."},
+    {n:"8.2", t:"Direitos de acesso privilegiado",
+      d:"Atribuição e uso de direitos de acesso privilegiado devem ser restritos e geridos.",
+      a:["Inventário de contas privilegiadas.","JIT/JEA.","PAM.","MFA forte.","Sessões gravadas.","Revisão trimestral."],
+      r:"AWS: SSO via IdP, papéis assumidos por tempo limitado. GCP: IAM com condições. GitHub: equipa de admins reduzida e revista. Eliminar credenciais long-lived."},
+    {n:"8.3", t:"Restrição de acesso à informação",
+      d:"Acesso à informação e outros ativos associados deve ser restringido de acordo com a política específica.",
+      a:["RBAC/ABAC.","Princípio de necessidade de conhecer.","Bucket policies / IAM least-privilege.","Auditoria de acessos."],
+      r:"Acessos a buckets S3/GCS por política específica e bloqueio de acesso público por defeito. IAM Access Analyzer / Policy Analyzer ativos."},
+    {n:"8.4", t:"Acesso ao código-fonte",
+      d:"Acesso de leitura e escrita ao código-fonte, ferramentas de desenvolvimento e bibliotecas de software deve ser apropriadamente gerido.",
+      a:["Permissões por equipa em GitHub/GitLab.","Branch protection rules.","Code signing.","Revisão obrigatória."],
+      r:"GitHub Organization com SSO obrigatório, branch protection na main, CODEOWNERS, signed commits, 2 reviewers para main de repos críticos."},
+    {n:"8.5", t:"Autenticação segura",
+      d:"Tecnologias e procedimentos de autenticação segura devem ser implementados com base nas restrições de acesso à informação e na política específica.",
+      a:["MFA obrigatório.","Hardware keys para acessos privilegiados.","Phishing-resistant MFA.","Política de palavra-passe NIST 800-63B.","Anti-brute-force."],
+      r:"FIDO2/WebAuthn em todos os acessos administrativos (AWS root/IdP admin, GitHub org admins, Vercel/Render owners). SSO obrigatório por federação SAML/OIDC."},
+    {n:"8.6", t:"Gestão de capacidade",
+      d:"O uso de recursos deve ser monitorizado e ajustado em função das necessidades atuais e futuras.",
+      a:["Monitorização de utilização.","Auto-scaling.","Planeamento de capacidade.","Limites de gastos."],
+      r:"AWS Cost Explorer, GCP Billing, budget alerts. Auto-scaling de ECS/EKS/Cloud Run. Limites por workload para evitar denial of wallet."},
+    {n:"8.7", t:"Proteção contra malware",
+      d:"Proteção contra malware deve ser implementada e suportada por sensibilização adequada dos utilizadores.",
+      a:["EDR/AV nos endpoints.","Scanning em e-mail/web.","Scanning de uploads.","Quarentena.","Sensibilização."],
+      r:"EDR (CrowdStrike, SentinelOne, Defender) gerido centralmente. ClamAV/yara em pipelines que processam ficheiros de utilizadores. Scanning de imagens de container (Trivy, Grype)."},
+    {n:"8.8", t:"Gestão de vulnerabilidades técnicas",
+      d:"Informações sobre vulnerabilidades técnicas em sistemas em uso devem ser obtidas, a exposição da organização avaliada e medidas tomadas.",
+      a:["Inventário atualizado.","Feeds de CVE.","Scanners (host, container, IaC, web).","SLA de remediação por severidade.","Patch management.","Métricas."],
+      r:"⚡ CRÍTICO: SCA (Snyk/Mend/Dependabot/Renovate), scanning de imagens (Trivy/Grype), CSPM (Security Hub, SCC, Wiz/Prisma), DAST (ZAP/Burp). SLAs: Crítica ≤7 dias; Alta ≤30; Média ≤90."},
+    {n:"8.9", t:"Gestão de configuração",
+      d:"Configurações, incluindo configurações de segurança, de hardware, software, serviços e redes devem ser estabelecidas, documentadas, implementadas, monitorizadas e revistas.",
+      a:["Baselines de configuração (CIS Benchmarks).","IaC versionada (Terraform/CloudFormation).","Detecção de drift.","Gestão de mudanças formal.","CMDB."],
+      r:"⚡ CRÍTICO: Infrastructure-as-Code para 100% dos recursos cloud (Terraform). Pipelines de IaC com checks (Checkov, tfsec, Terrascan, OPA). Drift detection (Terraform Cloud, Cloud Custodian). Bloquear console changes em produção."},
+    {n:"8.10", t:"Eliminação de informação",
+      d:"Informação armazenada em sistemas, dispositivos ou em qualquer outro suporte deve ser eliminada quando não for mais necessária.",
+      a:["Política de retenção.","Procedimentos de eliminação por tipo de suporte.","Eliminação de cópias e backups.","Evidência de eliminação."],
+      r:"⚡ NOVO: Pipelines automatizados de eliminação para dados sujeitos a retenção (RGPD: right to be forgotten). Crypto-erase em buckets, exclusão verificada de backups."},
+    {n:"8.11", t:"Mascaramento de dados",
+      d:"Mascaramento de dados deve ser usado em conformidade com a política específica e outros requisitos relacionados, considerando legislação aplicável.",
+      a:["Anonimização/pseudonimização.","Tokenização.","Geração de dados sintéticos para ambientes não-produtivos.","Política específica."],
+      r:"⚡ NOVO: Nenhum dado pessoal real em DEV/TEST. Geradores de dados sintéticos (Faker, Synthea). Tokenização para PII em logs. Pipelines de cópia produção→staging com mascaramento."},
+    {n:"8.12", t:"Prevenção de fuga de dados",
+      d:"Medidas de DLP devem ser aplicadas a sistemas, redes e dispositivos que processam, armazenam ou transmitem informação sensível.",
+      a:["Inventário de dados sensíveis.","Classificação.","DLP em e-mail/endpoint/cloud.","Bloqueio de canais não aprovados.","Monitorização."],
+      r:"⚡ NOVO: DLP em Google Workspace/M365. Secret scanning em repos (GitHub Advanced Security, GitGuardian, TruffleHog). CASB para SaaS shadow IT. Bloqueio de upload de código a LLM públicos."},
+    {n:"8.13", t:"Cópias de segurança da informação",
+      d:"Cópias de segurança da informação, software e sistemas devem ser mantidas e regularmente testadas em conformidade com a política específica.",
+      a:["Política de backups (3-2-1).","Cifragem.","Imutabilidade (WORM).","Testes regulares de restauro.","Documentação de RPO/RTO."],
+      r:"Backups cross-region/cross-account, imutáveis (S3 Object Lock, GCS Bucket Lock). Testes de restauro trimestrais. Backups de bases de dados e estado de IaC."},
+    {n:"8.14", t:"Redundância das instalações de processamento de informação",
+      d:"Instalações de processamento devem ser implementadas com redundância suficiente para cumprir requisitos de disponibilidade.",
+      a:["Arquitetura HA/DR.","Multi-AZ/região.","Failover testado.","RPO/RTO documentados."],
+      r:"Workloads críticos em multi-AZ; críticos máximos em multi-região (AWS eu-west-1 + eu-west-3, GCP europe-west1 + europe-west4). Vercel/Render: validar zonas."},
+    {n:"8.15", t:"Registos (Logging)",
+      d:"Logs que registem atividades, exceções, falhas e outros eventos relevantes devem ser produzidos, armazenados, protegidos e analisados.",
+      a:["Política de logging.","Logs centralizados.","Proteção contra adulteração.","Retenção definida.","Análise/SIEM."],
+      r:"Centralização em SIEM (Elastic, Datadog, Sentinel) de: CloudTrail, Cloud Audit Logs, VPC Flow Logs, application logs, GitHub audit, Vercel/Render logs. Retenção 1 ano (mínimo). Object Lock para imutabilidade."},
+    {n:"8.16", t:"Atividades de monitorização",
+      d:"Redes, sistemas e aplicações devem ser monitorizados para deteção de comportamento anómalo e tomada de ações apropriadas.",
+      a:["Casos de uso de deteção.","SIEM/UEBA.","Alertas com baixo falso positivo.","SOC 24/7 ou MDR.","Métricas (MTTD)."],
+      r:"⚡ NOVO: Detection-as-code (Sigma rules, GuardDuty findings, SCC, Wazuh). MDR/SOC contratado ou interno em horas críticas. Playbooks SOAR (TheHive, Tines, Cortex XSOAR)."},
+    {n:"8.17", t:"Sincronização do relógio",
+      d:"Relógios de sistemas relevantes para a SI devem ser sincronizados com fontes de tempo aprovadas.",
+      a:["NTP configurado em todos os hosts.","Fontes de tempo redundantes (pool.ntp.org, AWS/GCP NTP)","Monitorização de drift."],
+      r:"AWS Time Sync, Google Cloud time, Chrony em VMs. Drift máximo 1 segundo para correlação de eventos."},
+    {n:"8.18", t:"Uso de programas utilitários privilegiados",
+      d:"Uso de programas utilitários que possam contornar controlos do sistema e aplicação deve ser restrito e estritamente controlado.",
+      a:["Inventário de utilitários.","Restrição de uso (whitelist).","Logging detalhado.","Justificação documentada."],
+      r:"Restringir uso de aws cli/gcloud em produção a contas auditadas; bastion hosts com session recording (AWS SSM Session Manager + logging)."},
+    {n:"8.19", t:"Instalação de software em sistemas operacionais",
+      d:"Procedimentos e medidas devem ser implementados para gerir com segurança a instalação de software em sistemas operacionais.",
+      a:["Política de software permitido (allowlist).","Repositórios internos.","Assinatura de pacotes.","Gestão de mudança."],
+      r:"Em servidores: imagens imutáveis (golden AMI/imagens GCE). Em endpoints: MDM controla aplicações instaladas (allowlist/blocklist)."},
+    {n:"8.20", t:"Segurança das redes",
+      d:"Redes e dispositivos de rede devem ser protegidos, geridos e controlados para proteger a informação em sistemas e aplicações.",
+      a:["Segmentação.","Firewalls/Security Groups.","NACLs/Firewall Rules.","Encriptação em trânsito.","Monitorização."],
+      r:"VPCs/Vnets com subnets privadas. Security Groups com least privilege. AWS Network Firewall / GCP Cloud Armor. Egress controlado (proxies, NAT)."},
+    {n:"8.21", t:"Segurança dos serviços de rede",
+      d:"Mecanismos de segurança, níveis de serviço e requisitos dos serviços de rede devem ser identificados, implementados e monitorizados.",
+      a:["SLA com fornecedores de rede.","Configuração segura.","Monitorização de disponibilidade e segurança."],
+      r:"Validar configurações de Cloud Interconnect, Direct Connect, Cloudflare; DDoS protection (AWS Shield, GCP Cloud Armor)."},
+    {n:"8.22", t:"Segregação das redes",
+      d:"Grupos de serviços, utilizadores e sistemas de informação devem ser segregados nas redes da organização.",
+      a:["Subnets por tier/ambiente.","Microsegmentação.","Zero Trust.","Service Mesh (mTLS)."],
+      r:"VPC peering/Transit Gateway com regras restritas. Service mesh (Istio, Linkerd) com mTLS entre microsserviços. Production isolada de Dev/Staging."},
+    {n:"8.23", t:"Filtragem da web",
+      d:"Acesso a websites externos deve ser gerido para reduzir a exposição a conteúdo malicioso.",
+      a:["Categorização de URLs.","Proxy/Secure Web Gateway.","DNS filtering.","Bloqueio de C2."],
+      r:"⚡ NOVO: DNS filtering (Cloudflare Gateway, Cisco Umbrella, NextDNS). Bloqueio de categorias maliciosas e shadow IT. Logging de DNS para investigações."},
+    {n:"8.24", t:"Uso da criptografia",
+      d:"Regras para o uso eficaz da criptografia, incluindo gestão de chaves criptográficas, devem ser definidas e implementadas.",
+      a:["Política de criptografia.","Algoritmos aprovados (AES-256, RSA 2048+/ECC).","KMS/HSM.","Rotação de chaves.","Gestão do ciclo de vida das chaves."],
+      r:"AWS KMS / GCP KMS / HashiCorp Vault para chaves. CMEK (customer-managed) para dados sensíveis. TLS 1.2+ obrigatório, TLS 1.3 preferido. Cifragem em repouso para todos os volumes/buckets."},
+    {n:"8.25", t:"Ciclo de vida de desenvolvimento seguro",
+      d:"Regras para o desenvolvimento seguro de software e sistemas devem ser estabelecidas e aplicadas.",
+      a:["Política de SDLC seguro.","Threat modeling.","Requisitos de segurança nas user stories.","Code review.","Testes de segurança automáticos.","Gates de segurança."],
+      r:"⚡ CRÍTICO: Adopção de modelo de referência (BSIMM, OWASP SAMM). Threat modeling para épicos novos. Security champions por equipa. Definition of Done inclui critérios de segurança."},
+    {n:"8.26", t:"Requisitos de segurança das aplicações",
+      d:"Requisitos de SI devem ser identificados, especificados e aprovados ao desenvolver ou adquirir aplicações.",
+      a:["Catálogo de requisitos (OWASP ASVS).","Análise de requisitos por funcionalidade.","Aprovação pelo proprietário do produto."],
+      r:"OWASP ASVS Nível 2 como linha de base para aplicações novas; Nível 3 para aplicações que processem PII sensível."},
+    {n:"8.27", t:"Princípios de arquitetura e engenharia de sistemas seguros",
+      d:"Princípios de engenharia de sistemas seguros devem ser estabelecidos, documentados, mantidos e aplicados a qualquer atividade de desenvolvimento de sistemas de informação.",
+      a:["Princípios documentados (defense in depth, least privilege, fail securely, secure defaults).","Patterns aprovados.","Reference architectures.","Revisão de arquitetura."],
+      r:"Arquiteturas de referência para microsserviços em AWS/GCP. Zero Trust. Patterns aprovados para autenticação, autorização, logging, criptografia, gestão de segredos."},
+    {n:"8.28", t:"Codificação segura",
+      d:"Princípios de codificação segura devem ser aplicados ao desenvolvimento de software.",
+      a:["Guias por linguagem (OWASP, CERT).","Linters de segurança no IDE.","SAST em CI.","Pair programming/code review.","Formação contínua."],
+      r:"⚡ CRÍTICO/NOVO: SAST (Semgrep, SonarQube, CodeQL, Snyk Code) obrigatório em PR; bloqueio para findings críticos. Linters específicos (bandit, eslint-plugin-security, gosec). Secure coding guidelines por linguagem (TypeScript, Python, Go) versionadas."},
+    {n:"8.29", t:"Testes de segurança em desenvolvimento e aceitação",
+      d:"Processos de teste de segurança devem ser definidos e implementados no ciclo de vida de desenvolvimento.",
+      a:["SAST/DAST/SCA em pipeline.","Pentests por release maior.","Bug bash de segurança.","Critérios de aceitação claros."],
+      r:"⚡ CRÍTICO: Pipeline obrigatório com SAST + SCA + secret scanning + IaC scanning; DAST em staging; pentests externos anuais para aplicações em produção; pré-release security review obrigatória."},
+    {n:"8.30", t:"Desenvolvimento subcontratado",
+      d:"A organização deve dirigir, monitorizar e rever as atividades relacionadas com desenvolvimento subcontratado.",
+      a:["Cláusulas contratuais de SI.","Acesso restrito ao code base.","Revisão de qualidade e segurança.","Aceitação formal."],
+      r:"Freelancers/empresas terceiras: contas dedicadas, acesso apenas a repos atribuídos, revisão obrigatória por colaborador interno, NDA."},
+    {n:"8.31", t:"Separação de ambientes de desenvolvimento, teste e produção",
+      d:"Ambientes de desenvolvimento, teste e produção devem ser separados e protegidos.",
+      a:["Contas/projetos separados.","Dados de produção nunca em DEV/TEST.","Credenciais distintas.","Networking isolado.","Permissões diferenciadas."],
+      r:"⚡ CRÍTICO: Contas AWS / projetos GCP separados por ambiente. Vercel/Render: ambientes distintos. Promoção entre ambientes via CI/CD com aprovação. IaC parametrizada por ambiente."},
+    {n:"8.32", t:"Gestão de mudanças",
+      d:"Mudanças nas instalações de processamento de informação e nos sistemas de informação devem estar sujeitas a procedimentos de gestão de mudança.",
+      a:["Processo de change management.","Aprovação documentada.","Avaliação de risco.","Plano de rollback.","CAB para mudanças relevantes.","Comunicação."],
+      r:"⚡ CRÍTICO: Pull requests com revisão obrigatória; deploys via CI/CD com aprovação para produção; janelas de manutenção; mudanças de emergência registadas a posteriori (post-implementation review)."},
+    {n:"8.33", t:"Informação de teste",
+      d:"Informação de teste deve ser apropriadamente selecionada, protegida e gerida.",
+      a:["Dados de teste sintéticos/anonimizados.","Processo de provisionamento.","Eliminação após uso.","Logging de acessos."],
+      r:"Geradores de dados sintéticos por domínio; bibliotecas internas de fixtures; nenhum dado pessoal real em TEST. Procedimento de mascaramento (cf. 8.11)."},
+    {n:"8.34", t:"Proteção de sistemas de informação durante testes de auditoria",
+      d:"Testes de auditoria e outras atividades que envolvam avaliação de sistemas operacionais devem ser planeados e acordados entre o testador e a gestão apropriada.",
+      a:["Plano de teste aprovado.","Janela de teste definida.","Backups antes do teste.","Acessos read-only quando possível.","Monitorização do teste."],
+      r:"Pentests/auditorias em janelas planeadas; backups pré-pentest; isolamento de contas de auditoria; monitorização reforçada durante a janela."}
+  ]
+};
+
+/* ============================================================================
+   RENDER DOS COMPONENTES
+   ============================================================================ */
+
+const STORAGE_KEY = "iso27001_datacolab_v1";
+let estado = {};
+
+function carregarEstado(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    estado = raw ? JSON.parse(raw) : {};
+  }catch(e){ estado = {}; }
+}
+function guardarEstado(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(estado));
+}
+
+/* ---------- Renderizar Cláusulas ---------- */
+function renderClausulas(){
+  const cont = document.getElementById("containerClausulas");
+  cont.innerHTML = CLAUSULAS.map(c => {
+    const ids = c.checklist.map((_,i)=>`cl_${c.num}_${i}`);
+    return `
+      <article class="clausula" id="${c.id}" data-grupo="clausulas" data-cgrupo="c${c.num}">
+        <header class="cab">
+          <div class="titulo"><span class="num">${c.num}</span>${c.titulo}
+            <span class="eti eti-obrig" style="margin-left:8px;">Obrigatório</span>
+          </div>
+          <div class="mini-bar"><span data-mini="c${c.num}"></span></div>
+        </header>
+        <div class="corpo">
+          <div class="bloco">
+            <h4>📋 Requisitos obrigatórios que o DataCoLAB deve demonstrar</h4>
+            <ul>${c.requisitos.map(r=>`<li>${r}</li>`).join("")}</ul>
+          </div>
+          <div class="bloco">
+            <h4>📂 Artefactos / Documentos necessários</h4>
+            <ul>${c.artefactos.map(a=>`<li>${a}</li>`).join("")}</ul>
+          </div>
+          <div class="bloco">
+            <h4>✅ Checklist de Conformidade</h4>
+            <div class="checklist">
+              ${c.checklist.map((item,i)=>{
+                const id = ids[i];
+                const ck = !!estado[id];
+                return `<div class="item-check ${ck?"feito":""}" data-id="${id}" data-grupo="c${c.num}" data-cl="clausulas">
+                  <input type="checkbox" id="${id}" ${ck?"checked":""} data-testid="chk-${id}">
+                  <label for="${id}">${item}</label>
+                </div>`;
+              }).join("")}
+            </div>
+          </div>
+          <div class="bloco">
+            <h4>☁ Aplicação ao contexto Cloud/DevSecOps do DataCoLAB</h4>
+            <div class="nota-cloud"><strong>Nota:</strong> ${c.nota}</div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+/* ---------- Renderizar Controlos ---------- */
+function renderGrupoControlos(grupo, containerId){
+  const cont = document.getElementById(containerId);
+  cont.innerHTML = CONTROLOS[grupo].map(c => {
+    const eNovo = NOVOS_2022.has(c.n);
+    const eCritico = CRITICOS.has(c.n);
+    const ids = c.a.map((_,i)=>`ctrl_${c.n.replace(".","_")}_${i}`);
+    const numTotal = ids.length;
+    const numFeito = ids.filter(id=>!!estado[id]).length;
+    const todoFeito = numTotal>0 && numFeito===numTotal;
+    return `
+      <article class="controlo ${eCritico?"critico":""} ${todoFeito?"feito-tudo":""}"
+               id="ctrl-${c.n}"
+               data-num="${c.n}"
+               data-titulo="${c.t.toLowerCase()}"
+               data-grupo="${grupo}"
+               data-novo="${eNovo?"1":"0"}"
+               data-critico="${eCritico?"1":"0"}">
+        <div class="cab">
+          <div class="esquerda">
+            <span class="num-c">${c.n}</span>
+            <span class="titulo-c">${c.t}</span>
+            ${eNovo?'<span class="eti eti-novo">⭐ Novo 2022</span>':""}
+            ${eCritico?'<span class="eti eti-critico">⚡ Crítico Cloud/DevSecOps</span>':""}
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="mini-bar"><span data-mini="ctrl-${c.n}"></span></div>
+            <span class="seta">▶</span>
+          </div>
+        </div>
+        <div class="corpo-c">
+          <p class="descricao">${c.d}</p>
+          <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--azul-700);margin-bottom:8px;">✅ Checklist de ações específicas</h4>
+          <div class="checklist">
+            ${c.a.map((acao,i)=>{
+              const id = ids[i];
+              const ck = !!estado[id];
+              return `<div class="item-check ${ck?"feito":""}" data-id="${id}" data-grupo="${grupo}" data-ctrl="${c.n}">
+                <input type="checkbox" id="${id}" ${ck?"checked":""} data-testid="chk-${id}">
+                <label for="${id}">${acao}</label>
+              </div>`;
+            }).join("")}
+          </div>
+          <div class="relev"><strong>Relevância para o DataCoLAB:</strong> ${c.r}</div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+/* ============================================================================
+   LÓGICA: PROGRESSO, INTERAÇÕES, FILTROS, EXPORTAÇÃO
+   ============================================================================ */
+
+function listarTodosIds(){
+  const ids = [];
+  CLAUSULAS.forEach(c => c.checklist.forEach((_,i)=>ids.push({id:`cl_${c.num}_${i}`,grupo:"clausulas",cgrupo:`c${c.num}`})));
+  ["org","pes","fis","tec"].forEach(g => {
+    CONTROLOS[g].forEach(c => c.a.forEach((_,i)=>ids.push({id:`ctrl_${c.n.replace(".","_")}_${i}`,grupo:g,cgrupo:`ctrl-${c.n}`,controlo:c.n})));
+  });
+  return ids;
+}
+
+function atualizarProgresso(){
+  const todos = listarTodosIds();
+  const total = todos.length;
+  const feitos = todos.filter(x=>!!estado[x.id]).length;
+  const pct = total ? Math.round((feitos/total)*100) : 0;
+
+  document.getElementById("kpiTotal").textContent = total;
+  document.getElementById("kpiFeitos").textContent = feitos;
+  document.getElementById("kpiPendentes").textContent = total - feitos;
+  document.getElementById("kpiPercent").textContent = pct + "%";
+  document.getElementById("barraProgresso").style.width = pct + "%";
+  document.getElementById("rotuloProgresso").textContent = pct + "% concluído";
+
+  // por grupo (contagens sidebar) — controlos
+  ["org","pes","fis","tec"].forEach(g=>{
+    const itens = todos.filter(x=>x.grupo===g);
+    const f = itens.filter(x=>!!estado[x.id]).length;
+    const cont = document.getElementById("cnt-"+g);
+    if(cont) cont.textContent = `${f}/${itens.length}`;
+    const bar = document.getElementById("bar-"+g);
+    if(bar) bar.style.width = itens.length ? (f/itens.length*100)+"%" : "0%";
+  });
+  // cláusulas — contagens
+  CLAUSULAS.forEach(c=>{
+    const itens = todos.filter(x=>x.cgrupo===`c${c.num}`);
+    const f = itens.filter(x=>!!estado[x.id]).length;
+    const cont = document.getElementById("cnt-c"+c.num);
+    if(cont) cont.textContent = `${f}/${itens.length}`;
+    const mini = document.querySelector(`[data-mini="c${c.num}"]`);
+    if(mini) mini.style.width = itens.length ? (f/itens.length*100)+"%" : "0%";
+  });
+  // mini bars por controlo
+  ["org","pes","fis","tec"].forEach(g=>{
+    CONTROLOS[g].forEach(c=>{
+      const itens = todos.filter(x=>x.controlo===c.n);
+      const f = itens.filter(x=>!!estado[x.id]).length;
+      const mini = document.querySelector(`[data-mini="ctrl-${c.n}"]`);
+      if(mini) mini.style.width = itens.length ? (f/itens.length*100)+"%" : "0%";
+      const art = document.getElementById(`ctrl-${c.n}`);
+      if(art){
+        if(itens.length>0 && f===itens.length) art.classList.add("feito-tudo");
+        else art.classList.remove("feito-tudo");
+      }
+    });
+  });
+
+  // grelha grupos dashboard
+  renderGrelhaGrupos(todos);
+}
+
+function renderGrelhaGrupos(todos){
+  const cont = document.getElementById("grelhaGrupos");
+  const grupos = [
+    {id:"clausulas", nome:"Cláusulas 4–10", icone:"📘", alvo:"#seccao-clausulas"},
+    {id:"org", nome:"Organizacionais", icone:"🏛", alvo:"#grupo-org"},
+    {id:"pes", nome:"Pessoas", icone:"👥", alvo:"#grupo-pes"},
+    {id:"fis", nome:"Físicos", icone:"🏢", alvo:"#grupo-fis"},
+    {id:"tec", nome:"Tecnológicos", icone:"⚙", alvo:"#grupo-tec"}
+  ];
+  cont.innerHTML = grupos.map(g=>{
+    const itens = todos.filter(x=>x.grupo===g.id);
+    const f = itens.filter(x=>!!estado[x.id]).length;
+    const pct = itens.length ? Math.round(f/itens.length*100) : 0;
+    return `<a href="${g.alvo}" class="cartao-grupo" style="text-decoration:none;color:inherit;display:block;">
+      <h3>${g.icone} ${g.nome}</h3>
+      <div class="num">${f} <span style="font-size:14px;color:var(--cinza-500);font-weight:600;">/ ${itens.length}</span></div>
+      <div style="font-size:12px;color:var(--cinza-500);margin-top:4px;">${pct}% concluído</div>
+      <div class="bar"><span style="width:${pct}%"></span></div>
+    </a>`;
+  }).join("");
+}
+
+/* ---------- Acordeão ---------- */
+function activarAcordeao(){
+  document.querySelectorAll(".controlo > .cab").forEach(cab=>{
+    cab.addEventListener("click", e=>{
+      if(e.target.tagName === "INPUT" || e.target.tagName === "LABEL") return;
+      cab.parentElement.classList.toggle("aberto");
+    });
+  });
+}
+
+/* ---------- Checkboxes ---------- */
+function activarCheckboxes(){
+  document.addEventListener("change", e=>{
+    if(e.target && e.target.type === "checkbox" && e.target.id){
+      const id = e.target.id;
+      if(e.target.checked) estado[id] = true; else delete estado[id];
+      guardarEstado();
+      const wrap = e.target.closest(".item-check");
+      if(wrap){
+        if(e.target.checked) wrap.classList.add("feito"); else wrap.classList.remove("feito");
+      }
+      atualizarProgresso();
+    }
+  });
+}
+
+/* ---------- Pesquisa ---------- */
+function aplicarPesquisaFiltro(){
+  const termo = (document.getElementById("campoPesquisa").value || "").trim().toLowerCase();
+  const fEstado = document.getElementById("filtroEstado").value;
+  const fEti = document.getElementById("filtroEtiqueta").value;
+
+  document.querySelectorAll(".controlo").forEach(art=>{
+    const num = art.dataset.num || "";
+    const tit = art.dataset.titulo || "";
+    const novo = art.dataset.novo === "1";
+    const critico = art.dataset.critico === "1";
+
+    // termo
+    let matchTermo = !termo || num.toLowerCase().includes(termo) || tit.includes(termo);
+
+    // etiqueta
+    let matchEti = true;
+    if(fEti === "novo") matchEti = novo;
+    if(fEti === "critico") matchEti = critico;
+
+    // estado (todos os checks dentro)
+    let matchEstado = true;
+    if(fEstado !== "todos"){
+      const checks = art.querySelectorAll('input[type="checkbox"]');
+      const total = checks.length;
+      const feitos = Array.from(checks).filter(c=>c.checked).length;
+      const completo = total>0 && feitos===total;
+      if(fEstado === "feito") matchEstado = completo;
+      if(fEstado === "pendente") matchEstado = !completo;
+    }
+
+    if(matchTermo && matchEti && matchEstado) art.classList.remove("escondido");
+    else art.classList.add("escondido");
+  });
+}
+
+/* ---------- Filtros laterais rápidos ---------- */
+function activarFiltrosRapidos(){
+  document.getElementById("filtroNovo").addEventListener("click", e=>{
+    e.preventDefault();
+    document.getElementById("filtroEtiqueta").value = "novo";
+    aplicarPesquisaFiltro();
+    document.getElementById("seccao-anexo").scrollIntoView({behavior:"smooth"});
+  });
+  document.getElementById("filtroCritico").addEventListener("click", e=>{
+    e.preventDefault();
+    document.getElementById("filtroEtiqueta").value = "critico";
+    aplicarPesquisaFiltro();
+    document.getElementById("seccao-anexo").scrollIntoView({behavior:"smooth"});
+  });
+  document.getElementById("filtroPendentes").addEventListener("click", e=>{
+    e.preventDefault();
+    document.getElementById("filtroEstado").value = "pendente";
+    aplicarPesquisaFiltro();
+  });
+  document.getElementById("filtroLimpar").addEventListener("click", e=>{
+    e.preventDefault();
+    document.getElementById("filtroEstado").value = "todos";
+    document.getElementById("filtroEtiqueta").value = "todos";
+    document.getElementById("campoPesquisa").value = "";
+    aplicarPesquisaFiltro();
+  });
+}
+
+/* ---------- Botões topo ---------- */
+function activarBotoesTopo(){
+  let expandidoTudo = false;
+  document.getElementById("btnExpandir").addEventListener("click", ()=>{
+    expandidoTudo = !expandidoTudo;
+    document.querySelectorAll(".controlo").forEach(c=>{
+      if(expandidoTudo) c.classList.add("aberto"); else c.classList.remove("aberto");
+    });
+    document.getElementById("btnExpandir").textContent = expandidoTudo ? "⊟ Colapsar tudo" : "⊞ Expandir tudo";
+  });
+  document.getElementById("btnRepor").addEventListener("click", ()=>{
+    if(!confirm("Tem a certeza que deseja repor todo o progresso? Esta ação não pode ser desfeita.")) return;
+    estado = {};
+    guardarEstado();
+    document.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);
+    document.querySelectorAll('.item-check.feito').forEach(c=>c.classList.remove("feito"));
+    atualizarProgresso();
+  });
+  document.getElementById("btnExportar").addEventListener("click", exportarRelatorio);
+}
+
+/* ---------- Exportação TXT ---------- */
+function exportarRelatorio(){
+  const dataHoje = new Date().toLocaleString("pt-PT");
+  const todos = listarTodosIds();
+  const total = todos.length;
+  const feitos = todos.filter(x=>!!estado[x.id]).length;
+  const pct = total ? Math.round(feitos/total*100) : 0;
+
+  let txt = "";
+  txt += "================================================================\n";
+  txt += "  RELATÓRIO DE PROGRESSO — ISO/IEC 27001:2022\n";
+  txt += "  Organização: DataCoLAB\n";
+  txt += "  Âmbito: Desenvolvimento, implementação e manutenção de software\n";
+  txt += "          em ambiente Cloud (AWS, GCP, Render, Vercel) + DevSecOps.\n";
+  txt += "  Gerado em: " + dataHoje + "\n";
+  txt += "================================================================\n\n";
+  txt += `RESUMO GLOBAL\n  Total de itens: ${total}\n  Concluídos:     ${feitos}\n  Pendentes:      ${total-feitos}\n  Progresso:      ${pct}%\n\n`;
+
+  // por grupo
+  const grupos = [
+    {id:"clausulas", nome:"CLÁUSULAS 4–10 (Esqueleto do SGSI)"},
+    {id:"org", nome:"A.5 CONTROLOS ORGANIZACIONAIS"},
+    {id:"pes", nome:"A.6 CONTROLOS DE PESSOAS"},
+    {id:"fis", nome:"A.7 CONTROLOS FÍSICOS"},
+    {id:"tec", nome:"A.8 CONTROLOS TECNOLÓGICOS"}
+  ];
+  grupos.forEach(g=>{
+    const itens = todos.filter(x=>x.grupo===g.id);
+    const f = itens.filter(x=>!!estado[x.id]).length;
+    const p = itens.length ? Math.round(f/itens.length*100) : 0;
+    txt += `--- ${g.nome} — ${f}/${itens.length} (${p}%) ---\n`;
+  });
+
+  // Cláusulas detalhado
+  txt += "\n================================================================\n";
+  txt += "  DETALHE — CLÁUSULAS 4 a 10\n";
+  txt += "================================================================\n";
+  CLAUSULAS.forEach(c=>{
+    const ids = c.checklist.map((_,i)=>`cl_${c.num}_${i}`);
+    const f = ids.filter(id=>!!estado[id]).length;
+    txt += `\n[Cláusula ${c.num}] ${c.titulo}  — ${f}/${ids.length}\n`;
+    c.checklist.forEach((item,i)=>{
+      const ok = !!estado[ids[i]];
+      txt += `  [${ok?"X":" "}] ${item}\n`;
+    });
+  });
+
+  // Controlos detalhado
+  txt += "\n================================================================\n";
+  txt += "  DETALHE — ANEXO A (93 CONTROLOS)\n";
+  txt += "================================================================\n";
+  ["org","pes","fis","tec"].forEach(g=>{
+    const nomeG = ({org:"A.5 Organizacionais",pes:"A.6 Pessoas",fis:"A.7 Físicos",tec:"A.8 Tecnológicos"})[g];
+    txt += `\n--- ${nomeG} ---\n`;
+    CONTROLOS[g].forEach(c=>{
+      const ids = c.a.map((_,i)=>`ctrl_${c.n.replace(".","_")}_${i}`);
+      const f = ids.filter(id=>!!estado[id]).length;
+      const tags = [];
+      if(NOVOS_2022.has(c.n)) tags.push("NOVO-2022");
+      if(CRITICOS.has(c.n)) tags.push("CRÍTICO-CLOUD/DEVSECOPS");
+      txt += `\n[${c.n}] ${c.t}  — ${f}/${ids.length}${tags.length?" ["+tags.join(", ")+"]":""}\n`;
+      c.a.forEach((acao,i)=>{
+        const ok = !!estado[ids[i]];
+        txt += `  [${ok?"X":" "}] ${acao}\n`;
+      });
+    });
+  });
+
+  // Lista de pendentes
+  txt += "\n================================================================\n";
+  txt += "  ITENS PENDENTES (PRIORIDADE PARA ACÇÃO)\n";
+  txt += "================================================================\n";
+  let countPend = 0;
+  CLAUSULAS.forEach(c=>{
+    c.checklist.forEach((item,i)=>{
+      const id = `cl_${c.num}_${i}`;
+      if(!estado[id]){ txt += `  [ ] Cláusula ${c.num}: ${item}\n`; countPend++; }
+    });
+  });
+  ["org","pes","fis","tec"].forEach(g=>{
+    CONTROLOS[g].forEach(c=>{
+      c.a.forEach((acao,i)=>{
+        const id = `ctrl_${c.n.replace(".","_")}_${i}`;
+        if(!estado[id]){
+          const tags = [];
+          if(NOVOS_2022.has(c.n)) tags.push("NOVO");
+          if(CRITICOS.has(c.n)) tags.push("CRÍTICO");
+          txt += `  [ ] [${c.n}] ${acao}${tags.length?" ("+tags.join("/")+")":""}\n`;
+          countPend++;
+        }
+      });
+    });
+  });
+  if(!countPend) txt += "  Nenhum item pendente. Excelente trabalho!\n";
+
+  txt += "\n================================================================\n";
+  txt += "  Fim do relatório — DataCoLAB / SGSI ISO/IEC 27001:2022\n";
+  txt += "================================================================\n";
+
+  const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `Relatorio_ISO27001_DataCoLAB_${new Date().toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+/* ---------- Navegação (highlight) ---------- */
+function activarNavegacao(){
+  const links = document.querySelectorAll(".barra-lateral a.link[data-alvo]");
+  links.forEach(l=>{
+    l.addEventListener("click", ()=>{
+      links.forEach(x=>x.classList.remove("ativo"));
+      l.classList.add("ativo");
+    });
+  });
+}
+
+/* ---------- Listeners pesquisa/filtros ---------- */
+function activarListenersPesquisa(){
+  document.getElementById("campoPesquisa").addEventListener("input", aplicarPesquisaFiltro);
+  document.getElementById("filtroEstado").addEventListener("change", aplicarPesquisaFiltro);
+  document.getElementById("filtroEtiqueta").addEventListener("change", aplicarPesquisaFiltro);
+}
+
+/* ============================================================================
+   PARTILHA POR URL — codifica/descodifica estado em base64 (bitmap)
+   ============================================================================ */
+
+function listaOrdenadaIds(){
+  const ids = [];
+  CLAUSULAS.forEach(c => c.checklist.forEach((_,i)=>ids.push(`cl_${c.num}_${i}`)));
+  ["org","pes","fis","tec"].forEach(g => {
+    CONTROLOS[g].forEach(c => c.a.forEach((_,i)=>ids.push(`ctrl_${c.n.replace(".","_")}_${i}`)));
+  });
+  return ids;
+}
+
+function codificarEstadoParaUrl(){
+  const ids = listaOrdenadaIds();
+  const bytes = new Uint8Array(Math.ceil(ids.length/8));
+  ids.forEach((id,i)=>{
+    if(estado[id]) bytes[i>>3] |= (1 << (i & 7));
+  });
+  let bin = "";
+  for(let i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
+  // base64 url-safe
+  return btoa(bin).replace(/=+$/,"").replace(/\+/g,"-").replace(/\//g,"_");
+}
+
+function descodificarEstadoDaUrl(s){
+  try{
+    let b = s.replace(/-/g,"+").replace(/_/g,"/");
+    while(b.length % 4) b += "=";
+    const bin = atob(b);
+    const ids = listaOrdenadaIds();
+    const novo = {};
+    let feitos = 0;
+    for(let i=0;i<ids.length;i++){
+      const byte = bin.charCodeAt(i>>3) || 0;
+      if(byte & (1 << (i & 7))){ novo[ids[i]] = true; feitos++; }
+    }
+    return { estado: novo, feitos, total: ids.length };
+  }catch(e){ return null; }
+}
+
+function construirUrlPartilha(){
+  const codigo = codificarEstadoParaUrl();
+  const base = location.origin + location.pathname;
+  return base + "#s=" + codigo;
+}
+
+function abrirModalPartilha(){
+  const url = construirUrlPartilha();
+  document.getElementById("campoUrl").value = url;
+  const total = listaOrdenadaIds().length;
+  const feitos = listaOrdenadaIds().filter(id=>!!estado[id]).length;
+  const pct = total ? Math.round(feitos/total*100) : 0;
+  document.getElementById("resumoPartilha").textContent = `${feitos}/${total} concluídos · ${pct}%`;
+  document.getElementById("modalPartilhar").classList.add("aberto");
+  const btn = document.getElementById("btnCopiar");
+  btn.textContent = "📋 Copiar";
+  btn.classList.remove("copiado");
+  setTimeout(()=>{
+    const campo = document.getElementById("campoUrl");
+    campo.focus(); campo.select();
+  }, 100);
+}
+
+function fecharModalPartilha(){
+  document.getElementById("modalPartilhar").classList.remove("aberto");
+}
+
+async function copiarUrlPartilha(){
+  const campo = document.getElementById("campoUrl");
+  const btn = document.getElementById("btnCopiar");
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(campo.value);
+    }else{
+      campo.select();
+      document.execCommand("copy");
+    }
+    btn.textContent = "✓ Copiado!";
+    btn.classList.add("copiado");
+    setTimeout(()=>{ btn.textContent="📋 Copiar"; btn.classList.remove("copiado"); }, 1800);
+  }catch(e){
+    alert("Não foi possível copiar automaticamente. Selecione e copie o URL manualmente.");
+  }
+}
+
+let estadoImportPendente = null;
+
+function verificarHashImportar(){
+  const m = (location.hash || "").match(/[#&]s=([A-Za-z0-9_-]+)/);
+  if(!m) return;
+  const decoded = descodificarEstadoDaUrl(m[1]);
+  if(!decoded) return;
+  estadoImportPendente = decoded.estado;
+  const banner = document.getElementById("bannerImportar");
+  const pct = decoded.total ? Math.round(decoded.feitos/decoded.total*100) : 0;
+  document.getElementById("bannerResumo").textContent = `${decoded.feitos}/${decoded.total} itens · ${pct}%`;
+  banner.classList.add("visivel");
+}
+
+function aplicarImport(){
+  if(!estadoImportPendente) return;
+  estado = estadoImportPendente;
+  guardarEstado();
+  // sincronizar UI
+  document.querySelectorAll('input[type="checkbox"]').forEach(c=>{
+    const checked = !!estado[c.id];
+    c.checked = checked;
+    const wrap = c.closest(".item-check");
+    if(wrap){ wrap.classList.toggle("feito", checked); }
+  });
+  atualizarProgresso();
+  estadoImportPendente = null;
+  document.getElementById("bannerImportar").classList.remove("visivel");
+  // limpar hash
+  history.replaceState(null, "", location.pathname);
+}
+
+function rejeitarImport(){
+  estadoImportPendente = null;
+  document.getElementById("bannerImportar").classList.remove("visivel");
+  history.replaceState(null, "", location.pathname);
+}
+
+function activarPartilha(){
+  document.getElementById("btnPartilhar").addEventListener("click", abrirModalPartilha);
+  document.getElementById("fecharModal").addEventListener("click", fecharModalPartilha);
+  document.getElementById("btnFecharModal").addEventListener("click", fecharModalPartilha);
+  document.getElementById("btnCopiar").addEventListener("click", copiarUrlPartilha);
+  document.getElementById("btnLimparHash").addEventListener("click", ()=>{
+    history.replaceState(null, "", location.pathname);
+    document.getElementById("campoUrl").value = location.origin + location.pathname;
+  });
+  document.getElementById("modalPartilhar").addEventListener("click", e=>{
+    if(e.target.id === "modalPartilhar") fecharModalPartilha();
+  });
+  document.addEventListener("keydown", e=>{
+    if(e.key === "Escape") fecharModalPartilha();
+  });
+  document.getElementById("btnAceitarImport").addEventListener("click", aplicarImport);
+  document.getElementById("btnRejeitarImport").addEventListener("click", rejeitarImport);
+  window.addEventListener("hashchange", verificarHashImportar);
+}
+
+/* ============================================================================
+   BOOTSTRAP
+   ============================================================================ */
+document.addEventListener("DOMContentLoaded", ()=>{
+  carregarEstado();
+  renderClausulas();
+  renderGrupoControlos("org","container-org");
+  renderGrupoControlos("pes","container-pes");
+  renderGrupoControlos("fis","container-fis");
+  renderGrupoControlos("tec","container-tec");
+  activarAcordeao();
+  activarCheckboxes();
+  activarBotoesTopo();
+  activarFiltrosRapidos();
+  activarNavegacao();
+  activarListenersPesquisa();
+  activarPartilha();
+  verificarHashImportar();
+  atualizarProgresso();
+});
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7f7b0fd8732c4326aae4b9d58d5c514a","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
