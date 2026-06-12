@@ -348,6 +348,126 @@
   .banner-importar .txt{color:#92400e;font-size:13.5px;font-weight:500;}
   .banner-importar .btns{display:flex;gap:8px;}
   .banner-importar button{border:none;cursor:pointer;font-weight:600;font-size:12.5px;padding:7px 14px;border-radius:6px;font-family:inherit;}
+  /* ============================== ESTADOS GRANULARES E NOTAS ============================== */
+  .estados{display:flex;gap:4px;align-items:center;flex-shrink:0;}
+  .estados button{
+    border:1px solid var(--cinza-300);background:var(--branco);color:var(--cinza-600);
+    font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;
+    padding:5px 9px;border-radius:5px;transition:all .15s;
+    text-transform:uppercase;letter-spacing:.03em;
+  }
+  .estados button:hover{background:var(--cinza-50);border-color:var(--cinza-400);}
+  .estados button[data-st="ni"].ativo{background:var(--cinza-200);color:var(--cinza-800);border-color:var(--cinza-400);}
+  .estados button[data-st="ec"].ativo{background:var(--laranja-100);color:#92400e;border-color:#f59e0b;}
+  .estados button[data-st="im"].ativo{background:#d1fae5;color:#065f46;border-color:var(--verde-500);}
+  .estados button[data-st="na"].ativo{background:var(--azul-100);color:var(--azul-800);border-color:var(--azul-500);}
+
+  .item-check{padding:6px 10px;}
+  .item-check.estado-im{background:#ecfdf5;border-color:#a7f3d0;}
+  .item-check.estado-ec{background:#fffbeb;border-color:#fcd34d;}
+  .item-check.estado-na{background:var(--azul-50);border-color:#bfdbfe;}
+  .item-check .desc-item{flex:1;color:var(--cinza-800);font-size:14px;line-height:1.45;}
+  .item-check.estado-im .desc-item{color:#065f46;}
+  .item-check.estado-na .desc-item{color:var(--azul-800);font-style:italic;}
+  .item-check.estado-na .desc-item::after{content:" — N/A";font-size:11px;opacity:.8;}
+
+  .justif-na{
+    display:none;margin-top:6px;width:100%;
+    border:1px solid var(--azul-300, #bfdbfe);border-radius:4px;
+    padding:6px 8px;font-size:12px;font-family:inherit;color:var(--cinza-800);
+    background:#f8fafc;resize:vertical;min-height:36px;
+  }
+  .item-check.estado-na .justif-na{display:block;}
+
+  /* Notas e evidências por controlo/cláusula */
+  .bloco-evid{
+    background:var(--cinza-50);border:1px solid var(--cinza-200);border-radius:6px;
+    padding:12px 14px;margin-top:14px;
+  }
+  .bloco-evid h5{
+    font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--cinza-600);
+    margin-bottom:8px;display:flex;align-items:center;gap:6px;
+  }
+  .bloco-evid textarea{
+    width:100%;border:1px solid var(--cinza-300);border-radius:5px;
+    padding:8px 10px;font-family:inherit;font-size:13px;color:var(--cinza-800);
+    background:var(--branco);resize:vertical;min-height:60px;outline:none;
+  }
+  .bloco-evid textarea:focus{border-color:var(--azul-500);}
+  .lista-evid{margin-top:8px;display:flex;flex-direction:column;gap:4px;}
+  .evid-item{
+    display:flex;align-items:center;gap:6px;background:var(--branco);
+    border:1px solid var(--cinza-200);border-radius:4px;padding:5px 8px;font-size:12.5px;
+  }
+  .evid-item .url-evid{flex:1;color:var(--azul-700);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .evid-item .url-evid:hover{text-decoration:underline;}
+  .evid-item .lab-evid{font-weight:600;color:var(--cinza-700);margin-right:4px;}
+  .evid-item .rem-evid{
+    cursor:pointer;background:none;border:none;color:var(--cinza-400);font-size:14px;
+    padding:0 4px;
+  }
+  .evid-item .rem-evid:hover{color:var(--vermelho-500);}
+  .form-evid{display:flex;gap:6px;margin-top:6px;}
+  .form-evid input{
+    border:1px solid var(--cinza-300);border-radius:4px;padding:5px 8px;font-size:12px;
+    font-family:inherit;background:var(--branco);outline:none;
+  }
+  .form-evid input.lab{flex:0 0 140px;}
+  .form-evid input.url{flex:1;}
+  .form-evid button{
+    background:var(--azul-600);color:#fff;border:none;border-radius:4px;
+    padding:5px 12px;cursor:pointer;font-weight:600;font-size:12px;font-family:inherit;
+  }
+  .form-evid button:hover{background:var(--azul-700);}
+
+  /* Idioma toggle */
+  .lang-toggle{
+    display:flex;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+    border-radius:6px;overflow:hidden;
+  }
+  .lang-toggle button{
+    background:transparent;border:none;color:rgba(255,255,255,.78);
+    cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;padding:6px 10px;
+    letter-spacing:.04em;
+  }
+  .lang-toggle button.ativo{background:#fff;color:var(--azul-800);}
+
+  /* ============================== IMPRESSÃO / PDF ============================== */
+  @media print {
+    @page{size:A4;margin:14mm 12mm 14mm 12mm;}
+    body{background:#fff;color:#000;font-size:11pt;}
+    .topo, .barra-lateral, .filtros, .acoes, .progresso-global, .progresso-rotulo,
+    .modal-fundo, .banner-importar, .cartao-upload, .grelha-upload, #seccao-docs, #seccao-riscos,
+    .doc-rem, .estados, .form-evid, .seta, .mini-bar, .barra-prog-grupo, .alerta-template,
+    #btnDownloadTemplate, [data-print-hide]{display:none !important;}
+    .area{display:block;}
+    .conteudo{padding:0 !important;max-width:100% !important;}
+    .seccao{page-break-inside:avoid;margin-bottom:14px;}
+    .seccao > .cabeca h2{font-size:14pt;color:#000;border-bottom:1px solid #000;padding-bottom:4px;}
+    .clausula, .controlo{page-break-inside:avoid;border:1px solid #555;margin-bottom:6px;box-shadow:none;}
+    .clausula .cab, .controlo > .cab{background:#f0f0f0 !important;color:#000 !important;}
+    .clausula .cab .num{background:#000 !important;color:#fff !important;}
+    .controlo .corpo-c{display:block !important;border-top:1px solid #ccc;}
+    .item-check{break-inside:avoid;background:#fff !important;border:1px solid #aaa;padding:4px 6px;}
+    .item-check.estado-im{background:#e8f8ee !important;}
+    .item-check.estado-ec{background:#fff8e6 !important;}
+    .item-check.estado-na{background:#eef4fc !important;}
+    .item-check.estado-im::before{content:"✓ ";font-weight:bold;color:#065f46;}
+    .item-check.estado-ec::before{content:"◐ ";font-weight:bold;color:#92400e;}
+    .item-check.estado-na::before{content:"⊘ ";font-weight:bold;color:#1e40af;}
+    .item-check.estado-ni::before{content:"☐ ";color:#888;}
+    .eti{border:1px solid #555;background:transparent !important;color:#000 !important;padding:1px 5px;}
+    .bloco-evid{background:#fafafa !important;border:1px dashed #aaa;}
+    .bloco-evid textarea{border:1px solid #ccc;}
+    .rodape{margin-top:20px;color:#555;border-top:1px solid #000;}
+    a{color:#000;text-decoration:none;}
+    .nota-cloud, .relev{background:#fff !important;border:1px solid #aaa !important;color:#000 !important;}
+  }
+  body.modo-impressao .barra-lateral, body.modo-impressao .topo, body.modo-impressao .filtros{display:none;}
+  body.modo-impressao .area{grid-template-columns:1fr;}
+  body.modo-impressao .controlo{break-inside:avoid;}
+  body.modo-impressao .controlo .corpo-c{display:block;}
+
   .banner-importar .btn-aceitar{background:var(--azul-600);color:#fff;}
   .banner-importar .btn-rejeitar{background:#fff;color:var(--cinza-700);border:1px solid var(--cinza-300);}
 
@@ -513,55 +633,63 @@
   <div class="marca">
     <div class="logo">27K</div>
     <div>
-      <input type="text" id="campoOrganizacao" placeholder="Nome da sua organização" data-testid="campo-organizacao"
+      <input type="text" id="campoOrganizacao" data-i18n-placeholder="org_placeholder" placeholder="Nome da sua organização" data-testid="campo-organizacao"
              style="background:transparent;border:none;color:#fff;font-weight:700;font-size:18px;width:240px;padding:2px 4px;border-bottom:1px dashed rgba(255,255,255,.25);outline:none;font-family:inherit;">
-      <div class="sub">Guia ISO/IEC 27001:2022 — Implementação SGSI Cloud & DevSecOps</div>
+      <div class="sub" data-i18n="header_sub">Guia ISO/IEC 27001:2022 — Implementação SGSI Cloud & DevSecOps</div>
     </div>
   </div>
   <div class="pesquisa">
     <span class="icone">🔍</span>
-    <input type="text" id="campoPesquisa" placeholder="Pesquisar controlo (ex: 8.25, codificação segura, cloud)…" data-testid="campo-pesquisa">
+    <input type="text" id="campoPesquisa" data-i18n-placeholder="search_placeholder" placeholder="Pesquisar controlo (ex: 8.25, codificação segura, cloud)…" data-testid="campo-pesquisa">
   </div>
   <div class="acoes">
-    <div class="progresso-rotulo" id="rotuloProgresso">0% concluído</div>
+    <div class="lang-toggle" data-testid="lang-toggle">
+      <button id="btnLangPt" class="ativo" data-lang="pt" data-testid="btn-lang-pt">PT</button>
+      <button id="btnLangEn" data-lang="en" data-testid="btn-lang-en">EN</button>
+    </div>
+    <div class="progresso-rotulo" id="rotuloProgresso"><span data-i18n="progress_label">0% concluído</span></div>
     <div class="progresso-global"><span id="barraProgresso"></span></div>
-    <button class="botao botao-primario" id="btnExportar" data-testid="btn-exportar">📄 Exportar Relatório</button>
-    <button class="botao botao-fantasma" id="btnPartilhar" data-testid="btn-partilhar">🔗 Partilhar</button>
-    <button class="botao botao-fantasma" id="btnExpandir" data-testid="btn-expandir">⊞ Expandir tudo</button>
-    <button class="botao botao-perigo" id="btnRepor" data-testid="btn-repor">↺ Repor</button>
+    <button class="botao botao-primario" id="btnExportar" data-testid="btn-exportar"><span data-i18n="export_txt">📄 Relatório TXT</span></button>
+    <button class="botao botao-primario" id="btnExportarSoA" data-testid="btn-exportar-soa"><span data-i18n="export_soa">📋 SoA Excel</span></button>
+    <button class="botao botao-primario" id="btnImportarSoA" data-testid="btn-importar-soa"><span data-i18n="import_soa">📥 Importar SoA</span></button>
+    <input type="file" id="inputImportarSoA" accept=".xlsx,.xls" style="display:none;" data-testid="input-importar-soa">
+    <button class="botao botao-primario" id="btnImprimir" data-testid="btn-imprimir"><span data-i18n="export_pdf">🖨 PDF</span></button>
+    <button class="botao botao-fantasma" id="btnPartilhar" data-testid="btn-partilhar"><span data-i18n="share">🔗 Partilhar</span></button>
+    <button class="botao botao-fantasma" id="btnExpandir" data-testid="btn-expandir"><span data-i18n="expand_all">⊞ Expandir tudo</span></button>
+    <button class="botao botao-perigo" id="btnRepor" data-testid="btn-repor"><span data-i18n="reset">↺ Repor</span></button>
   </div>
 </header>
 
 <div class="area">
   <!-- ============================== NAVEGAÇÃO LATERAL ============================== -->
   <nav class="barra-lateral" id="barraLateral">
-    <h4>Dashboard</h4>
-    <a href="#dashboard" class="link" data-alvo="dashboard">📊 Visão Geral</a>
+    <h4 data-i18n="nav_dashboard">Dashboard</h4>
+    <a href="#dashboard" class="link" data-alvo="dashboard"><span data-i18n="nav_overview">📊 Visão Geral</span></a>
 
-    <h4>Cláusulas (Esqueleto do SGSI)</h4>
-    <a href="#clausula-4" class="link" data-alvo="clausula-4">4. Contexto da Organização <span class="contagem" id="cnt-c4"></span></a>
-    <a href="#clausula-5" class="link" data-alvo="clausula-5">5. Liderança <span class="contagem" id="cnt-c5"></span></a>
-    <a href="#clausula-6" class="link" data-alvo="clausula-6">6. Planeamento <span class="contagem" id="cnt-c6"></span></a>
-    <a href="#clausula-7" class="link" data-alvo="clausula-7">7. Suporte <span class="contagem" id="cnt-c7"></span></a>
-    <a href="#clausula-8" class="link" data-alvo="clausula-8">8. Operação <span class="contagem" id="cnt-c8"></span></a>
-    <a href="#clausula-9" class="link" data-alvo="clausula-9">9. Avaliação do Desempenho <span class="contagem" id="cnt-c9"></span></a>
-    <a href="#clausula-10" class="link" data-alvo="clausula-10">10. Melhoria <span class="contagem" id="cnt-c10"></span></a>
+    <h4 data-i18n="nav_clauses_title">Cláusulas (Esqueleto do SGSI)</h4>
+    <a href="#clausula-4" class="link" data-alvo="clausula-4"><span data-i18n="nav_c4">4. Contexto da Organização</span> <span class="contagem" id="cnt-c4"></span></a>
+    <a href="#clausula-5" class="link" data-alvo="clausula-5"><span data-i18n="nav_c5">5. Liderança</span> <span class="contagem" id="cnt-c5"></span></a>
+    <a href="#clausula-6" class="link" data-alvo="clausula-6"><span data-i18n="nav_c6">6. Planeamento</span> <span class="contagem" id="cnt-c6"></span></a>
+    <a href="#clausula-7" class="link" data-alvo="clausula-7"><span data-i18n="nav_c7">7. Suporte</span> <span class="contagem" id="cnt-c7"></span></a>
+    <a href="#clausula-8" class="link" data-alvo="clausula-8"><span data-i18n="nav_c8">8. Operação</span> <span class="contagem" id="cnt-c8"></span></a>
+    <a href="#clausula-9" class="link" data-alvo="clausula-9"><span data-i18n="nav_c9">9. Avaliação do Desempenho</span> <span class="contagem" id="cnt-c9"></span></a>
+    <a href="#clausula-10" class="link" data-alvo="clausula-10"><span data-i18n="nav_c10">10. Melhoria</span> <span class="contagem" id="cnt-c10"></span></a>
 
-    <h4>Anexo A — 93 Controlos</h4>
-    <a href="#grupo-org" class="link" data-alvo="grupo-org">🏛 Organizacionais (5.1–5.37) <span class="contagem" id="cnt-org"></span></a>
-    <a href="#grupo-pes" class="link" data-alvo="grupo-pes">👥 Pessoas (6.1–6.8) <span class="contagem" id="cnt-pes"></span></a>
-    <a href="#grupo-fis" class="link" data-alvo="grupo-fis">🏢 Físicos (7.1–7.14) <span class="contagem" id="cnt-fis"></span></a>
-    <a href="#grupo-tec" class="link" data-alvo="grupo-tec">⚙ Tecnológicos (8.1–8.34) <span class="contagem" id="cnt-tec"></span></a>
+    <h4 data-i18n="nav_annex_title">Anexo A — 93 Controlos</h4>
+    <a href="#grupo-org" class="link" data-alvo="grupo-org"><span data-i18n="nav_org">🏛 Organizacionais (5.1–5.37)</span> <span class="contagem" id="cnt-org"></span></a>
+    <a href="#grupo-pes" class="link" data-alvo="grupo-pes"><span data-i18n="nav_pes">👥 Pessoas (6.1–6.8)</span> <span class="contagem" id="cnt-pes"></span></a>
+    <a href="#grupo-fis" class="link" data-alvo="grupo-fis"><span data-i18n="nav_fis">🏢 Físicos (7.1–7.14)</span> <span class="contagem" id="cnt-fis"></span></a>
+    <a href="#grupo-tec" class="link" data-alvo="grupo-tec"><span data-i18n="nav_tec">⚙ Tecnológicos (8.1–8.34)</span> <span class="contagem" id="cnt-tec"></span></a>
 
-    <h4>Evidências Documentais</h4>
-    <a href="#seccao-docs" class="link" data-alvo="seccao-docs">📁 Documentos & Políticas <span class="contagem" id="cnt-docs"></span></a>
-    <a href="#seccao-riscos" class="link" data-alvo="seccao-riscos">📊 Matriz de Riscos <span class="contagem" id="cnt-riscos"></span></a>
+    <h4 data-i18n="nav_evidence_title">Evidências Documentais</h4>
+    <a href="#seccao-docs" class="link" data-alvo="seccao-docs"><span data-i18n="nav_docs">📁 Documentos & Políticas</span> <span class="contagem" id="cnt-docs"></span></a>
+    <a href="#seccao-riscos" class="link" data-alvo="seccao-riscos"><span data-i18n="nav_risks">📊 Matriz de Riscos</span> <span class="contagem" id="cnt-riscos"></span></a>
 
-    <h4>Filtros Rápidos</h4>
-    <a href="#" class="link" id="filtroNovo">⭐ Apenas Novos 2022</a>
-    <a href="#" class="link" id="filtroCritico">⚡ Apenas Críticos Cloud/DevSecOps</a>
-    <a href="#" class="link" id="filtroPendentes">⏳ Apenas Pendentes</a>
-    <a href="#" class="link" id="filtroLimpar">✖ Limpar filtros</a>
+    <h4 data-i18n="nav_filters_title">Filtros Rápidos</h4>
+    <a href="#" class="link" id="filtroNovo" data-i18n="filter_new">⭐ Apenas Novos 2022</a>
+    <a href="#" class="link" id="filtroCritico" data-i18n="filter_crit">⚡ Apenas Críticos Cloud/DevSecOps</a>
+    <a href="#" class="link" id="filtroPendentes" data-i18n="filter_pending">⏳ Apenas Pendentes</a>
+    <a href="#" class="link" id="filtroLimpar" data-i18n="filter_clear">✖ Limpar filtros</a>
   </nav>
 
   <!-- ============================== CONTEÚDO ============================== -->
@@ -571,43 +699,41 @@
     <section class="seccao" id="dashboard">
       <div class="cabeca">
         <div>
-          <h2>📊 Dashboard de Conformidade</h2>
-          <p class="descricao">Visão consolidada do progresso de implementação do SGSI no âmbito típico de uma organização de desenvolvimento de software cloud-native: <em>desenvolvimento, implementação e manutenção de software em ambientes Cloud (AWS, Google Cloud, Azure, Render, Vercel, etc.) e ferramentas DevSecOps associadas</em>.</p>
+          <h2 data-i18n="dashboard_title">📊 Dashboard de Conformidade</h2>
+          <p class="descricao" data-i18n="dashboard_desc">Visão consolidada do progresso de implementação do SGSI no âmbito típico de uma organização de desenvolvimento de software cloud-native: <em>desenvolvimento, implementação e manutenção de software em ambientes Cloud (AWS, Google Cloud, Azure, Render, Vercel, etc.) e ferramentas DevSecOps associadas</em>.</p>
         </div>
       </div>
 
       <div class="grelha-kpi">
-        <div class="kpi"><span class="rotulo">Total de Itens</span><span class="valor" id="kpiTotal">0</span><span class="sub">checklist agregada (cláusulas + 93 controlos)</span></div>
-        <div class="kpi verde"><span class="rotulo">Concluídos</span><span class="valor" id="kpiFeitos">0</span><span class="sub">marcados como implementados</span></div>
-        <div class="kpi laranja"><span class="rotulo">Pendentes</span><span class="valor" id="kpiPendentes">0</span><span class="sub">ainda por implementar / evidenciar</span></div>
-        <div class="kpi roxo"><span class="rotulo">Progresso Global</span><span class="valor" id="kpiPercent">0%</span><span class="sub">percentagem de conformidade</span></div>
+        <div class="kpi"><span class="rotulo" data-i18n="kpi_total">Total de Itens</span><span class="valor" id="kpiTotal">0</span><span class="sub" data-i18n="kpi_total_sub">checklist agregada (cláusulas + 93 controlos)</span></div>
+        <div class="kpi verde"><span class="rotulo" data-i18n="kpi_done">Concluídos</span><span class="valor" id="kpiFeitos">0</span><span class="sub" data-i18n="kpi_done_sub">implementados ou não aplicáveis</span></div>
+        <div class="kpi laranja"><span class="rotulo" data-i18n="kpi_pending">Pendentes</span><span class="valor" id="kpiPendentes">0</span><span class="sub" data-i18n="kpi_pending_sub">ainda por implementar / evidenciar</span></div>
+        <div class="kpi roxo"><span class="rotulo" data-i18n="kpi_progress">Progresso Global</span><span class="valor" id="kpiPercent">0%</span><span class="sub" data-i18n="kpi_progress_sub">percentagem de conformidade</span></div>
       </div>
 
-      <h3 style="margin:18px 0 12px;color:var(--azul-800);font-size:16px;">Progresso por Grupo</h3>
-      <div class="grelha-grupos" id="grelhaGrupos">
-        <!-- preenchido por JS -->
-      </div>
+      <h3 style="margin:18px 0 12px;color:var(--azul-800);font-size:16px;" data-i18n="dashboard_progress_groups">Progresso por Grupo</h3>
+      <div class="grelha-grupos" id="grelhaGrupos"></div>
     </section>
 
     <!-- ===== FILTROS ===== -->
-    <div class="filtros">
+    <div class="filtros" data-print-hide>
       <div class="grupo">
-        <label>Filtrar:</label>
+        <label data-i18n="filters_label">Filtrar:</label>
         <select id="filtroEstado" data-testid="filtro-estado">
-          <option value="todos">Todos os itens</option>
-          <option value="pendente">Apenas pendentes</option>
-          <option value="feito">Apenas concluídos</option>
+          <option value="todos" data-i18n="filter_all_items">Todos os itens</option>
+          <option value="pendente" data-i18n="filter_only_pending">Apenas pendentes</option>
+          <option value="feito" data-i18n="filter_only_done">Apenas concluídos</option>
         </select>
       </div>
       <div class="grupo">
-        <label>Etiqueta:</label>
+        <label data-i18n="filters_tag">Etiqueta:</label>
         <select id="filtroEtiqueta" data-testid="filtro-etiqueta">
-          <option value="todos">Todas</option>
-          <option value="novo">Novos 2022</option>
-          <option value="critico">Críticos Cloud/DevSecOps</option>
+          <option value="todos" data-i18n="filter_all_tags">Todas</option>
+          <option value="novo" data-i18n="filter_tag_new">Novos 2022</option>
+          <option value="critico" data-i18n="filter_tag_crit">Críticos Cloud/DevSecOps</option>
         </select>
       </div>
-      <div class="grupo" style="margin-left:auto;color:var(--cinza-500);font-size:12px;">
+      <div class="grupo" style="margin-left:auto;color:var(--cinza-500);font-size:12px;" data-i18n="storage_notice">
         Estado guardado localmente no navegador (localStorage)
       </div>
     </div>
@@ -616,8 +742,8 @@
     <section class="seccao" id="seccao-clausulas">
       <div class="cabeca">
         <div>
-          <h2>📘 Componente 1 — Cláusulas 4 a 10 (Esqueleto do SGSI) <span class="eti eti-obrig" style="vertical-align:middle;">Obrigatório para Certificação</span></h2>
-          <p class="descricao">As cláusulas 4 a 10 constituem o corpo normativo obrigatório da ISO/IEC 27001:2022. Toda a organização certificável tem de demonstrar conformidade plena com estas cláusulas, independentemente do âmbito.</p>
+          <h2><span data-i18n="comp1_title">📘 Componente 1 — Cláusulas 4 a 10 (Esqueleto do SGSI)</span> <span class="eti eti-obrig" style="vertical-align:middle;" data-i18n="badge_mandatory">Obrigatório para Certificação</span></h2>
+          <p class="descricao" data-i18n="comp1_desc">As cláusulas 4 a 10 constituem o corpo normativo obrigatório da ISO/IEC 27001:2022. Toda a organização certificável tem de demonstrar conformidade plena com estas cláusulas, independentemente do âmbito.</p>
         </div>
       </div>
       <div id="containerClausulas"></div>
@@ -627,16 +753,16 @@
     <section class="seccao" id="seccao-anexo">
       <div class="cabeca">
         <div>
-          <h2>📚 Componente 2 — Anexo A (ISO/IEC 27002:2022): 93 Controlos</h2>
-          <p class="descricao">Catálogo de referência para a Declaração de Aplicabilidade (DdA / SoA). Cada controlo aplicado pela organização deve estar justificado pelo resultado da apreciação de riscos.</p>
+          <h2 data-i18n="comp2_title">📚 Componente 2 — Anexo A (ISO/IEC 27002:2022): 93 Controlos</h2>
+          <p class="descricao" data-i18n="comp2_desc">Catálogo de referência para a Declaração de Aplicabilidade (DdA / SoA). Cada controlo aplicado pela organização deve estar justificado pelo resultado da apreciação de riscos.</p>
         </div>
       </div>
 
       <div class="seccao" id="grupo-org">
         <div class="cabeca">
           <div>
-            <h2>🏛 A.5 Controlos Organizacionais (5.1–5.37) <span class="eti eti-grupo">37 controlos</span></h2>
-            <p class="descricao">Políticas, papéis, gestão de fornecedores, gestão de incidentes, conformidade legal e continuidade.</p>
+            <h2><span data-i18n="grp_org_title">🏛 A.5 Controlos Organizacionais (5.1–5.37)</span> <span class="eti eti-grupo">37 <span data-i18n="grp_count">controlos</span></span></h2>
+            <p class="descricao" data-i18n="grp_org_desc">Políticas, papéis, gestão de fornecedores, gestão de incidentes, conformidade legal e continuidade.</p>
           </div>
           <div class="barra-prog-grupo"><span id="bar-org"></span></div>
         </div>
@@ -646,8 +772,8 @@
       <div class="seccao" id="grupo-pes">
         <div class="cabeca">
           <div>
-            <h2>👥 A.6 Controlos de Pessoas (6.1–6.8) <span class="eti eti-grupo">8 controlos</span></h2>
-            <p class="descricao">Triagem, sensibilização, formação, NDA e reporte de eventos.</p>
+            <h2><span data-i18n="grp_pes_title">👥 A.6 Controlos de Pessoas (6.1–6.8)</span> <span class="eti eti-grupo">8 <span data-i18n="grp_count">controlos</span></span></h2>
+            <p class="descricao" data-i18n="grp_pes_desc">Triagem, sensibilização, formação, NDA e reporte de eventos.</p>
           </div>
           <div class="barra-prog-grupo"><span id="bar-pes"></span></div>
         </div>
@@ -657,8 +783,8 @@
       <div class="seccao" id="grupo-fis">
         <div class="cabeca">
           <div>
-            <h2>🏢 A.7 Controlos Físicos (7.1–7.14) <span class="eti eti-grupo">14 controlos</span></h2>
-            <p class="descricao">Perímetros físicos, equipamento, suportes de armazenamento e eliminação segura.</p>
+            <h2><span data-i18n="grp_fis_title">🏢 A.7 Controlos Físicos (7.1–7.14)</span> <span class="eti eti-grupo">14 <span data-i18n="grp_count">controlos</span></span></h2>
+            <p class="descricao" data-i18n="grp_fis_desc">Perímetros físicos, equipamento, suportes de armazenamento e eliminação segura.</p>
           </div>
           <div class="barra-prog-grupo"><span id="bar-fis"></span></div>
         </div>
@@ -668,8 +794,8 @@
       <div class="seccao" id="grupo-tec">
         <div class="cabeca">
           <div>
-            <h2>⚙ A.8 Controlos Tecnológicos (8.1–8.34) <span class="eti eti-grupo">34 controlos</span></h2>
-            <p class="descricao">Núcleo técnico do SGSI — autenticação, criptografia, vulnerabilidades, registos, redes, ciclo de vida de desenvolvimento seguro, gestão de mudança e separação de ambientes.</p>
+            <h2><span data-i18n="grp_tec_title">⚙ A.8 Controlos Tecnológicos (8.1–8.34)</span> <span class="eti eti-grupo">34 <span data-i18n="grp_count">controlos</span></span></h2>
+            <p class="descricao" data-i18n="grp_tec_desc">Núcleo técnico do SGSI — autenticação, criptografia, vulnerabilidades, registos, redes, ciclo de vida de desenvolvimento seguro, gestão de mudança e separação de ambientes.</p>
           </div>
           <div class="barra-prog-grupo"><span id="bar-tec"></span></div>
         </div>
@@ -678,25 +804,25 @@
     </section>
 
     <!-- ===== DOCUMENTOS / POLÍTICAS ===== -->
-    <section class="seccao" id="seccao-docs">
+    <section class="seccao" id="seccao-docs" data-print-hide>
       <div class="cabeca">
         <div>
-          <h2>📁 Importação de Documentos & Políticas</h2>
-          <p class="descricao">Faça upload de políticas, procedimentos e evidências documentais (TXT, PDF, DOCX). O sistema analisa o conteúdo através de <em>keyword matching</em> e mapeia automaticamente cada documento aos controlos do Anexo A que aparenta cobrir — facilitando a deteção de lacunas documentais para a certificação.</p>
+          <h2 data-i18n="docs_title">📁 Importação de Documentos & Políticas</h2>
+          <p class="descricao" data-i18n="docs_desc">Faça upload de políticas, procedimentos e evidências documentais (TXT, PDF, DOCX). O sistema analisa o conteúdo através de <em>keyword matching</em> e mapeia automaticamente cada documento aos controlos do Anexo A que aparenta cobrir — facilitando a deteção de lacunas documentais para a certificação.</p>
         </div>
       </div>
 
       <div class="grelha-upload">
         <label class="cartao-upload" id="dropDocs" for="inputDocs" data-testid="drop-docs">
           <span class="icone-big">📄</span>
-          <h3>Arrastar documentos ou clicar aqui</h3>
-          <p>Políticas, procedimentos, manuais, atas, evidências de auditoria</p>
+          <h3 data-i18n="docs_drop_title">Arrastar documentos ou clicar aqui</h3>
+          <p data-i18n="docs_drop_sub">Políticas, procedimentos, manuais, atas, evidências de auditoria</p>
           <span class="tipos">TXT · MD · PDF · DOCX</span>
           <input type="file" id="inputDocs" accept=".txt,.md,.pdf,.docx" multiple data-testid="input-docs">
         </label>
         <div class="alerta-template" style="display:flex;flex-direction:column;justify-content:center;">
-          <strong style="display:block;margin-bottom:6px;">ℹ Como funciona a análise?</strong>
-          O texto extraído é comparado com um dicionário de palavras-chave por controlo (PT/EN). Cada documento recebe uma <strong>lista de controlos prováveis</strong> que aparenta cobrir. <em>Não substitui revisão humana</em> — serve como ponto de partida para auditoria documental.
+          <strong style="display:block;margin-bottom:6px;" data-i18n="docs_info_title">ℹ Como funciona a análise?</strong>
+          <span data-i18n="docs_info_body">O texto extraído é comparado com um dicionário de palavras-chave por controlo (PT/EN). Cada documento recebe uma <strong>lista de controlos prováveis</strong> que aparenta cobrir. <em>Não substitui revisão humana</em> — serve como ponto de partida para auditoria documental.</span>
         </div>
       </div>
 
@@ -704,35 +830,35 @@
 
       <div class="lista-docs" id="listaDocs" style="display:none;">
         <div class="cab-doc">
-          <span>📋 Documentos importados</span>
-          <button class="botao botao-perigo" id="btnLimparDocs" style="font-size:11px;padding:5px 10px;" data-testid="btn-limpar-docs">↺ Limpar todos</button>
+          <span data-i18n="docs_imported">📋 Documentos importados</span>
+          <button class="botao botao-perigo" id="btnLimparDocs" style="font-size:11px;padding:5px 10px;" data-testid="btn-limpar-docs" data-i18n="docs_clear_all">↺ Limpar todos</button>
         </div>
         <div id="containerDocs"></div>
       </div>
     </section>
 
     <!-- ===== MATRIZ DE RISCOS ===== -->
-    <section class="seccao" id="seccao-riscos">
+    <section class="seccao" id="seccao-riscos" data-print-hide>
       <div class="cabeca">
         <div>
-          <h2>📊 Matriz de Riscos (ISO/IEC 27005)</h2>
-          <p class="descricao">Importe a matriz de riscos da organização em formato Excel (XLSX) ou CSV. O sistema deteta automaticamente as colunas, calcula níveis de risco e relaciona com os controlos do Anexo A indicados.</p>
+          <h2 data-i18n="risks_title">📊 Matriz de Riscos (ISO/IEC 27005)</h2>
+          <p class="descricao" data-i18n="risks_desc">Importe a matriz de riscos da organização em formato Excel (XLSX) ou CSV. O sistema deteta automaticamente as colunas, calcula níveis de risco e relaciona com os controlos do Anexo A indicados.</p>
         </div>
       </div>
 
       <div class="grelha-upload">
         <label class="cartao-upload" id="dropRiscos" for="inputRiscos" data-testid="drop-riscos">
           <span class="icone-big">📊</span>
-          <h3>Arrastar matriz de riscos ou clicar aqui</h3>
-          <p>Excel ou CSV com riscos identificados pela organização</p>
+          <h3 data-i18n="risks_drop_title">Arrastar matriz de riscos ou clicar aqui</h3>
+          <p data-i18n="risks_drop_sub">Excel ou CSV com riscos identificados pela organização</p>
           <span class="tipos">XLSX · XLS · CSV</span>
           <input type="file" id="inputRiscos" accept=".xlsx,.xls,.csv" data-testid="input-riscos">
         </label>
         <div class="alerta-template" style="display:flex;flex-direction:column;justify-content:center;">
-          <strong style="display:block;margin-bottom:6px;">📋 Template ISO 27005 esperado</strong>
-          Colunas reconhecidas (auto-deteção PT/EN, ordem flexível):
+          <strong style="display:block;margin-bottom:6px;" data-i18n="risks_tpl_title">📋 Template ISO 27005 esperado</strong>
+          <span data-i18n="risks_tpl_desc">Colunas reconhecidas (auto-deteção PT/EN, ordem flexível):</span>
           <code style="display:block;margin-top:6px;font-size:11.5px;line-height:1.6;">ID · Ativo · Ameaça · Vulnerabilidade · Probabilidade (1-5) · Impacto (1-5) · Tratamento · Controlos · Proprietário · Estado</code>
-          <button class="btn-mini" id="btnDownloadTemplate" data-testid="btn-template" style="margin-top:8px;align-self:flex-start;">⬇ Descarregar template CSV</button>
+          <button class="btn-mini" id="btnDownloadTemplate" data-testid="btn-template" style="margin-top:8px;align-self:flex-start;" data-i18n="risks_tpl_download">⬇ Descarregar template CSV</button>
         </div>
       </div>
 
@@ -744,11 +870,379 @@
 </div>
 
 <footer class="rodape">
-  Conteúdo baseado nas normas ISO/IEC 27001:2022 e ISO/IEC 27002:2022. Documento de apoio à implementação — não substitui o texto normativo oficial.<br>
-  Estado de progresso guardado no navegador (localStorage). Use o botão <em>Exportar Relatório</em> para evidência documental.
+  <span data-i18n="footer_line1">Conteúdo baseado nas normas ISO/IEC 27001:2022 e ISO/IEC 27002:2022. Documento de apoio à implementação — não substitui o texto normativo oficial.</span><br>
+  <span data-i18n="footer_line2">Estado de progresso guardado no navegador (localStorage). Use o botão <em>Relatório TXT</em> ou <em>SoA Excel</em> para evidência documental.</span>
 </footer>
 
 <script>
+/* ============================================================================
+   i18n — Sistema de tradução PT-PT / EN-GB
+   ============================================================================ */
+const KEY_LANG = "iso27001_sgsi_lang_v1";
+let LANG = localStorage.getItem(KEY_LANG) || "pt";
+
+const I18N = {
+  pt: {
+    org_placeholder:"Nome da sua organização",
+    header_sub:"Guia ISO/IEC 27001:2022 — Implementação SGSI Cloud & DevSecOps",
+    search_placeholder:"Pesquisar controlo (ex: 8.25, codificação segura, cloud)…",
+    progress_label:"% concluído",
+    export_txt:"📄 Relatório TXT",
+    export_soa:"📋 SoA Excel",
+    import_soa:"📥 Importar SoA",
+    confirm_import_soa:"Importar SoA Excel? Os estados, justificações, notas e evidências dos controlos referenciados no ficheiro serão sobrescritos. Recomenda-se descarregar uma cópia de backup primeiro (Botão SoA Excel).",
+    import_soa_ok:"✓ SoA importada com sucesso: %controls% controlos e %items% itens atualizados.",
+    import_soa_no_sheet:"Folha do Anexo A não encontrada. Use o template descarregado pelo botão «SoA Excel».",
+    import_soa_no_cols:"Colunas obrigatórias não encontradas (ID Controlo, Estado Agregado).",
+    import_soa_xlsx_loading:"Biblioteca XLSX ainda a carregar — tente novamente em 2 segundos.",
+    import_soa_error:"Erro ao processar o ficheiro: ",
+    export_pdf:"🖨 PDF",
+    share:"🔗 Partilhar",
+    expand_all:"⊞ Expandir tudo",
+    collapse_all:"⊟ Colapsar tudo",
+    reset:"↺ Repor",
+    nav_dashboard:"Dashboard",
+    nav_overview:"📊 Visão Geral",
+    nav_clauses_title:"Cláusulas (Esqueleto do SGSI)",
+    nav_c4:"4. Contexto da Organização", nav_c5:"5. Liderança", nav_c6:"6. Planeamento",
+    nav_c7:"7. Suporte", nav_c8:"8. Operação", nav_c9:"9. Avaliação do Desempenho", nav_c10:"10. Melhoria",
+    nav_annex_title:"Anexo A — 93 Controlos",
+    nav_org:"🏛 Organizacionais (5.1–5.37)",
+    nav_pes:"👥 Pessoas (6.1–6.8)",
+    nav_fis:"🏢 Físicos (7.1–7.14)",
+    nav_tec:"⚙ Tecnológicos (8.1–8.34)",
+    nav_evidence_title:"Evidências Documentais",
+    nav_docs:"📁 Documentos & Políticas", nav_risks:"📊 Matriz de Riscos",
+    nav_filters_title:"Filtros Rápidos",
+    filter_new:"⭐ Apenas Novos 2022",
+    filter_crit:"⚡ Apenas Críticos Cloud/DevSecOps",
+    filter_pending:"⏳ Apenas Pendentes",
+    filter_clear:"✖ Limpar filtros",
+    dashboard_title:"📊 Dashboard de Conformidade",
+    dashboard_desc:"Visão consolidada do progresso de implementação do SGSI no âmbito típico de uma organização de desenvolvimento de software cloud-native: <em>desenvolvimento, implementação e manutenção de software em ambientes Cloud (AWS, Google Cloud, Azure, Render, Vercel, etc.) e ferramentas DevSecOps associadas</em>.",
+    dashboard_progress_groups:"Progresso por Grupo",
+    kpi_total:"Total de Itens", kpi_total_sub:"checklist agregada (cláusulas + 93 controlos)",
+    kpi_done:"Concluídos", kpi_done_sub:"implementados ou não aplicáveis",
+    kpi_pending:"Pendentes", kpi_pending_sub:"ainda por implementar / evidenciar",
+    kpi_progress:"Progresso Global", kpi_progress_sub:"percentagem de conformidade",
+    filters_label:"Filtrar:", filters_tag:"Etiqueta:",
+    filter_all_items:"Todos os itens", filter_only_pending:"Apenas pendentes", filter_only_done:"Apenas concluídos",
+    filter_all_tags:"Todas", filter_tag_new:"Novos 2022", filter_tag_crit:"Críticos Cloud/DevSecOps",
+    storage_notice:"Estado guardado localmente no navegador (localStorage)",
+    comp1_title:"📘 Componente 1 — Cláusulas 4 a 10 (Esqueleto do SGSI)",
+    badge_mandatory:"Obrigatório para Certificação",
+    badge_mandatory_short:"Obrigatório",
+    comp1_desc:"As cláusulas 4 a 10 constituem o corpo normativo obrigatório da ISO/IEC 27001:2022. Toda a organização certificável tem de demonstrar conformidade plena com estas cláusulas, independentemente do âmbito.",
+    comp2_title:"📚 Componente 2 — Anexo A (ISO/IEC 27002:2022): 93 Controlos",
+    comp2_desc:"Catálogo de referência para a Declaração de Aplicabilidade (DdA / SoA). Cada controlo aplicado pela organização deve estar justificado pelo resultado da apreciação de riscos.",
+    grp_count:"controlos",
+    grp_org_title:"🏛 A.5 Controlos Organizacionais (5.1–5.37)",
+    grp_org_desc:"Políticas, papéis, gestão de fornecedores, gestão de incidentes, conformidade legal e continuidade.",
+    grp_pes_title:"👥 A.6 Controlos de Pessoas (6.1–6.8)",
+    grp_pes_desc:"Triagem, sensibilização, formação, NDA e reporte de eventos.",
+    grp_fis_title:"🏢 A.7 Controlos Físicos (7.1–7.14)",
+    grp_fis_desc:"Perímetros físicos, equipamento, suportes de armazenamento e eliminação segura.",
+    grp_tec_title:"⚙ A.8 Controlos Tecnológicos (8.1–8.34)",
+    grp_tec_desc:"Núcleo técnico do SGSI — autenticação, criptografia, vulnerabilidades, registos, redes, ciclo de vida de desenvolvimento seguro, gestão de mudança e separação de ambientes.",
+    docs_title:"📁 Importação de Documentos & Políticas",
+    docs_desc:"Faça upload de políticas, procedimentos e evidências documentais (TXT, PDF, DOCX). O sistema analisa o conteúdo através de <em>keyword matching</em> e mapeia automaticamente cada documento aos controlos do Anexo A que aparenta cobrir — facilitando a deteção de lacunas documentais para a certificação.",
+    docs_drop_title:"Arrastar documentos ou clicar aqui",
+    docs_drop_sub:"Políticas, procedimentos, manuais, atas, evidências de auditoria",
+    docs_info_title:"ℹ Como funciona a análise?",
+    docs_info_body:"O texto extraído é comparado com um dicionário de palavras-chave por controlo (PT/EN). Cada documento recebe uma <strong>lista de controlos prováveis</strong> que aparenta cobrir. <em>Não substitui revisão humana</em> — serve como ponto de partida para auditoria documental.",
+    docs_imported:"📋 Documentos importados",
+    docs_clear_all:"↺ Limpar todos",
+    risks_title:"📊 Matriz de Riscos (ISO/IEC 27005)",
+    risks_desc:"Importe a matriz de riscos da organização em formato Excel (XLSX) ou CSV. O sistema deteta automaticamente as colunas, calcula níveis de risco e relaciona com os controlos do Anexo A indicados.",
+    risks_drop_title:"Arrastar matriz de riscos ou clicar aqui",
+    risks_drop_sub:"Excel ou CSV com riscos identificados pela organização",
+    risks_tpl_title:"📋 Template ISO 27005 esperado",
+    risks_tpl_desc:"Colunas reconhecidas (auto-deteção PT/EN, ordem flexível):",
+    risks_tpl_download:"⬇ Descarregar template CSV",
+    footer_line1:"Conteúdo baseado nas normas ISO/IEC 27001:2022 e ISO/IEC 27002:2022. Documento de apoio à implementação — não substitui o texto normativo oficial.",
+    footer_line2:"Estado de progresso guardado no navegador (localStorage). Use o botão <em>Relatório TXT</em> ou <em>SoA Excel</em> para evidência documental.",
+    block_req:"📋 Requisitos obrigatórios a demonstrar",
+    block_art:"📂 Artefactos / Documentos necessários",
+    block_check:"✅ Checklist de Conformidade",
+    block_cloud:"☁ Aplicação ao contexto Cloud / DevSecOps",
+    block_actions:"✅ Checklist de ações específicas",
+    block_relev:"Relevância Cloud / DevSecOps:",
+    note_prefix:"Nota:",
+    state_ni:"Por iniciar", state_ec:"Em curso", state_im:"Implementado", state_na:"N/A",
+    state_ni_short:"NI", state_ec_short:"EC", state_im_short:"IM", state_na_short:"N/A",
+    just_na_placeholder:"Justificação (obrigatória para «Não Aplicável»)…",
+    notes_label:"📝 Notas internas",
+    notes_placeholder:"Adicione notas, contexto, observações, plano de ação…",
+    evid_label:"🔗 Evidências (documentos, URLs)",
+    evid_lab_placeholder:"Rótulo (ex: Política SI v2)",
+    evid_url_placeholder:"URL ou referência (ex: https://… ou SharePoint/Doc-123)",
+    evid_add:"Adicionar",
+    eti_new:"⭐ Novo 2022",
+    eti_crit:"⚡ Crítico Cloud/DevSecOps",
+    confirm_reset:"Tem a certeza que deseja repor todo o progresso? Notas e evidências serão também eliminadas. Esta ação não pode ser desfeita.",
+    confirm_clear_docs:"Remover todos os documentos importados?",
+    confirm_clear_risks:"Limpar toda a matriz de riscos importada?"
+  },
+  en: {
+    org_placeholder:"Your organisation name",
+    header_sub:"ISO/IEC 27001:2022 Guide — Cloud & DevSecOps ISMS Implementation",
+    search_placeholder:"Search control (e.g. 8.25, secure coding, cloud)…",
+    progress_label:"% complete",
+    export_txt:"📄 Report TXT",
+    export_soa:"📋 SoA Excel",
+    import_soa:"📥 Import SoA",
+    confirm_import_soa:"Import SoA Excel? Status, justifications, notes and evidences for controls referenced in the file will be overwritten. We recommend downloading a backup copy first (SoA Excel button).",
+    import_soa_ok:"✓ SoA imported successfully: %controls% controls and %items% items updated.",
+    import_soa_no_sheet:"Annex A sheet not found. Use the template downloaded via the «SoA Excel» button.",
+    import_soa_no_cols:"Required columns not found (Control ID, Aggregate State).",
+    import_soa_xlsx_loading:"XLSX library still loading — try again in 2 seconds.",
+    import_soa_error:"Error processing file: ",
+    export_pdf:"🖨 PDF",
+    share:"🔗 Share",
+    expand_all:"⊞ Expand all",
+    collapse_all:"⊟ Collapse all",
+    reset:"↺ Reset",
+    nav_dashboard:"Dashboard",
+    nav_overview:"📊 Overview",
+    nav_clauses_title:"Clauses (ISMS Body)",
+    nav_c4:"4. Context of the Organization", nav_c5:"5. Leadership", nav_c6:"6. Planning",
+    nav_c7:"7. Support", nav_c8:"8. Operation", nav_c9:"9. Performance Evaluation", nav_c10:"10. Improvement",
+    nav_annex_title:"Annex A — 93 Controls",
+    nav_org:"🏛 Organizational (5.1–5.37)",
+    nav_pes:"👥 People (6.1–6.8)",
+    nav_fis:"🏢 Physical (7.1–7.14)",
+    nav_tec:"⚙ Technological (8.1–8.34)",
+    nav_evidence_title:"Documentary Evidence",
+    nav_docs:"📁 Documents & Policies", nav_risks:"📊 Risk Matrix",
+    nav_filters_title:"Quick Filters",
+    filter_new:"⭐ New in 2022 only",
+    filter_crit:"⚡ Cloud/DevSecOps Critical only",
+    filter_pending:"⏳ Pending only",
+    filter_clear:"✖ Clear filters",
+    dashboard_title:"📊 Compliance Dashboard",
+    dashboard_desc:"Consolidated view of ISMS implementation progress for the typical scope of a cloud-native software organisation: <em>development, deployment and maintenance of software in Cloud environments (AWS, Google Cloud, Azure, Render, Vercel, etc.) and associated DevSecOps tooling</em>.",
+    dashboard_progress_groups:"Progress by Group",
+    kpi_total:"Total Items", kpi_total_sub:"aggregated checklist (clauses + 93 controls)",
+    kpi_done:"Completed", kpi_done_sub:"implemented or not applicable",
+    kpi_pending:"Pending", kpi_pending_sub:"still to implement / evidence",
+    kpi_progress:"Overall Progress", kpi_progress_sub:"compliance percentage",
+    filters_label:"Filter:", filters_tag:"Tag:",
+    filter_all_items:"All items", filter_only_pending:"Pending only", filter_only_done:"Completed only",
+    filter_all_tags:"All", filter_tag_new:"New in 2022", filter_tag_crit:"Cloud/DevSecOps Critical",
+    storage_notice:"State stored locally in the browser (localStorage)",
+    comp1_title:"📘 Component 1 — Clauses 4 to 10 (ISMS Body)",
+    badge_mandatory:"Mandatory for Certification",
+    badge_mandatory_short:"Mandatory",
+    comp1_desc:"Clauses 4 to 10 form the mandatory normative body of ISO/IEC 27001:2022. Every certifiable organisation must demonstrate full conformity with these clauses, regardless of scope.",
+    comp2_title:"📚 Component 2 — Annex A (ISO/IEC 27002:2022): 93 Controls",
+    comp2_desc:"Reference catalogue for the Statement of Applicability (SoA). Every control applied by the organisation must be justified by the outcome of risk assessment.",
+    grp_count:"controls",
+    grp_org_title:"🏛 A.5 Organizational Controls (5.1–5.37)",
+    grp_org_desc:"Policies, roles, supplier management, incident management, legal compliance and continuity.",
+    grp_pes_title:"👥 A.6 People Controls (6.1–6.8)",
+    grp_pes_desc:"Screening, awareness, training, NDAs and event reporting.",
+    grp_fis_title:"🏢 A.7 Physical Controls (7.1–7.14)",
+    grp_fis_desc:"Physical perimeters, equipment, storage media and secure disposal.",
+    grp_tec_title:"⚙ A.8 Technological Controls (8.1–8.34)",
+    grp_tec_desc:"Technical core of the ISMS — authentication, cryptography, vulnerabilities, logging, networks, secure development lifecycle, change management and environment segregation.",
+    docs_title:"📁 Document & Policy Import",
+    docs_desc:"Upload policies, procedures and documentary evidence (TXT, PDF, DOCX). The system analyses the content via <em>keyword matching</em> and automatically maps each document to the Annex A controls it appears to cover — making it easier to spot documentary gaps before certification.",
+    docs_drop_title:"Drag documents here or click to browse",
+    docs_drop_sub:"Policies, procedures, manuals, minutes, audit evidence",
+    docs_info_title:"ℹ How does the analysis work?",
+    docs_info_body:"Extracted text is compared with a keyword dictionary per control (PT/EN). Each document gets a <strong>list of probable controls</strong> it appears to cover. <em>Does not replace human review</em> — it is a starting point for documentary audit.",
+    docs_imported:"📋 Imported documents",
+    docs_clear_all:"↺ Clear all",
+    risks_title:"📊 Risk Matrix (ISO/IEC 27005)",
+    risks_desc:"Import the organisation's risk matrix as Excel (XLSX) or CSV. The system auto-detects columns, computes risk levels and relates risks to the Annex A controls referenced.",
+    risks_drop_title:"Drag risk matrix here or click to browse",
+    risks_drop_sub:"Excel or CSV with risks identified by the organisation",
+    risks_tpl_title:"📋 Expected ISO 27005 Template",
+    risks_tpl_desc:"Recognised columns (auto-detection PT/EN, flexible order):",
+    risks_tpl_download:"⬇ Download CSV template",
+    footer_line1:"Content based on ISO/IEC 27001:2022 and ISO/IEC 27002:2022 standards. Implementation support document — does not replace the official normative text.",
+    footer_line2:"Progress is stored in the browser (localStorage). Use <em>Report TXT</em> or <em>SoA Excel</em> buttons for documentary evidence.",
+    block_req:"📋 Mandatory requirements to demonstrate",
+    block_art:"📂 Required artefacts / documents",
+    block_check:"✅ Conformance checklist",
+    block_cloud:"☁ Application to Cloud / DevSecOps context",
+    block_actions:"✅ Specific action checklist",
+    block_relev:"Cloud / DevSecOps relevance:",
+    note_prefix:"Note:",
+    state_ni:"Not started", state_ec:"In progress", state_im:"Implemented", state_na:"N/A",
+    state_ni_short:"NS", state_ec_short:"IP", state_im_short:"IM", state_na_short:"N/A",
+    just_na_placeholder:"Justification (mandatory for «Not Applicable»)…",
+    notes_label:"📝 Internal notes",
+    notes_placeholder:"Add notes, context, observations, action plan…",
+    evid_label:"🔗 Evidences (documents, URLs)",
+    evid_lab_placeholder:"Label (e.g. IS Policy v2)",
+    evid_url_placeholder:"URL or reference (e.g. https://… or SharePoint/Doc-123)",
+    evid_add:"Add",
+    eti_new:"⭐ New 2022",
+    eti_crit:"⚡ Cloud/DevSecOps Critical",
+    confirm_reset:"Are you sure you want to reset all progress? Notes and evidences will also be deleted. This action cannot be undone.",
+    confirm_clear_docs:"Remove all imported documents?",
+    confirm_clear_risks:"Clear the entire imported risk matrix?"
+  }
+};
+
+function t(key){
+  return (I18N[LANG] && I18N[LANG][key]) || (I18N.pt[key] || key);
+}
+
+function L(obj){
+  // obj pode ser string ou {pt, en}
+  if(obj == null) return "";
+  if(typeof obj === "string") return obj;
+  return obj[LANG] || obj.pt || obj.en || "";
+}
+
+function aplicarTraducao(){
+  document.documentElement.lang = LANG === "en" ? "en-GB" : "pt-PT";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key = el.getAttribute("data-i18n");
+    el.innerHTML = t(key);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+    el.setAttribute("placeholder", t(el.getAttribute("data-i18n-placeholder")));
+  });
+  // botões idioma
+  document.querySelectorAll(".lang-toggle button").forEach(b=>{
+    b.classList.toggle("ativo", b.getAttribute("data-lang") === LANG);
+  });
+  // re-render conteúdo dinâmico
+  if(typeof renderClausulas === "function") renderClausulas();
+  ["org","pes","fis","tec"].forEach(g => {
+    if(typeof renderGrupoControlos === "function" && document.getElementById("container-"+g))
+      renderGrupoControlos(g, "container-"+g);
+  });
+  if(typeof atualizarProgresso === "function") atualizarProgresso();
+  if(typeof renderDocs === "function") renderDocs();
+  if(typeof renderRiscos === "function") renderRiscos();
+  if(typeof renderAnaliseCobertura === "function") renderAnaliseCobertura();
+}
+
+function activarToggleIdioma(){
+  document.querySelectorAll(".lang-toggle button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const novo = btn.getAttribute("data-lang");
+      if(novo === LANG) return;
+      LANG = novo;
+      localStorage.setItem(KEY_LANG, LANG);
+      aplicarTraducao();
+    });
+  });
+}
+
+/* ============================================================================
+   TÍTULOS OFICIAIS EN dos controlos ISO/IEC 27002:2022
+   ============================================================================ */
+const CTRL_TITLES_EN = {
+  "5.1":"Policies for information security",
+  "5.2":"Information security roles and responsibilities",
+  "5.3":"Segregation of duties",
+  "5.4":"Management responsibilities",
+  "5.5":"Contact with authorities",
+  "5.6":"Contact with special interest groups",
+  "5.7":"Threat intelligence",
+  "5.8":"Information security in project management",
+  "5.9":"Inventory of information and other associated assets",
+  "5.10":"Acceptable use of information and other associated assets",
+  "5.11":"Return of assets",
+  "5.12":"Classification of information",
+  "5.13":"Labelling of information",
+  "5.14":"Information transfer",
+  "5.15":"Access control",
+  "5.16":"Identity management",
+  "5.17":"Authentication information",
+  "5.18":"Access rights",
+  "5.19":"Information security in supplier relationships",
+  "5.20":"Addressing information security within supplier agreements",
+  "5.21":"Managing information security in the ICT supply chain",
+  "5.22":"Monitoring, review and change management of supplier services",
+  "5.23":"Information security for use of cloud services",
+  "5.24":"Information security incident management planning and preparation",
+  "5.25":"Assessment and decision on information security events",
+  "5.26":"Response to information security incidents",
+  "5.27":"Learning from information security incidents",
+  "5.28":"Collection of evidence",
+  "5.29":"Information security during disruption",
+  "5.30":"ICT readiness for business continuity",
+  "5.31":"Legal, statutory, regulatory and contractual requirements",
+  "5.32":"Intellectual property rights",
+  "5.33":"Protection of records",
+  "5.34":"Privacy and protection of PII",
+  "5.35":"Independent review of information security",
+  "5.36":"Compliance with policies, rules and standards for information security",
+  "5.37":"Documented operating procedures",
+  "6.1":"Screening",
+  "6.2":"Terms and conditions of employment",
+  "6.3":"Information security awareness, education and training",
+  "6.4":"Disciplinary process",
+  "6.5":"Responsibilities after termination or change of employment",
+  "6.6":"Confidentiality or non-disclosure agreements",
+  "6.7":"Remote working",
+  "6.8":"Information security event reporting",
+  "7.1":"Physical security perimeters",
+  "7.2":"Physical entry",
+  "7.3":"Securing offices, rooms and facilities",
+  "7.4":"Physical security monitoring",
+  "7.5":"Protecting against physical and environmental threats",
+  "7.6":"Working in secure areas",
+  "7.7":"Clear desk and clear screen",
+  "7.8":"Equipment siting and protection",
+  "7.9":"Security of assets off-premises",
+  "7.10":"Storage media",
+  "7.11":"Supporting utilities",
+  "7.12":"Cabling security",
+  "7.13":"Equipment maintenance",
+  "7.14":"Secure disposal or re-use of equipment",
+  "8.1":"User end point devices",
+  "8.2":"Privileged access rights",
+  "8.3":"Information access restriction",
+  "8.4":"Access to source code",
+  "8.5":"Secure authentication",
+  "8.6":"Capacity management",
+  "8.7":"Protection against malware",
+  "8.8":"Management of technical vulnerabilities",
+  "8.9":"Configuration management",
+  "8.10":"Information deletion",
+  "8.11":"Data masking",
+  "8.12":"Data leakage prevention",
+  "8.13":"Information backup",
+  "8.14":"Redundancy of information processing facilities",
+  "8.15":"Logging",
+  "8.16":"Monitoring activities",
+  "8.17":"Clock synchronization",
+  "8.18":"Use of privileged utility programs",
+  "8.19":"Installation of software on operational systems",
+  "8.20":"Networks security",
+  "8.21":"Security of network services",
+  "8.22":"Segregation of networks",
+  "8.23":"Web filtering",
+  "8.24":"Use of cryptography",
+  "8.25":"Secure development life cycle",
+  "8.26":"Application security requirements",
+  "8.27":"Secure system architecture and engineering principles",
+  "8.28":"Secure coding",
+  "8.29":"Security testing in development and acceptance",
+  "8.30":"Outsourced development",
+  "8.31":"Separation of development, test and production environments",
+  "8.32":"Change management",
+  "8.33":"Test information",
+  "8.34":"Protection of information systems during audit testing"
+};
+
+const CLAUSE_TITLES_EN = {
+  "4":"Context of the Organization",
+  "5":"Leadership",
+  "6":"Planning",
+  "7":"Support",
+  "8":"Operation",
+  "9":"Performance Evaluation",
+  "10":"Improvement"
+};
+
 /* ============================================================================
    DADOS — CLÁUSULAS 4–10 e CONTROLOS DO ANEXO A (93)
    ============================================================================ */
@@ -1321,61 +1815,418 @@ const CONTROLOS = {
 };
 
 /* ============================================================================
+   TRADUÇÕES EN — CLÁUSULAS 4–10
+   ============================================================================ */
+const CLAUSULAS_EN = {
+  "4":{
+    requisitos:[
+      "Determine internal and external issues relevant to the ISMS (clause 4.1).",
+      "Identify interested parties (clients, cloud partners, regulators, team) and their relevant requirements (4.2).",
+      "Determine the documented scope of the ISMS, including interfaces and dependencies with external cloud services (4.3).",
+      "Establish, implement, maintain and continually improve the ISMS (4.4)."
+    ],
+    artefactos:[
+      "ISMS Scope Document (referencing AWS, Google Cloud, Azure, Render, Vercel and DevSecOps).",
+      "Context analysis (SWOT/PESTEL) adapted to the software development sector.",
+      "Stakeholder matrix with identified security requirements.",
+      "ISMS process map."
+    ],
+    checklist:[
+      "ISMS scope documented and approved by Management.",
+      "Internal issues (structure, resources, DevSecOps culture) documented.",
+      "External issues (GDPR, NIS2, cloud threats, client expectations) documented.",
+      "Stakeholder matrix with identified requirements, updated annually.",
+      "Interfaces and dependencies with cloud providers explicitly mapped in scope.",
+      "Scope exclusions (if any) justified and documented."
+    ],
+    nota:"The scope must clearly identify which cloud environments and DevSecOps tooling (CI/CD, SAST, DAST, SCA, IaC scanners) are included, and which repositories/pipelines. The shared responsibility model for each cloud provider must be documented."
+  },
+  "5":{
+    requisitos:[
+      "Management demonstrates leadership and commitment to the ISMS (5.1).",
+      "Establish an approved, communicated and available Information Security Policy (5.2).",
+      "Assign, communicate and document roles, responsibilities and authorities for information security (5.3)."
+    ],
+    artefactos:[
+      "Information Security Policy (signed by Management, versioned).",
+      "ISMS organisation chart with appointed Security Officer (CISO/DPO).",
+      "Security Committee / ISMS Board minutes.",
+      "Security RACI matrix applied to product, platform and DevSecOps teams."
+    ],
+    checklist:[
+      "Information Security Policy approved, dated, versioned and signed by Management.",
+      "Policy communicated to all staff (evidence: signature, newsletter, e-learning).",
+      "Policy reviewed at least annually or upon relevant changes.",
+      "CISO role (or equivalent) formally assigned in writing.",
+      "Security responsibilities included in engineering team job descriptions.",
+      "Resources (human, financial, technological) allocated to the ISMS and formalised in budget.",
+      "ISMS Committee with periodic meetings (minimum quarterly) and recorded minutes."
+    ],
+    nota:"In DevSecOps organisations, leadership must visibly sponsor security integration into the pipeline (shift-left). The security team should be independent of development but integrated into agile rituals."
+  },
+  "6":{
+    requisitos:[
+      "Determine risks and opportunities affecting ISMS outcomes (6.1.1).",
+      "Define and apply a formal information security risk assessment process (6.1.2).",
+      "Define and apply a risk treatment process, producing the Statement of Applicability (SoA) (6.1.3).",
+      "Establish measurable and planned information security objectives (6.2).",
+      "Plan changes to the ISMS in a controlled manner (6.3)."
+    ],
+    artefactos:[
+      "Documented risk assessment methodology (acceptance criteria, scales, periodicity).",
+      "Risk Register kept up to date.",
+      "Risk Treatment Plan (RTP).",
+      "Statement of Applicability (SoA) referencing all 93 Annex A controls.",
+      "Annual security objectives plan with KPIs."
+    ],
+    checklist:[
+      "Risk assessment methodology approved and applied.",
+      "Critical information assets identified (source code, secrets, client data, IaC configs).",
+      "Cloud-specific threats identified (misconfiguration, bucket exposure, key leakage, supply chain).",
+      "Risks have named owners and defined acceptable levels.",
+      "Risk treatment plan with deadlines, owners and status.",
+      "SoA updated with applicable / not applicable + justification for each of the 93 controls.",
+      "SMART security objectives defined (e.g. <5% critical SAST findings per release).",
+      "Significant changes (new cloud service, region, supplier) subject to ISMS impact analysis."
+    ],
+    nota:"Risk assessment must explicitly consider the shared responsibility model of each cloud provider and software supply chain risks (open-source dependencies, container images, Terraform providers)."
+  },
+  "7":{
+    requisitos:[
+      "Determine and provide resources needed for the ISMS (7.1).",
+      "Ensure appropriate competence of people influencing ISMS performance (7.2).",
+      "Promote awareness amongst staff (7.3).",
+      "Determine internal and external communication needs (7.4).",
+      "Control documented information: creation, update, access and retention (7.5)."
+    ],
+    artefactos:[
+      "Annual training and awareness plan (OWASP Top 10, secure coding, phishing, cloud security).",
+      "Competence and training records (LMS, certifications).",
+      "ISMS Communication Plan (internal and external).",
+      "Document management system with version control, approval and access controls.",
+      "Document and Records Control Policy."
+    ],
+    checklist:[
+      "Human, financial and technological resources assigned to the ISMS and reviewed annually.",
+      "Annual training plan approved and executed (including secure coding for developers).",
+      "Continuous awareness programme (simulated phishing, newsletters, e-learning capsules).",
+      "Training attendance/completion records archived.",
+      "Internal and external ISMS communication matrix defined.",
+      "ISMS documents controlled (identification, version, author, approver, review date).",
+      "Documentary repository with role-based access controls.",
+      "Document retention and disposal policy defined and applied."
+    ],
+    nota:"For DevSecOps, technical training in secure coding (OWASP ASVS), cloud security (CSA CCM) and secure infrastructure-as-code is essential. Gamification and internal capture-the-flag are recommended."
+  },
+  "8":{
+    requisitos:[
+      "Plan, implement and control the processes needed to meet ISMS requirements (8.1).",
+      "Perform information security risk assessments at planned intervals and on significant changes (8.2).",
+      "Implement the risk treatment plan (8.3)."
+    ],
+    artefactos:[
+      "Documented operational procedures (onboarding/offboarding, key management, change management, incident management).",
+      "Records of periodic risk assessment execution.",
+      "Risk treatment plan execution records.",
+      "Subcontracting and supplier control records."
+    ],
+    checklist:[
+      "Critical operational processes documented and controlled (onboarding, offboarding, access, secrets, change, incident, vulnerability, backups).",
+      "Risk assessments executed at planned intervals (minimum annually) and ad-hoc for significant changes.",
+      "Risk assessment results documented and communicated.",
+      "Risk treatment plan executed as planned; deviations documented.",
+      "Outsourced processes (cloud, SaaS, providers) controlled and monitored.",
+      "Significant process changes go through change management (control 8.32)."
+    ],
+    nota:"Cloud-native operation requires automation of controls as code (policy-as-code with OPA/Conftest/Sentinel), runtime monitoring (CSPM, CWPP), and integration of risk management with CI/CD pipelines."
+  },
+  "9":{
+    requisitos:[
+      "Determine what is monitored and measured, methods, frequency and who analyses results (9.1).",
+      "Conduct internal audits at planned intervals (9.2).",
+      "Perform management review at planned intervals (9.3)."
+    ],
+    artefactos:[
+      "Monitoring and measurement plan with KPIs/KRIs.",
+      "Annual Internal Audit Programme and audit reports.",
+      "Management Review minutes and actions.",
+      "Technical dashboards (vulnerabilities, incidents, MTTD/MTTR, SAST/DAST coverage)."
+    ],
+    checklist:[
+      "Set of security metrics defined (e.g. critical vulnerabilities in production, MTTR, % pipelines with SAST/DAST/SCA, % images with critical CVEs).",
+      "Frequency, method and responsibility of each metric defined in writing.",
+      "Annual internal audit plan covers all standard requirements and applicable controls.",
+      "Internal audits executed by competent auditors independent of the audited process.",
+      "Audit reports with non-conformities, observations and recommendations.",
+      "Management Review held at least annually covering all mandatory inputs (9.3.2).",
+      "Decisions and actions from Management Review documented and followed up."
+    ],
+    nota:"Mandatory Management Review inputs (9.3.2) include: status of previous actions, relevant changes, security performance feedback, stakeholder feedback, risks and opportunities, improvement opportunities."
+  },
+  "10":{
+    requisitos:[
+      "Identify non-conformities, take actions to control and correct them and deal with consequences (10.1).",
+      "Determine causes and implement corrective actions to prevent recurrence (10.1).",
+      "Continually improve the suitability, adequacy and effectiveness of the ISMS (10.2)."
+    ],
+    artefactos:[
+      "Non-Conformity and Corrective Action (NCCA) procedure.",
+      "Non-conformity register (audits, incidents, complaints).",
+      "Continuous Improvement Plan.",
+      "Corrective action effectiveness records."
+    ],
+    checklist:[
+      "NCCA procedure documented and applied.",
+      "All non-conformities from audits and incidents recorded and handled with root cause analysis.",
+      "Corrective actions with deadlines, owners and effectiveness validation.",
+      "Continuous improvement initiatives identified, prioritised and executed.",
+      "Evidence of corrective action effectiveness (post-mortem, reduction metrics)."
+    ],
+    nota:"In DevSecOps environments, incident root cause analysis must result in automated controls (additional pipeline tests, IaC rules, policies) to prevent systemic recurrence."
+  }
+};
+
+/* ============================================================================
+   TRADUÇÕES EN — Controlos do Anexo A (descrição, ações, relevância)
+   ============================================================================ */
+const CTRL_EN = {
+  "5.1":{d:"Information security policy and topic-specific policies must be defined, approved by Management, published, communicated and reviewed at planned intervals or upon significant changes.",a:["Master IS policy approved and versioned.","Topic policies (access, cryptography, cloud, backups, secure development, BYOD, remote work) published.","Staff communication plan.","Mandatory annual review recorded."],r:"The organisation must have explicit policies for use of cloud platforms (AWS/GCP/Azure/Render/Vercel) and for the DevSecOps pipeline (SAST/DAST/SCA, secrets management, IaC)."},
+  "5.2":{d:"IS roles and responsibilities must be defined and assigned according to organisational needs.",a:["Security RACI matrix.","Job descriptions including IS responsibilities.","Formal appointment of asset and risk owners."],r:"Define specific roles: Cloud Security Engineer, DevSecOps Lead, AppSec Champion per team, Security SRE."},
+  "5.3":{d:"Conflicting duties and areas of responsibility must be segregated to reduce opportunities for unauthorised modification/misuse.",a:["Conflict-of-duties analysis documented.","IAM with separation (approver ≠ implementer).","Pull request workflows with mandatory peer review."],r:"In CI/CD: separate merge-to-main permissions from production deploy; production deploy approval outside the scope of the PR developer."},
+  "5.4":{d:"Management must require all staff to apply IS according to established policies.",a:["Documented Management commitment.","Periodic review meetings.","IS included in manager performance reviews."],r:"Visible executive sponsorship: dedicated DevSecOps budget, top-down communication on security priority."},
+  "5.5":{d:"Maintain appropriate contacts with relevant authorities.",a:["Authority contact list (DPA, national CERT, judicial authorities, sector regulators).","Procedure to trigger contacts during incidents.","Annual update."],r:"In Portugal: CNPD (GDPR), CNCS/CERT.PT (NIS2/incidents), Polícia Judiciária (cybercrime). Adapt to the organisation's jurisdiction."},
+  "5.6":{d:"Maintain appropriate contacts with special interest groups, forums and professional associations.",a:["Subscriptions to CERT, OWASP, CSA, ISACA, ENISA.","Participation in technical communities (local DevSecOps, OWASP).","Controlled threat information sharing."],r:"Subscribe to AWS/Google Cloud/Vercel/Render advisories; integrate CTI feeds into the SIEM."},
+  "5.7":{d:"Information related to IS threats must be collected and analysed to produce actionable threat intelligence.",a:["CTI feed subscriptions (open-source and commercial).","IOC triage and enrichment process.","TI integration with SIEM/SOAR and WAF.","Internal threat bulletins for product teams."],r:"⚡ CRITICAL: Cloud-specific TI (MITRE ATT&CK Cloud TTPs, supply-chain, dependency confusion). Integrate with pipelines (block deploy if active IOC on image)."},
+  "5.8":{d:"IS must be integrated into project management regardless of project type.",a:["Mandatory IS checklist at project kick-off.","Per-project risk assessment.","Documented Privacy/Security by Design.","Security sign-off at project gates."],r:"Threat modeling mandatory (STRIDE/LINDDUN) for new features handling sensitive data."},
+  "5.9":{d:"Inventory of information and other associated assets, including owners, must be developed and maintained.",a:["Automated CMDB/Inventory.","Auto-discovery in AWS/GCP (Config, Asset Inventory).","Code and secret repositories inventoried.","Defined owners."],r:"Inventory must include: AWS/GCP accounts, projects, GitHub/GitLab repos, pipelines, vault secrets, Vercel/Render domains, SaaS integrations."},
+  "5.10":{d:"Rules for acceptable use and asset handling procedures must be identified, documented and implemented.",a:["Acceptable Use Policy (AUP) signed.","Equipment, email, GenAI use rules.","BYOD policy."],r:"Define acceptable use of GenAI tools in development (prohibit submitting proprietary code to external LLMs without approval)."},
+  "5.11":{d:"People and other interested parties must return all assets at end of employment, contract or agreement.",a:["Offboarding checklist.","Immediate access revocation procedure.","Return of laptop, tokens, smartcards.","Signed discharge."],r:"Immediate revocation in central IdP, AWS IAM, GCP IAM, GitHub Org, Vercel/Render, Slack, Jira; rotation of shared keys."},
+  "5.12":{d:"Information must be classified based on confidentiality, integrity, availability and stakeholder requirements.",a:["Classification scheme (e.g. Public/Internal/Confidential/Restricted).","Objective criteria.","Staff training.","Periodic review."],r:"Apply classification to code repos, S3/GCS buckets, datasets, secrets. Tags on cloud resources."},
+  "5.13":{d:"An appropriate information labelling procedure must be developed and implemented per the classification scheme.",a:["Labelling convention.","Labels on documents and files.","Mandatory tags on AWS/GCP resources (Confidentiality, Owner, Environment).","Block deploy if tags missing."],r:"Mandatory tags in IaC (Terraform): data-classification, owner, environment, cost-center."},
+  "5.14":{d:"Rules, procedures or agreements for information transfer must be in place for all transfer types (electronic, physical, verbal).",a:["Transfer policy.","Mandatory encryption in transit (TLS 1.2+).","Approved channels (SFTP, sharing SaaS).","NDA with third parties."],r:"Block sharing of sensitive data via unapproved channels; email DLP; NDA signed before sharing code."},
+  "5.15":{d:"Rules to control physical and logical access to information and other associated assets must be established and implemented based on IS and business requirements.",a:["Access Control Policy.","Least privilege.","Periodic review.","RBAC/ABAC implemented."],r:"Unified IAM (central IdP like Okta/Azure AD), SAML/OIDC federation for AWS, GCP, GitHub, Vercel, Render. JIT and PAM for privileged access."},
+  "5.16":{d:"The full identity lifecycle must be managed.",a:["Automated SCIM provisioning.","Unique (non-shared) identities.","Managed service identities (workload identity).","Immediate deactivation on leaver."],r:"Workload identity (AWS IAM Roles, GCP Service Accounts, OIDC GitHub Actions) without long-lived keys."},
+  "5.17":{d:"Assignment and management of authentication information must be controlled by a management process, including advising people on correct handling.",a:["Password policy (NIST 800-63B).","Mandatory MFA.","Password vault.","No sharing."],r:"Mandatory MFA on all accounts (AWS, GCP, GitHub, Vercel, Render). FIDO2 hardware keys for privileged access. Secrets in AWS Secrets Manager / GCP Secret Manager / HashiCorp Vault — never in code."},
+  "5.18":{d:"Access rights to information and other associated assets must be assigned, reviewed, modified and removed per the access control policy.",a:["Request/approval procedure.","Quarterly review of privileged access.","Annual review of general access.","Immediate revocation on leavers."],r:"Automated Access Reviews (AWS Access Analyzer, GCP Policy Analyzer). Reports of who has production access."},
+  "5.19":{d:"Processes and procedures must be defined and implemented to manage IS risks from use of supplier products or services.",a:["Supplier policy.","Supplier risk assessment.","IS contractual clauses.","Performance monitoring."],r:"AWS/GCP/Render/Vercel are critical suppliers: SLAs, SOC2/ISO 27001 due diligence, documented shared responsibility model."},
+  "5.20":{d:"Relevant IS requirements must be established and agreed with each supplier.",a:["Contractual clauses (confidentiality, incident notification, audit rights, sub-processors).","GDPR DPA.","Security SLA."],r:"Verify and archive DPA, SCCs and compliance attestations (SOC 2 Type II, ISO 27001, ISO 27017, ISO 27018) from each cloud provider and SaaS vendor."},
+  "5.21":{d:"Processes and procedures must be defined to manage IS risks in the ICT supply chain.",a:["ICT supplier inventory.","SBOM for critical components.","Origin and integrity verification.","N-tier supplier assessment."],r:"SBOM (CycloneDX/SPDX) for each release. Artifact signing (Sigstore/Cosign). Package integrity verification (npm/pip/maven)."},
+  "5.22":{d:"The organisation must regularly monitor, review, assess and manage changes in supplier IS practices and service delivery.",a:["Periodic meetings with strategic suppliers.","Supplier incident tracking.","Annual KPI/SLA review."],r:"Subscribe to AWS/GCP/Vercel/Render status and security bulletins. Assess impact of product changes (deprecations, breaking changes)."},
+  "5.23":{d:"Processes for acquisition, use, management and exit from cloud services must be established according to organisational IS requirements.",a:["Cloud Security Policy.","New cloud service approval process.","Secure baseline (landing zone) configuration.","Continuous CSPM (AWS Security Hub, GCP SCC).","Exit/portability plan."],r:"⚡ CRITICAL: AWS landing zones (Control Tower / Organizations) and GCP (Org policies, IAM hierarchy) with guardrails. Multi-account/multi-project. CSPM with auto-remediation. Document shared responsibility matrix per service (IaaS/PaaS/SaaS)."},
+  "5.24":{d:"The organisation must plan and prepare incident management by defining, establishing and communicating processes, roles and responsibilities.",a:["Incident Management Procedure.","Playbooks per incident type (key leak, ransomware, DDoS, data leak).","Named response team (CSIRT).","Annual tabletop exercises."],r:"Specific playbooks: AWS/GCP key compromise, GitHub secret leak, S3/GCS exposure, supply-chain compromise."},
+  "5.25":{d:"The organisation must assess IS events and decide whether to classify them as incidents.",a:["Classification criteria (severity, impact).","Triage procedure.","Event logging in SIEM/ticketing."],r:"Integration of CloudTrail/Cloud Audit Logs, GitHub audit log, Dependabot alerts, secret scanning, SAST/DAST events into central SIEM."},
+  "5.26":{d:"IS incidents must be responded to per documented procedures.",a:["Response procedure (containment, eradication, recovery, lessons learned).","Communication channels.","Regulatory notification (GDPR 72h, NIS2).","Post-mortems."],r:"Automation (SOAR): isolate compromised EC2/GCE instances, auto-rotate keys, revoke GitHub tokens."},
+  "5.27":{d:"Knowledge gained from incidents must be used to strengthen and improve controls.",a:["Blameless post-mortems.","Playbook and control updates.","Internally shared IOCs.","Metrics (MTTD, MTTR)."],r:"Every incident must yield at least one automated improvement (IaC rule, pipeline test, new alert)."},
+  "5.28":{d:"The organisation must establish and implement procedures for evidence identification, collection, acquisition and preservation.",a:["Forensics procedure.","Chain of custody.","Immutable logs (write-once).","Forensic snapshots."],r:"CloudTrail/Cloud Audit logs in immutable buckets (Object Lock / Bucket Lock). Retain minimum 1 year. EBS/Persistent Disk snapshots for analysis."},
+  "5.29":{d:"The organisation must plan how to maintain IS at an appropriate level during disruption.",a:["BIA (Business Impact Analysis).","Continuity Plan integrated with IS.","Multi-region failover strategies.","BCP tests."],r:"Multi-AZ or multi-region architectures in AWS/GCP for critical services. Migration plan between providers if needed."},
+  "5.30":{d:"ICT readiness must be planned, implemented, maintained and tested based on continuity objectives and ICT continuity requirements.",a:["Per-service RTO/RPO objectives.","Resilient architecture (multi-AZ/region, backups).","DR procedures.","Regular failover tests."],r:"Automated DR (IaC + GitOps): infrastructure recoverable in minutes. Annual chaos engineering tests."},
+  "5.31":{d:"Legal, statutory, regulatory and contractual IS requirements must be identified, documented and kept current.",a:["Legal obligations register.","Analysis of new requirements.","GDPR, NIS2, client contracts.","Documented compliance."],r:"Typically applicable: GDPR, national data protection law, NIS2, sector-specific regulation, B2B client SLAs."},
+  "5.32":{d:"The organisation must implement procedures to protect intellectual property rights.",a:["IP policy.","Open-source license compliance.","SCA (Software Composition Analysis).","Software produced register."],r:"SCA (Snyk, Mend, Black Duck) integrated in CI to detect incompatible licenses (AGPL in SaaS product, etc.)."},
+  "5.33":{d:"Records must be protected against loss, destruction, falsification, unauthorised access and unauthorised disclosure.",a:["Record classification.","Retention policy.","Access and integrity controls (WORM).","Access auditing."],r:"Audit, billing, contract logs in immutable storage (S3 Object Lock / GCS Bucket Lock) for legal periods."},
+  "5.34":{d:"The organisation must identify and meet requirements concerning privacy and PII protection.",a:["Privacy Policy.","DPIA for high-risk processing.","Data subject rights procedure.","DPO appointment.","Processing register."],r:"Minimisation and pseudonymisation in non-production environments (control 8.11). EU data localisation. Sub-processor management."},
+  "5.35":{d:"The IS management approach and its implementation must be independently reviewed at planned intervals or on significant changes.",a:["Internal audits (clause 9.2).","External audits (ISO, SOC).","Annual external pentests.","Red team exercises."],r:"Annual external pentest on production applications (coverage: auth, business logic, API). Cloud security review (CIS Benchmarks)."},
+  "5.36":{d:"Compliance with IS policies, topic policies, rules and standards must be regularly reviewed.",a:["Self-assessments.","Themed internal audits.","Adherence metrics.","Non-conformities tracked."],r:"Policy-as-code (OPA Conftest, Checkov, AWS Config Rules, GCP Org Policies) with auto-blocking of violations."},
+  "5.37":{d:"Operating procedures for information processing facilities must be documented and made available to staff that need them.",a:["Per-system runbooks.","Change, recovery, monitoring procedures.","Maintenance and updates.","Controlled access."],r:"Runbooks stored in versioned wiki (Notion, Confluence, GitHub Wiki). Mandatory update after each change."},
+  "6.1":{d:"Background checks of all candidates must be performed prior to hire, proportionate to IS requirements.",a:["Screening procedure.","Identity, education, references verification.","Criminal record where applicable.","Renewal for sensitive roles."],r:"Enhanced screening for roles with privileged production access (SRE, DevOps, DBAs, AppSec)."},
+  "6.2":{d:"Employment contractual agreements must stipulate employee and organisation IS responsibilities.",a:["IS contractual clauses.","Signed NDA.","Policy acknowledgement.","Post-termination responsibilities."],r:"Specific clauses on code produced, accessible client data, use of corporate tools and accounts."},
+  "6.3":{d:"Staff and, when applicable, third parties must receive appropriate awareness, education, training and regular updates.",a:["Annual training plan.","Onboarding awareness.","Monthly capsules.","Simulated phishing.","Coverage metrics."],r:"Mandatory technical track for developers: OWASP Top 10, secure coding (languages in use), cloud security (AWS/GCP), DevSecOps essentials."},
+  "6.4":{d:"A formal and communicated disciplinary process must be in place to act against staff who commit an IS breach.",a:["Disciplinary procedure.","Clear communication.","Consistent application.","HR/Legal coordination."],r:"Typify breaches: credential sharing, unreviewed deploy, data misuse, pipeline control bypass."},
+  "6.5":{d:"IS responsibilities and duties that remain valid after termination or change must be defined, applied and communicated.",a:["Post-contract clauses (confidentiality).","Exit interview.","Formal reminder of obligations.","Non-compete period if applicable."],r:"Confidentiality on source code, architectures, client data maintained post-departure."},
+  "6.6":{d:"NDAs reflecting organisational needs must be identified, documented, regularly reviewed and signed.",a:["NDA template.","NDA signed by staff and third parties before access.","Periodic template review."],r:"NDA with freelancers, agencies, interns before access to repos or environments."},
+  "6.7":{d:"Security measures must be implemented when staff work remotely to protect information accessed, processed or stored off-site.",a:["Remote work policy.","Corporate equipment / MDM.","VPN / Zero Trust Network Access.","Disk encryption.","Rules on physical environment."],r:"ZTNA (Cloudflare Access, Tailscale, AWS Verified Access). MDM (Kandji, Jamf, Intune). FileVault/BitLocker mandatory."},
+  "6.8":{d:"The organisation must provide a mechanism for personnel to report observed or suspected IS events through appropriate channels in a timely manner.",a:["Reporting channel (dedicated email, form, Slack).","Simple and known procedure.","Anonymous reporting possible.","Defined response time.","Guaranteed no retaliation."],r:"⚡ CRITICAL: #security-incidents channel in Slack/Teams + email security@company; blameless reporting culture. Public bug bounty or VDP for external researchers."},
+  "7.1":{d:"Security perimeters must be defined and used to protect areas containing information and other associated assets.",a:["Perimeter definition (office, technical rooms).","Entry control.","Signage.","Surveillance."],r:"Even in cloud-first, the office hosts laptops with production access; physical perimeter matters. For cloud, perimeter is CSP responsibility (verify SOC2/ISO 27001 attestations)."},
+  "7.2":{d:"Secure areas must be protected by appropriate entry controls and access points.",a:["Access cards / biometrics.","Visitor log.","Visitor escort.","Rights review."],r:"Office access by card; visitors logged and escorted; technical areas (if any) with restricted access."},
+  "7.3":{d:"Physical security for offices, rooms and facilities must be designed and implemented.",a:["Meeting rooms with treated glass/blinds.","Secure document storage.","Minimised signage (no marking of critical zones)."],r:"Server room not applicable (cloud-first); desks with lockable drawers."},
+  "7.4":{d:"Facilities must be continuously monitored for unauthorised physical access.",a:["CCTV.","Alarm system.","Access logs reviewed.","GDPR compliance for CCTV."],r:"CCTV at entries and common zones; card logs reviewed monthly."},
+  "7.5":{d:"Protection against physical and environmental threats (natural, intentional, accidental) must be designed and implemented.",a:["Environmental risk assessment.","Extinguishers, fire detection.","UPS for critical on-site systems.","Evacuation plan."],r:"Validate with cloud providers (AWS/GCP) the respective environmental controls in regions used (eu-west-1, europe-west, etc.)."},
+  "7.6":{d:"Security measures for work in secure areas must be designed and implemented.",a:["Personal device use rules.","Photo prohibition.","Visitor escort."],r:"Applicable to meetings with clients/sensitive data: dedicated rooms with recording rules."},
+  "7.7":{d:"Clear desk rules for papers and removable devices and clear screen rules must be defined and implemented.",a:["Clean Desk/Clear Screen policy.","Auto-lock after inactivity.","Surprise audits.","Sensitive documents in drawers/safes."],r:"Screen lock enforced by MDM (5 min). Do not leave production dashboards visible in common areas."},
+  "7.8":{d:"Equipment must be located securely and protected.",a:["Equipment away from risk sources (heat, water).","Surge protection.","Care with shared spaces (coworking)."],r:"In coworking: security cables, do not leave laptops unattended. Mask screens with privacy filters."},
+  "7.9":{d:"Off-site assets must be protected.",a:["Mandatory encryption.","Mobile inventory.","Travel policy (no work on public WiFi without VPN).","Theft/loss procedure."],r:"Laptops with FileVault/BitLocker + MDM remote + Find My/Intune wipe. Yubikeys for authentication."},
+  "7.10":{d:"Storage media must be managed throughout their lifecycle.",a:["USB/external HDD policy.","Media encryption.","Secure disposal procedure.","Inventory."],r:"USB prohibition/restriction; use approved cloud storage (corporate Google Drive)."},
+  "7.11":{d:"Processing facilities must be protected against power failures and other disruptions.",a:["UPS for critical local equipment.","Maintenance.","SLA agreements with utility providers."],r:"For cloud: rely on CSP SLA; for office: UPS for routers/switches."},
+  "7.12":{d:"Power, data or service cabling must be protected against interception, interference or damage.",a:["Cables in conduits.","Power/data separation.","Labelling.","Periodic inspection."],r:"In office: structured cabling; at staff home: WPA3 WiFi + mandatory VPN."},
+  "7.13":{d:"Equipment must be properly maintained to ensure continued integrity, availability and confidentiality of information.",a:["Maintenance plan.","Authorised vendors.","Cleaning/wipe before external assistance.","Preventive replacement."],r:"Laptops: replacement after 3-4 years. Wipe before any external assistance."},
+  "7.14":{d:"Equipment items containing storage media must be checked to ensure sensitive data and licensed software have been removed or overwritten before disposal or re-use.",a:["Wipe procedure (NIST SP 800-88).","Destruction certificate.","Updated inventory.","Chain of custody."],r:"Crypto-erase on encrypted SSDs; physical destruction for failed media; contracts with certified decommissioning vendors."},
+  "8.1":{d:"Information stored, processed or accessible via end-user devices must be protected.",a:["MDM/EMM (Kandji, Jamf, Intune).","Disk encryption.","Antivirus/EDR.","Patching policy.","Auto-lock."],r:"EDR (CrowdStrike, SentinelOne) + MDM on all endpoints. Real-time inventory. Compliance gates before access to critical SaaS (device trust)."},
+  "8.2":{d:"Assignment and use of privileged access rights must be restricted and managed.",a:["Privileged account inventory.","JIT/JEA.","PAM.","Strong MFA.","Recorded sessions.","Quarterly review."],r:"AWS: SSO via IdP, time-bound assumed roles. GCP: IAM with conditions. GitHub: small, reviewed admin team. Eliminate long-lived credentials."},
+  "8.3":{d:"Access to information and other associated assets must be restricted per the topic-specific policy.",a:["RBAC/ABAC.","Need-to-know.","Least-privilege bucket/IAM policies.","Access auditing."],r:"S3/GCS bucket access by specific policy and default-block-public. IAM Access Analyzer / Policy Analyzer enabled."},
+  "8.4":{d:"Read and write access to source code, development tools and software libraries must be appropriately managed.",a:["Team permissions in GitHub/GitLab.","Branch protection rules.","Code signing.","Mandatory review."],r:"GitHub Organization with mandatory SSO, branch protection on main, CODEOWNERS, signed commits, 2 reviewers for main on critical repos."},
+  "8.5":{d:"Secure authentication technologies and procedures must be implemented based on access restrictions and the topic-specific policy.",a:["Mandatory MFA.","Hardware keys for privileged access.","Phishing-resistant MFA.","NIST 800-63B password policy.","Anti-brute-force."],r:"FIDO2/WebAuthn on all administrative access (AWS root/IdP admin, GitHub org admins, Vercel/Render owners). Mandatory SSO via SAML/OIDC federation."},
+  "8.6":{d:"Resource use must be monitored and adjusted in line with current and future needs.",a:["Use monitoring.","Auto-scaling.","Capacity planning.","Spending limits."],r:"AWS Cost Explorer, GCP Billing, budget alerts. ECS/EKS/Cloud Run auto-scaling. Per-workload limits to avoid denial of wallet."},
+  "8.7":{d:"Malware protection must be implemented and supported by appropriate user awareness.",a:["EDR/AV on endpoints.","Email/web scanning.","Upload scanning.","Quarantine.","Awareness."],r:"Centrally managed EDR (CrowdStrike, SentinelOne, Defender). ClamAV/yara in user-file pipelines. Container image scanning (Trivy, Grype)."},
+  "8.8":{d:"Information on technical vulnerabilities in systems in use must be obtained, exposure assessed and measures taken.",a:["Updated inventory.","CVE feeds.","Scanners (host, container, IaC, web).","Severity-based remediation SLA.","Patch management.","Metrics."],r:"⚡ CRITICAL: SCA (Snyk/Mend/Dependabot/Renovate), image scanning (Trivy/Grype), CSPM (Security Hub, SCC, Wiz/Prisma), DAST (ZAP/Burp). SLAs: Critical ≤7d; High ≤30; Medium ≤90."},
+  "8.9":{d:"Configurations, including security configurations, of hardware, software, services and networks must be established, documented, implemented, monitored and reviewed.",a:["Configuration baselines (CIS Benchmarks).","Versioned IaC (Terraform/CloudFormation).","Drift detection.","Formal change management.","CMDB."],r:"⚡ CRITICAL: Infrastructure-as-Code for 100% of cloud resources (Terraform). IaC pipelines with checks (Checkov, tfsec, Terrascan, OPA). Drift detection (Terraform Cloud, Cloud Custodian). Block console changes in production."},
+  "8.10":{d:"Information stored in systems, devices or any other medium must be deleted when no longer needed.",a:["Retention policy.","Disposal procedures per medium type.","Disposal of copies and backups.","Disposal evidence."],r:"⚡ NEW: Automated deletion pipelines for retention-subject data (GDPR: right to be forgotten). Crypto-erase on buckets, verified deletion of backups."},
+  "8.11":{d:"Data masking must be used in line with the topic-specific policy and other related requirements, considering applicable legislation.",a:["Anonymisation/pseudonymisation.","Tokenisation.","Synthetic data for non-prod.","Topic-specific policy."],r:"⚡ NEW: No real personal data in DEV/TEST. Synthetic data generators (Faker, Synthea). Tokenisation of PII in logs. Production→staging copy pipelines with masking."},
+  "8.12":{d:"DLP measures must be applied to systems, networks and devices that process, store or transmit sensitive information.",a:["Sensitive data inventory.","Classification.","Email/endpoint/cloud DLP.","Block unapproved channels.","Monitoring."],r:"⚡ NEW: DLP in Google Workspace/M365. Secret scanning in repos (GitHub Advanced Security, GitGuardian, TruffleHog). CASB for shadow-IT SaaS. Block uploads of code to public LLMs."},
+  "8.13":{d:"Backup copies of information, software and systems must be maintained and regularly tested per the topic-specific policy.",a:["Backup policy (3-2-1).","Encryption.","Immutability (WORM).","Regular restore tests.","RPO/RTO documentation."],r:"Cross-region/cross-account immutable backups (S3 Object Lock, GCS Bucket Lock). Quarterly restore tests. Database and IaC-state backups."},
+  "8.14":{d:"Information processing facilities must be implemented with sufficient redundancy to meet availability requirements.",a:["HA/DR architecture.","Multi-AZ/region.","Tested failover.","Documented RPO/RTO."],r:"Critical workloads multi-AZ; mission critical multi-region (AWS eu-west-1 + eu-west-3, GCP europe-west1 + europe-west4). Vercel/Render: validate zones."},
+  "8.15":{d:"Logs recording activities, exceptions, failures and other relevant events must be produced, stored, protected and analysed.",a:["Logging policy.","Centralised logs.","Tamper protection.","Defined retention.","Analysis/SIEM."],r:"SIEM centralisation (Elastic, Datadog, Sentinel) of: CloudTrail, Cloud Audit Logs, VPC Flow Logs, application logs, GitHub audit, Vercel/Render logs. 1-year retention (minimum). Object Lock for immutability."},
+  "8.16":{d:"Networks, systems and applications must be monitored for anomalous behaviour and appropriate actions taken.",a:["Detection use cases.","SIEM/UEBA.","Low false positive alerts.","24/7 SOC or MDR.","Metrics (MTTD)."],r:"⚡ NEW: Detection-as-code (Sigma rules, GuardDuty findings, SCC, Wazuh). Contracted MDR/SOC or internal in critical hours. SOAR playbooks (TheHive, Tines, Cortex XSOAR)."},
+  "8.17":{d:"Clocks of IS-relevant systems must be synchronised with approved time sources.",a:["NTP configured on all hosts.","Redundant time sources (pool.ntp.org, AWS/GCP NTP).","Drift monitoring."],r:"AWS Time Sync, Google Cloud time, Chrony on VMs. Maximum drift 1 second for event correlation."},
+  "8.18":{d:"Use of utility programs that may bypass system and application controls must be restricted and tightly controlled.",a:["Utility inventory.","Use restriction (allowlist).","Detailed logging.","Documented justification."],r:"Restrict aws cli/gcloud use in production to audited accounts; bastion hosts with session recording (AWS SSM Session Manager + logging)."},
+  "8.19":{d:"Procedures and measures must be implemented to securely manage software installation on operational systems.",a:["Allowed software policy (allowlist).","Internal repositories.","Package signing.","Change management."],r:"On servers: immutable images (golden AMI/GCE images). On endpoints: MDM controls installed applications (allowlist/blocklist)."},
+  "8.20":{d:"Networks and network devices must be secured, managed and controlled to protect information in systems and applications.",a:["Segmentation.","Firewalls/Security Groups.","NACLs/Firewall Rules.","Encryption in transit.","Monitoring."],r:"VPCs/Vnets with private subnets. Security Groups with least privilege. AWS Network Firewall / GCP Cloud Armor. Controlled egress (proxies, NAT)."},
+  "8.21":{d:"Security mechanisms, service levels and requirements of network services must be identified, implemented and monitored.",a:["Network provider SLA.","Secure configuration.","Availability and security monitoring."],r:"Validate configurations of Cloud Interconnect, Direct Connect, Cloudflare; DDoS protection (AWS Shield, GCP Cloud Armor)."},
+  "8.22":{d:"Groups of services, users and information systems must be segregated in the organisation's networks.",a:["Per-tier/environment subnets.","Microsegmentation.","Zero Trust.","Service Mesh (mTLS)."],r:"VPC peering/Transit Gateway with restricted rules. Service mesh (Istio, Linkerd) with mTLS between microservices. Production isolated from Dev/Staging."},
+  "8.23":{d:"Access to external websites must be managed to reduce exposure to malicious content.",a:["URL categorisation.","Proxy/Secure Web Gateway.","DNS filtering.","C2 blocking."],r:"⚡ NEW: DNS filtering (Cloudflare Gateway, Cisco Umbrella, NextDNS). Blocking malicious categories and shadow IT. DNS logging for investigations."},
+  "8.24":{d:"Rules for effective use of cryptography, including cryptographic key management, must be defined and implemented.",a:["Cryptography policy.","Approved algorithms (AES-256, RSA 2048+/ECC).","KMS/HSM.","Key rotation.","Key lifecycle management."],r:"AWS KMS / GCP KMS / HashiCorp Vault for keys. CMEK (customer-managed) for sensitive data. Mandatory TLS 1.2+, TLS 1.3 preferred. Encryption at rest for all volumes/buckets."},
+  "8.25":{d:"Rules for the secure development of software and systems must be established and applied.",a:["Secure SDLC policy.","Threat modeling.","Security requirements in user stories.","Code review.","Automated security tests.","Security gates."],r:"⚡ CRITICAL: Adoption of reference model (BSIMM, OWASP SAMM). Threat modeling for new epics. Security champions per team. Definition of Done includes security criteria."},
+  "8.26":{d:"IS requirements must be identified, specified and approved when developing or acquiring applications.",a:["Requirements catalogue (OWASP ASVS).","Per-feature requirements analysis.","Product owner approval."],r:"OWASP ASVS Level 2 as baseline for new applications; Level 3 for applications processing sensitive PII."},
+  "8.27":{d:"Secure systems engineering principles must be established, documented, maintained and applied to any information system development activity.",a:["Documented principles (defense in depth, least privilege, fail securely, secure defaults).","Approved patterns.","Reference architectures.","Architecture review."],r:"Reference architectures for microservices in AWS/GCP. Zero Trust. Approved patterns for authentication, authorisation, logging, cryptography, secrets management."},
+  "8.28":{d:"Secure coding principles must be applied to software development.",a:["Per-language guides (OWASP, CERT).","Security linters in IDE.","SAST in CI.","Pair programming/code review.","Continuous training."],r:"⚡ CRITICAL/NEW: Mandatory SAST (Semgrep, SonarQube, CodeQL, Snyk Code) in PR; block for critical findings. Specific linters (bandit, eslint-plugin-security, gosec). Versioned secure coding guidelines per language (TypeScript, Python, Go)."},
+  "8.29":{d:"Security testing processes must be defined and implemented in the development lifecycle.",a:["SAST/DAST/SCA in pipeline.","Pentests per major release.","Security bug bash.","Clear acceptance criteria."],r:"⚡ CRITICAL: Mandatory pipeline with SAST + SCA + secret scanning + IaC scanning; DAST in staging; annual external pentests for production applications; mandatory pre-release security review."},
+  "8.30":{d:"The organisation must direct, monitor and review outsourced development activities.",a:["IS contractual clauses.","Restricted code base access.","Quality and security review.","Formal acceptance."],r:"Freelancers/third parties: dedicated accounts, access only to assigned repos, mandatory review by internal staff, NDA."},
+  "8.31":{d:"Development, test and production environments must be separated and protected.",a:["Separate accounts/projects.","Production data never in DEV/TEST.","Distinct credentials.","Isolated networking.","Differentiated permissions."],r:"⚡ CRITICAL: Separate AWS accounts / GCP projects per environment. Vercel/Render: distinct environments. Cross-environment promotion via CI/CD with approval. IaC parameterised per environment."},
+  "8.32":{d:"Changes to information processing facilities and information systems must be subject to change management procedures.",a:["Change management process.","Documented approval.","Risk assessment.","Rollback plan.","CAB for major changes.","Communication."],r:"⚡ CRITICAL: Pull requests with mandatory review; deploys via CI/CD with approval for production; maintenance windows; emergency changes recorded after the fact (post-implementation review)."},
+  "8.33":{d:"Test information must be appropriately selected, protected and managed.",a:["Synthetic/anonymised test data.","Provisioning process.","Disposal after use.","Access logging."],r:"Domain-based synthetic data generators; internal fixture libraries; no real personal data in TEST. Masking procedure (see 8.11)."},
+  "8.34":{d:"Audit testing and other activities involving operational system assessment must be planned and agreed between tester and appropriate management.",a:["Approved test plan.","Defined test window.","Pre-test backups.","Read-only access when possible.","Test monitoring."],r:"Pentests/audits in planned windows; pre-pentest backups; audit account isolation; reinforced monitoring during the window."}
+};
+
+/* ============================================================================
    RENDER DOS COMPONENTES
    ============================================================================ */
 
 const STORAGE_KEY = "iso27001_sgsi_v1";
-let estado = {};
+const KEY_NOTAS = "iso27001_sgsi_notas_v1";
+const KEY_EVID = "iso27001_sgsi_evid_v1";
+const KEY_JUSTNA = "iso27001_sgsi_justna_v1";
+let estado = {};   // estado[id] = "ni" | "ec" | "im" | "na"
+let NOTAS = {};    // NOTAS[ctrlId] = "..." (id do controlo, ex: "ctrl-5.23" ou "cl-4")
+let EVID = {};     // EVID[ctrlId]  = [{lab, url}]
+let JUSTNA = {};   // JUSTNA[itemId] = "justificação para N/A"
 
 function carregarEstado(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
-    estado = raw ? JSON.parse(raw) : {};
+    const dados = raw ? JSON.parse(raw) : {};
+    // Migração: estado antigo era boolean, novo é "ni"|"ec"|"im"|"na"
+    estado = {};
+    Object.entries(dados).forEach(([k,v])=>{
+      if(v === true) estado[k] = "im";
+      else if(typeof v === "string" && ["ni","ec","im","na"].includes(v)) estado[k] = v;
+    });
   }catch(e){ estado = {}; }
+  try{ NOTAS = JSON.parse(localStorage.getItem(KEY_NOTAS) || "{}"); }catch(e){ NOTAS = {}; }
+  try{ EVID = JSON.parse(localStorage.getItem(KEY_EVID) || "{}"); }catch(e){ EVID = {}; }
+  try{ JUSTNA = JSON.parse(localStorage.getItem(KEY_JUSTNA) || "{}"); }catch(e){ JUSTNA = {}; }
 }
 function guardarEstado(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(estado));
+}
+function guardarNotas(){ localStorage.setItem(KEY_NOTAS, JSON.stringify(NOTAS)); }
+function guardarEvid(){ localStorage.setItem(KEY_EVID, JSON.stringify(EVID)); }
+function guardarJustNA(){ localStorage.setItem(KEY_JUSTNA, JSON.stringify(JUSTNA)); }
+
+function estadoDe(id){ return estado[id] || "ni"; }
+function ehFeito(id){ const s = estadoDe(id); return s === "im" || s === "na"; }
+
+/* ---------- Componentes auxiliares (estado granular + notas + evidências) ---------- */
+function tituloClausula(c){
+  return LANG === "en" ? (CLAUSE_TITLES_EN[c.num] || c.titulo) : c.titulo;
+}
+function tituloControlo(c){
+  return LANG === "en" ? (CTRL_TITLES_EN[c.n] || c.t) : c.t;
+}
+function dadosClausula(c){
+  if(LANG === "en" && CLAUSULAS_EN[c.num]){
+    const en = CLAUSULAS_EN[c.num];
+    return { req: en.requisitos, art: en.artefactos, ck: en.checklist, nt: en.nota };
+  }
+  return { req: c.requisitos, art: c.artefactos, ck: c.checklist, nt: c.nota };
+}
+function dadosControlo(c){
+  if(LANG === "en" && CTRL_EN[c.n]){
+    const en = CTRL_EN[c.n];
+    return { d: en.d, a: en.a, r: en.r };
+  }
+  return { d: c.d, a: c.a, r: c.r };
+}
+
+function htmlEstados(id){
+  const s = estadoDe(id);
+  return `<div class="estados" data-print-hide>
+    <button data-st="ni" data-id="${id}" class="${s==='ni'?'ativo':''}" title="${t('state_ni')}">${t('state_ni_short')}</button>
+    <button data-st="ec" data-id="${id}" class="${s==='ec'?'ativo':''}" title="${t('state_ec')}">${t('state_ec_short')}</button>
+    <button data-st="im" data-id="${id}" class="${s==='im'?'ativo':''}" title="${t('state_im')}">${t('state_im_short')}</button>
+    <button data-st="na" data-id="${id}" class="${s==='na'?'ativo':''}" title="${t('state_na')}">${t('state_na_short')}</button>
+  </div>`;
+}
+
+function htmlItem(id, texto){
+  const s = estadoDe(id);
+  const just = JUSTNA[id] || "";
+  return `<div class="item-check estado-${s}" data-id="${id}" data-estado="${s}">
+    <div class="desc-item">${texto}</div>
+    ${htmlEstados(id)}
+    <textarea class="justif-na" data-justna="${id}" placeholder="${t('just_na_placeholder')}">${escapeHTML(just)}</textarea>
+  </div>`;
+}
+
+function htmlNotasEvid(scopeId){
+  const nt = NOTAS[scopeId] || "";
+  const ev = EVID[scopeId] || [];
+  return `<div class="bloco-evid" data-scope="${scopeId}">
+    <h5>${t('notes_label')}</h5>
+    <textarea data-notas="${scopeId}" placeholder="${t('notes_placeholder')}">${escapeHTML(nt)}</textarea>
+    <h5 style="margin-top:12px;">${t('evid_label')}</h5>
+    <div class="lista-evid">
+      ${ev.map((e,i)=>`<div class="evid-item">
+        <span class="lab-evid">${escapeHTML(e.lab||"")}</span>
+        ${e.url && /^https?:\/\//.test(e.url)
+          ? `<a href="${escapeHTML(e.url)}" class="url-evid" target="_blank" rel="noopener">${escapeHTML(e.url)}</a>`
+          : `<span class="url-evid">${escapeHTML(e.url||"")}</span>`}
+        <button class="rem-evid" data-evid-rem="${scopeId}|${i}" title="✕">✕</button>
+      </div>`).join("")}
+    </div>
+    <div class="form-evid" data-print-hide>
+      <input type="text" class="lab" placeholder="${t('evid_lab_placeholder')}" data-evid-lab="${scopeId}">
+      <input type="text" class="url" placeholder="${t('evid_url_placeholder')}" data-evid-url="${scopeId}">
+      <button data-evid-add="${scopeId}">${t('evid_add')}</button>
+    </div>
+  </div>`;
+}
+
+function escapeHTML(s){
+  return String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
 /* ---------- Renderizar Cláusulas ---------- */
 function renderClausulas(){
   const cont = document.getElementById("containerClausulas");
   cont.innerHTML = CLAUSULAS.map(c => {
-    const ids = c.checklist.map((_,i)=>`cl_${c.num}_${i}`);
+    const d = dadosClausula(c);
+    const ids = d.ck.map((_,i)=>`cl_${c.num}_${i}`);
     return `
       <article class="clausula" id="${c.id}" data-grupo="clausulas" data-cgrupo="c${c.num}">
         <header class="cab">
-          <div class="titulo"><span class="num">${c.num}</span>${c.titulo}
-            <span class="eti eti-obrig" style="margin-left:8px;">Obrigatório</span>
+          <div class="titulo"><span class="num">${c.num}</span>${tituloClausula(c)}
+            <span class="eti eti-obrig" style="margin-left:8px;">${t('badge_mandatory_short')}</span>
           </div>
           <div class="mini-bar"><span data-mini="c${c.num}"></span></div>
         </header>
         <div class="corpo">
           <div class="bloco">
-            <h4>📋 Requisitos obrigatórios a demonstrar</h4>
-            <ul>${c.requisitos.map(r=>`<li>${r}</li>`).join("")}</ul>
+            <h4>${t('block_req')}</h4>
+            <ul>${d.req.map(r=>`<li>${r}</li>`).join("")}</ul>
           </div>
           <div class="bloco">
-            <h4>📂 Artefactos / Documentos necessários</h4>
-            <ul>${c.artefactos.map(a=>`<li>${a}</li>`).join("")}</ul>
+            <h4>${t('block_art')}</h4>
+            <ul>${d.art.map(a=>`<li>${a}</li>`).join("")}</ul>
           </div>
           <div class="bloco">
-            <h4>✅ Checklist de Conformidade</h4>
+            <h4>${t('block_check')}</h4>
             <div class="checklist">
-              ${c.checklist.map((item,i)=>{
-                const id = ids[i];
-                const ck = !!estado[id];
-                return `<div class="item-check ${ck?"feito":""}" data-id="${id}" data-grupo="c${c.num}" data-cl="clausulas">
-                  <input type="checkbox" id="${id}" ${ck?"checked":""} data-testid="chk-${id}">
-                  <label for="${id}">${item}</label>
-                </div>`;
-              }).join("")}
+              ${d.ck.map((item,i)=>htmlItem(ids[i], item)).join("")}
             </div>
           </div>
           <div class="bloco">
-            <h4>☁ Aplicação ao contexto Cloud / DevSecOps</h4>
-            <div class="nota-cloud"><strong>Nota:</strong> ${c.nota}</div>
+            <h4>${t('block_cloud')}</h4>
+            <div class="nota-cloud"><strong>${t('note_prefix')}</strong> ${d.nt}</div>
           </div>
+          ${htmlNotasEvid("cl-"+c.num)}
         </div>
       </article>
     `;
@@ -1390,22 +2241,23 @@ function renderGrupoControlos(grupo, containerId){
     const eCritico = CRITICOS.has(c.n);
     const ids = c.a.map((_,i)=>`ctrl_${c.n.replace(".","_")}_${i}`);
     const numTotal = ids.length;
-    const numFeito = ids.filter(id=>!!estado[id]).length;
+    const numFeito = ids.filter(id=>ehFeito(id)).length;
     const todoFeito = numTotal>0 && numFeito===numTotal;
+    const d = dadosControlo(c);
     return `
       <article class="controlo ${eCritico?"critico":""} ${todoFeito?"feito-tudo":""}"
                id="ctrl-${c.n}"
                data-num="${c.n}"
-               data-titulo="${c.t.toLowerCase()}"
+               data-titulo="${(tituloControlo(c)||"").toLowerCase()}"
                data-grupo="${grupo}"
                data-novo="${eNovo?"1":"0"}"
                data-critico="${eCritico?"1":"0"}">
         <div class="cab">
           <div class="esquerda">
             <span class="num-c">${c.n}</span>
-            <span class="titulo-c">${c.t}</span>
-            ${eNovo?'<span class="eti eti-novo">⭐ Novo 2022</span>':""}
-            ${eCritico?'<span class="eti eti-critico">⚡ Crítico Cloud/DevSecOps</span>':""}
+            <span class="titulo-c">${tituloControlo(c)}</span>
+            ${eNovo?`<span class="eti eti-novo">${t('eti_new')}</span>`:""}
+            ${eCritico?`<span class="eti eti-critico">${t('eti_crit')}</span>`:""}
           </div>
           <div style="display:flex;align-items:center;gap:10px;">
             <div class="mini-bar"><span data-mini="ctrl-${c.n}"></span></div>
@@ -1413,19 +2265,13 @@ function renderGrupoControlos(grupo, containerId){
           </div>
         </div>
         <div class="corpo-c">
-          <p class="descricao">${c.d}</p>
-          <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--azul-700);margin-bottom:8px;">✅ Checklist de ações específicas</h4>
+          <p class="descricao">${d.d}</p>
+          <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--azul-700);margin-bottom:8px;">${t('block_actions')}</h4>
           <div class="checklist">
-            ${c.a.map((acao,i)=>{
-              const id = ids[i];
-              const ck = !!estado[id];
-              return `<div class="item-check ${ck?"feito":""}" data-id="${id}" data-grupo="${grupo}" data-ctrl="${c.n}">
-                <input type="checkbox" id="${id}" ${ck?"checked":""} data-testid="chk-${id}">
-                <label for="${id}">${acao}</label>
-              </div>`;
-            }).join("")}
+            ${d.a.map((acao,i)=>htmlItem(ids[i], acao)).join("")}
           </div>
-          <div class="relev"><strong>Relevância Cloud / DevSecOps:</strong> ${c.r}</div>
+          <div class="relev"><strong>${t('block_relev')}</strong> ${d.r}</div>
+          ${htmlNotasEvid("ctrl-"+c.n)}
         </div>
       </article>
     `;
@@ -1448,7 +2294,7 @@ function listarTodosIds(){
 function atualizarProgresso(){
   const todos = listarTodosIds();
   const total = todos.length;
-  const feitos = todos.filter(x=>!!estado[x.id]).length;
+  const feitos = todos.filter(x=>ehFeito(x.id)).length;
   const pct = total ? Math.round((feitos/total)*100) : 0;
 
   document.getElementById("kpiTotal").textContent = total;
@@ -1456,12 +2302,12 @@ function atualizarProgresso(){
   document.getElementById("kpiPendentes").textContent = total - feitos;
   document.getElementById("kpiPercent").textContent = pct + "%";
   document.getElementById("barraProgresso").style.width = pct + "%";
-  document.getElementById("rotuloProgresso").textContent = pct + "% concluído";
+  document.getElementById("rotuloProgresso").textContent = pct + (LANG === "en" ? "% complete" : "% concluído");
 
   // por grupo (contagens sidebar) — controlos
   ["org","pes","fis","tec"].forEach(g=>{
     const itens = todos.filter(x=>x.grupo===g);
-    const f = itens.filter(x=>!!estado[x.id]).length;
+    const f = itens.filter(x=>ehFeito(x.id)).length;
     const cont = document.getElementById("cnt-"+g);
     if(cont) cont.textContent = `${f}/${itens.length}`;
     const bar = document.getElementById("bar-"+g);
@@ -1470,7 +2316,7 @@ function atualizarProgresso(){
   // cláusulas — contagens
   CLAUSULAS.forEach(c=>{
     const itens = todos.filter(x=>x.cgrupo===`c${c.num}`);
-    const f = itens.filter(x=>!!estado[x.id]).length;
+    const f = itens.filter(x=>ehFeito(x.id)).length;
     const cont = document.getElementById("cnt-c"+c.num);
     if(cont) cont.textContent = `${f}/${itens.length}`;
     const mini = document.querySelector(`[data-mini="c${c.num}"]`);
@@ -1480,7 +2326,7 @@ function atualizarProgresso(){
   ["org","pes","fis","tec"].forEach(g=>{
     CONTROLOS[g].forEach(c=>{
       const itens = todos.filter(x=>x.controlo===c.n);
-      const f = itens.filter(x=>!!estado[x.id]).length;
+      const f = itens.filter(x=>ehFeito(x.id)).length;
       const mini = document.querySelector(`[data-mini="ctrl-${c.n}"]`);
       if(mini) mini.style.width = itens.length ? (f/itens.length*100)+"%" : "0%";
       const art = document.getElementById(`ctrl-${c.n}`);
@@ -1497,21 +2343,22 @@ function atualizarProgresso(){
 
 function renderGrelhaGrupos(todos){
   const cont = document.getElementById("grelhaGrupos");
+  const isEN = LANG === "en";
   const grupos = [
-    {id:"clausulas", nome:"Cláusulas 4–10", icone:"📘", alvo:"#seccao-clausulas"},
-    {id:"org", nome:"Organizacionais", icone:"🏛", alvo:"#grupo-org"},
-    {id:"pes", nome:"Pessoas", icone:"👥", alvo:"#grupo-pes"},
-    {id:"fis", nome:"Físicos", icone:"🏢", alvo:"#grupo-fis"},
-    {id:"tec", nome:"Tecnológicos", icone:"⚙", alvo:"#grupo-tec"}
+    {id:"clausulas", nome: isEN ? "Clauses 4–10" : "Cláusulas 4–10", icone:"📘", alvo:"#seccao-clausulas"},
+    {id:"org", nome: isEN ? "Organizational" : "Organizacionais", icone:"🏛", alvo:"#grupo-org"},
+    {id:"pes", nome: isEN ? "People" : "Pessoas", icone:"👥", alvo:"#grupo-pes"},
+    {id:"fis", nome: isEN ? "Physical" : "Físicos", icone:"🏢", alvo:"#grupo-fis"},
+    {id:"tec", nome: isEN ? "Technological" : "Tecnológicos", icone:"⚙", alvo:"#grupo-tec"}
   ];
   cont.innerHTML = grupos.map(g=>{
     const itens = todos.filter(x=>x.grupo===g.id);
-    const f = itens.filter(x=>!!estado[x.id]).length;
+    const f = itens.filter(x=>ehFeito(x.id)).length;
     const pct = itens.length ? Math.round(f/itens.length*100) : 0;
     return `<a href="${g.alvo}" class="cartao-grupo" style="text-decoration:none;color:inherit;display:block;">
       <h3>${g.icone} ${g.nome}</h3>
       <div class="num">${f} <span style="font-size:14px;color:var(--cinza-500);font-weight:600;">/ ${itens.length}</span></div>
-      <div style="font-size:12px;color:var(--cinza-500);margin-top:4px;">${pct}% concluído</div>
+      <div style="font-size:12px;color:var(--cinza-500);margin-top:4px;">${pct}% ${isEN ? "complete" : "concluído"}</div>
       <div class="bar"><span style="width:${pct}%"></span></div>
     </a>`;
   }).join("");
@@ -1527,18 +2374,76 @@ function activarAcordeao(){
   });
 }
 
-/* ---------- Checkboxes ---------- */
+/* ---------- Botões de estado granular + Notas + Evidências ---------- */
 function activarCheckboxes(){
-  document.addEventListener("change", e=>{
-    if(e.target && e.target.type === "checkbox" && e.target.id){
-      const id = e.target.id;
-      if(e.target.checked) estado[id] = true; else delete estado[id];
+  document.addEventListener("click", e=>{
+    // Botões de estado granular
+    if(e.target.matches(".estados button[data-st]")){
+      const id = e.target.getAttribute("data-id");
+      const st = e.target.getAttribute("data-st");
+      if(!id) return;
+      if(estadoDe(id) === st){
+        // clicar de novo no estado atual = limpar (volta a "ni")
+        delete estado[id];
+      } else {
+        estado[id] = st;
+      }
       guardarEstado();
-      const wrap = e.target.closest(".item-check");
-      if(wrap){
-        if(e.target.checked) wrap.classList.add("feito"); else wrap.classList.remove("feito");
+      // atualizar visual do item
+      const item = document.querySelector(`.item-check[data-id="${id}"]`);
+      if(item){
+        item.classList.remove("estado-ni","estado-ec","estado-im","estado-na");
+        item.classList.add("estado-" + estadoDe(id));
+        item.setAttribute("data-estado", estadoDe(id));
+        item.querySelectorAll(".estados button").forEach(b=>{
+          b.classList.toggle("ativo", b.getAttribute("data-st") === estadoDe(id));
+        });
       }
       atualizarProgresso();
+      return;
+    }
+    // Remover evidência
+    if(e.target.matches(".rem-evid")){
+      const [scope, idx] = e.target.getAttribute("data-evid-rem").split("|");
+      if(EVID[scope]){
+        EVID[scope].splice(parseInt(idx,10), 1);
+        if(!EVID[scope].length) delete EVID[scope];
+        guardarEvid();
+        const bloco = e.target.closest(".bloco-evid");
+        if(bloco) bloco.outerHTML = htmlNotasEvid(scope);
+      }
+      return;
+    }
+    // Adicionar evidência
+    if(e.target.matches("[data-evid-add]")){
+      const scope = e.target.getAttribute("data-evid-add");
+      const bloco = e.target.closest(".bloco-evid");
+      const labInput = bloco.querySelector("[data-evid-lab]");
+      const urlInput = bloco.querySelector("[data-evid-url]");
+      const lab = labInput.value.trim();
+      const url = urlInput.value.trim();
+      if(!lab && !url) return;
+      EVID[scope] = EVID[scope] || [];
+      EVID[scope].push({lab, url});
+      guardarEvid();
+      bloco.outerHTML = htmlNotasEvid(scope);
+      return;
+    }
+  });
+
+  // Notas (textarea)
+  document.addEventListener("input", e=>{
+    if(e.target.matches("[data-notas]")){
+      const scope = e.target.getAttribute("data-notas");
+      const v = e.target.value;
+      if(v) NOTAS[scope] = v; else delete NOTAS[scope];
+      guardarNotas();
+    }
+    if(e.target.matches("[data-justna]")){
+      const id = e.target.getAttribute("data-justna");
+      const v = e.target.value;
+      if(v) JUSTNA[id] = v; else delete JUSTNA[id];
+      guardarJustNA();
     }
   });
 }
@@ -1566,9 +2471,9 @@ function aplicarPesquisaFiltro(){
     // estado (todos os checks dentro)
     let matchEstado = true;
     if(fEstado !== "todos"){
-      const checks = art.querySelectorAll('input[type="checkbox"]');
-      const total = checks.length;
-      const feitos = Array.from(checks).filter(c=>c.checked).length;
+      const itens = art.querySelectorAll('.item-check[data-id]');
+      const total = itens.length;
+      const feitos = Array.from(itens).filter(c => ehFeito(c.getAttribute("data-id"))).length;
       const completo = total>0 && feitos===total;
       if(fEstado === "feito") matchEstado = completo;
       if(fEstado === "pendente") matchEstado = !completo;
@@ -1615,127 +2520,404 @@ function activarBotoesTopo(){
     document.querySelectorAll(".controlo").forEach(c=>{
       if(expandidoTudo) c.classList.add("aberto"); else c.classList.remove("aberto");
     });
-    document.getElementById("btnExpandir").textContent = expandidoTudo ? "⊟ Colapsar tudo" : "⊞ Expandir tudo";
+    document.getElementById("btnExpandir").querySelector("span").innerHTML = expandidoTudo ? t("collapse_all") : t("expand_all");
   });
   document.getElementById("btnRepor").addEventListener("click", ()=>{
-    if(!confirm("Tem a certeza que deseja repor todo o progresso? Esta ação não pode ser desfeita.")) return;
-    estado = {};
-    guardarEstado();
-    document.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);
-    document.querySelectorAll('.item-check.feito').forEach(c=>c.classList.remove("feito"));
+    if(!confirm(t("confirm_reset"))) return;
+    estado = {}; NOTAS = {}; EVID = {}; JUSTNA = {};
+    guardarEstado(); guardarNotas(); guardarEvid(); guardarJustNA();
+    renderClausulas();
+    ["org","pes","fis","tec"].forEach(g => renderGrupoControlos(g, "container-"+g));
     atualizarProgresso();
   });
   document.getElementById("btnExportar").addEventListener("click", exportarRelatorio);
+  document.getElementById("btnExportarSoA").addEventListener("click", exportarSoA);
+  document.getElementById("btnImportarSoA").addEventListener("click", ()=> document.getElementById("inputImportarSoA").click());
+  document.getElementById("inputImportarSoA").addEventListener("change", e=>{
+    if(e.target.files[0]) importarSoA(e.target.files[0]);
+    e.target.value = "";
+  });
+  document.getElementById("btnImprimir").addEventListener("click", imprimirPDF);
 }
 
 /* ---------- Exportação TXT ---------- */
+function rotuloEstado(s){
+  return ({ni:"[ ]", ec:"[~]", im:"[X]", na:"[N/A]"})[s||"ni"] || "[ ]";
+}
+
 function exportarRelatorio(){
-  const dataHoje = new Date().toLocaleString("pt-PT");
-  const nomeOrg = (document.getElementById("campoOrganizacao").value || "[Nome da Organização]").trim();
+  const dataHoje = new Date().toLocaleString(LANG === "en" ? "en-GB" : "pt-PT");
+  const nomeOrg = (document.getElementById("campoOrganizacao").value || "[Organização]").trim();
   const todos = listarTodosIds();
   const total = todos.length;
-  const feitos = todos.filter(x=>!!estado[x.id]).length;
+  const feitos = todos.filter(x=>ehFeito(x.id)).length;
   const pct = total ? Math.round(feitos/total*100) : 0;
+  const isEN = LANG === "en";
 
   let txt = "";
   txt += "================================================================\n";
-  txt += "  RELATÓRIO DE PROGRESSO — ISO/IEC 27001:2022\n";
-  txt += "  Organização: " + nomeOrg + "\n";
-  txt += "  Âmbito: Desenvolvimento, implementação e manutenção de software\n";
-  txt += "          em ambientes Cloud + ferramentas DevSecOps associadas.\n";
-  txt += "  Gerado em: " + dataHoje + "\n";
+  txt += "  " + (isEN ? "PROGRESS REPORT — ISO/IEC 27001:2022" : "RELATÓRIO DE PROGRESSO — ISO/IEC 27001:2022") + "\n";
+  txt += "  " + (isEN ? "Organisation: " : "Organização: ") + nomeOrg + "\n";
+  txt += "  " + (isEN ? "Generated on: " : "Gerado em: ") + dataHoje + "\n";
+  txt += "  " + (isEN ? "Legend: [X]=Implemented [~]=In progress [N/A]=Not Applicable [ ]=Not started" : "Legenda: [X]=Implementado [~]=Em curso [N/A]=Não Aplicável [ ]=Por iniciar") + "\n";
   txt += "================================================================\n\n";
-  txt += `RESUMO GLOBAL\n  Total de itens: ${total}\n  Concluídos:     ${feitos}\n  Pendentes:      ${total-feitos}\n  Progresso:      ${pct}%\n\n`;
-
-  // por grupo
-  const grupos = [
-    {id:"clausulas", nome:"CLÁUSULAS 4–10 (Esqueleto do SGSI)"},
-    {id:"org", nome:"A.5 CONTROLOS ORGANIZACIONAIS"},
-    {id:"pes", nome:"A.6 CONTROLOS DE PESSOAS"},
-    {id:"fis", nome:"A.7 CONTROLOS FÍSICOS"},
-    {id:"tec", nome:"A.8 CONTROLOS TECNOLÓGICOS"}
-  ];
-  grupos.forEach(g=>{
-    const itens = todos.filter(x=>x.grupo===g.id);
-    const f = itens.filter(x=>!!estado[x.id]).length;
-    const p = itens.length ? Math.round(f/itens.length*100) : 0;
-    txt += `--- ${g.nome} — ${f}/${itens.length} (${p}%) ---\n`;
-  });
+  txt += (isEN ? "GLOBAL SUMMARY\n  Total items: " : "RESUMO GLOBAL\n  Total de itens: ") + total + "\n";
+  txt += "  " + (isEN ? "Completed:    " : "Concluídos:     ") + feitos + "\n";
+  txt += "  " + (isEN ? "Pending:      " : "Pendentes:      ") + (total - feitos) + "\n";
+  txt += "  " + (isEN ? "Progress:     " : "Progresso:      ") + pct + "%\n\n";
 
   // Cláusulas detalhado
-  txt += "\n================================================================\n";
-  txt += "  DETALHE — CLÁUSULAS 4 a 10\n";
+  txt += "================================================================\n";
+  txt += "  " + (isEN ? "DETAIL — CLAUSES 4 to 10" : "DETALHE — CLÁUSULAS 4 a 10") + "\n";
   txt += "================================================================\n";
   CLAUSULAS.forEach(c=>{
-    const ids = c.checklist.map((_,i)=>`cl_${c.num}_${i}`);
-    const f = ids.filter(id=>!!estado[id]).length;
-    txt += `\n[Cláusula ${c.num}] ${c.titulo}  — ${f}/${ids.length}\n`;
-    c.checklist.forEach((item,i)=>{
-      const ok = !!estado[ids[i]];
-      txt += `  [${ok?"X":" "}] ${item}\n`;
+    const d = dadosClausula(c);
+    const ids = d.ck.map((_,i)=>`cl_${c.num}_${i}`);
+    const f = ids.filter(id=>ehFeito(id)).length;
+    txt += `\n[${isEN ? "Clause" : "Cláusula"} ${c.num}] ${tituloClausula(c)}  — ${f}/${ids.length}\n`;
+    d.ck.forEach((item,i)=>{
+      const id = ids[i];
+      const st = estadoDe(id);
+      txt += `  ${rotuloEstado(st)} ${item}`;
+      if(st === "na" && JUSTNA[id]) txt += `\n      ↪ ${isEN ? "Justification" : "Justificação"}: ${JUSTNA[id]}`;
+      txt += "\n";
     });
+    const scope = "cl-" + c.num;
+    if(NOTAS[scope]) txt += `  ${isEN ? "[NOTES]" : "[NOTAS]"} ${NOTAS[scope]}\n`;
+    if(EVID[scope] && EVID[scope].length){
+      txt += `  ${isEN ? "[EVIDENCES]" : "[EVIDÊNCIAS]"}\n`;
+      EVID[scope].forEach(e => txt += `    · ${e.lab || ""}: ${e.url || ""}\n`);
+    }
   });
 
-  // Controlos detalhado
+  // Controlos
   txt += "\n================================================================\n";
-  txt += "  DETALHE — ANEXO A (93 CONTROLOS)\n";
+  txt += "  " + (isEN ? "DETAIL — ANNEX A (93 CONTROLS)" : "DETALHE — ANEXO A (93 CONTROLOS)") + "\n";
   txt += "================================================================\n";
   ["org","pes","fis","tec"].forEach(g=>{
-    const nomeG = ({org:"A.5 Organizacionais",pes:"A.6 Pessoas",fis:"A.7 Físicos",tec:"A.8 Tecnológicos"})[g];
+    const nomeG = ({org:"A.5 "+(isEN?"Organizational":"Organizacionais"),pes:"A.6 "+(isEN?"People":"Pessoas"),fis:"A.7 "+(isEN?"Physical":"Físicos"),tec:"A.8 "+(isEN?"Technological":"Tecnológicos")})[g];
     txt += `\n--- ${nomeG} ---\n`;
     CONTROLOS[g].forEach(c=>{
       const ids = c.a.map((_,i)=>`ctrl_${c.n.replace(".","_")}_${i}`);
-      const f = ids.filter(id=>!!estado[id]).length;
+      const f = ids.filter(id=>ehFeito(id)).length;
       const tags = [];
-      if(NOVOS_2022.has(c.n)) tags.push("NOVO-2022");
-      if(CRITICOS.has(c.n)) tags.push("CRÍTICO-CLOUD/DEVSECOPS");
-      txt += `\n[${c.n}] ${c.t}  — ${f}/${ids.length}${tags.length?" ["+tags.join(", ")+"]":""}\n`;
-      c.a.forEach((acao,i)=>{
-        const ok = !!estado[ids[i]];
-        txt += `  [${ok?"X":" "}] ${acao}\n`;
+      if(NOVOS_2022.has(c.n)) tags.push("NEW-2022");
+      if(CRITICOS.has(c.n)) tags.push("CRITICAL-CLOUD/DEVSECOPS");
+      txt += `\n[${c.n}] ${tituloControlo(c)}  — ${f}/${ids.length}${tags.length?" ["+tags.join(", ")+"]":""}\n`;
+      const dataC = dadosControlo(c);
+      dataC.a.forEach((acao,i)=>{
+        const id = ids[i];
+        const st = estadoDe(id);
+        txt += `  ${rotuloEstado(st)} ${acao}`;
+        if(st === "na" && JUSTNA[id]) txt += `\n      ↪ ${isEN ? "Justification" : "Justificação"}: ${JUSTNA[id]}`;
+        txt += "\n";
       });
+      const scope = "ctrl-" + c.n;
+      if(NOTAS[scope]) txt += `  ${isEN ? "[NOTES]" : "[NOTAS]"} ${NOTAS[scope]}\n`;
+      if(EVID[scope] && EVID[scope].length){
+        txt += `  ${isEN ? "[EVIDENCES]" : "[EVIDÊNCIAS]"}\n`;
+        EVID[scope].forEach(e => txt += `    · ${e.lab || ""}: ${e.url || ""}\n`);
+      }
     });
   });
-
-  // Lista de pendentes
-  txt += "\n================================================================\n";
-  txt += "  ITENS PENDENTES (PRIORIDADE PARA ACÇÃO)\n";
-  txt += "================================================================\n";
-  let countPend = 0;
-  CLAUSULAS.forEach(c=>{
-    c.checklist.forEach((item,i)=>{
-      const id = `cl_${c.num}_${i}`;
-      if(!estado[id]){ txt += `  [ ] Cláusula ${c.num}: ${item}\n`; countPend++; }
-    });
-  });
-  ["org","pes","fis","tec"].forEach(g=>{
-    CONTROLOS[g].forEach(c=>{
-      c.a.forEach((acao,i)=>{
-        const id = `ctrl_${c.n.replace(".","_")}_${i}`;
-        if(!estado[id]){
-          const tags = [];
-          if(NOVOS_2022.has(c.n)) tags.push("NOVO");
-          if(CRITICOS.has(c.n)) tags.push("CRÍTICO");
-          txt += `  [ ] [${c.n}] ${acao}${tags.length?" ("+tags.join("/")+")":""}\n`;
-          countPend++;
-        }
-      });
-    });
-  });
-  if(!countPend) txt += "  Nenhum item pendente. Excelente trabalho!\n";
 
   txt += "\n================================================================\n";
-  txt += "  Fim do relatório — " + nomeOrg + " / SGSI ISO/IEC 27001:2022\n";
+  txt += "  " + (isEN ? "End of report — " : "Fim do relatório — ") + nomeOrg + " / SGSI ISO/IEC 27001:2022\n";
   txt += "================================================================\n";
 
-  const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+  descarregarFicheiro(txt, `Report_ISO27001_${slugify(nomeOrg)}_${new Date().toISOString().slice(0,10)}.txt`, "text/plain;charset=utf-8");
+}
+
+function slugify(s){
+  return (s||"SGSI").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"") || "SGSI";
+}
+function descarregarFicheiro(conteudo, nome, mime){
+  const blob = (conteudo instanceof Blob) ? conteudo : new Blob([conteudo], {type:mime||"application/octet-stream"});
   const url = URL.createObjectURL(blob);
-  const slug = nomeOrg.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"") || "SGSI";
   const a = document.createElement("a");
-  a.href = url;
-  a.download = `Relatorio_ISO27001_${slug}_${new Date().toISOString().slice(0,10)}.txt`;
+  a.href = url; a.download = nome;
   document.body.appendChild(a); a.click();
   document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+/* ---------- Exportação SoA Excel ---------- */
+const ESTADO_LABEL_EN = {ni:"Not started", ec:"In progress", im:"Implemented", na:"Not Applicable"};
+const ESTADO_LABEL_PT = {ni:"Por iniciar", ec:"Em curso", im:"Implementado", na:"Não Aplicável"};
+
+function exportarSoA(){
+  if(typeof XLSX === "undefined"){
+    alert(LANG === "en" ? "XLSX library still loading — try again in 2s." : "Biblioteca XLSX ainda a carregar — tente novamente em 2s.");
+    return;
+  }
+  const isEN = LANG === "en";
+  const lbl = isEN ? ESTADO_LABEL_EN : ESTADO_LABEL_PT;
+  const nomeOrg = (document.getElementById("campoOrganizacao").value || "Organização").trim();
+
+  const headers = isEN
+    ? ["Control ID","Title","Group","New 2022","Cloud/DevSecOps Critical","Applicable (Y/N)","Status","Aggregate State","Justification (if N/A)","Notes","Evidences","% Complete"]
+    : ["ID Controlo","Título","Grupo","Novo 2022","Crítico Cloud/DevSecOps","Aplicável (S/N)","Estado","Estado Agregado","Justificação (se N/A)","Notas","Evidências","% Conclusão"];
+
+  const linhas = [headers];
+  const grupoNome = isEN
+    ? {org:"A.5 Organizational",pes:"A.6 People",fis:"A.7 Physical",tec:"A.8 Technological"}
+    : {org:"A.5 Organizacional",pes:"A.6 Pessoas",fis:"A.7 Físico",tec:"A.8 Tecnológico"};
+
+  ["org","pes","fis","tec"].forEach(g=>{
+    CONTROLOS[g].forEach(c=>{
+      const ids = c.a.map((_,i)=>`ctrl_${c.n.replace(".","_")}_${i}`);
+      const estados = ids.map(id => estadoDe(id));
+      const naCount = estados.filter(s=>s==="na").length;
+      const imCount = estados.filter(s=>s==="im").length;
+      const ecCount = estados.filter(s=>s==="ec").length;
+      const f = estados.filter(s=>s==="im"||s==="na").length;
+      const pct = ids.length ? Math.round(f/ids.length*100) : 0;
+      // Aplicabilidade: se todos N/A → No; senão Yes
+      const aplicavel = (naCount === ids.length && ids.length>0)
+        ? (isEN ? "No" : "Não")
+        : (isEN ? "Yes" : "Sim");
+      // Estado agregado
+      let estAgreg = isEN ? "Not started" : "Por iniciar";
+      if(f === ids.length && ids.length>0) estAgreg = isEN ? "Complete" : "Concluído";
+      else if(imCount + ecCount > 0) estAgreg = isEN ? "In progress" : "Em curso";
+      const justNAs = ids.filter(id=>estadoDe(id)==="na" && JUSTNA[id]).map(id => JUSTNA[id]).join(" | ");
+      const scope = "ctrl-" + c.n;
+      const notas = NOTAS[scope] || "";
+      const evid = (EVID[scope]||[]).map(e=>`${e.lab||""}: ${e.url||""}`).join("\n");
+      const estadoDetalhe = c.a.map((acao,i)=>`${rotuloEstado(estados[i])} ${acao.substring(0,80)}`).join("\n");
+
+      linhas.push([
+        c.n,
+        tituloControlo(c),
+        grupoNome[g],
+        NOVOS_2022.has(c.n) ? (isEN?"Yes":"Sim") : (isEN?"No":"Não"),
+        CRITICOS.has(c.n) ? (isEN?"Yes":"Sim") : (isEN?"No":"Não"),
+        aplicavel,
+        estadoDetalhe,
+        estAgreg,
+        justNAs,
+        notas,
+        evid,
+        pct + "%"
+      ]);
+    });
+  });
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(linhas);
+  // Larguras das colunas
+  ws['!cols'] = [{wch:8},{wch:38},{wch:22},{wch:10},{wch:14},{wch:12},{wch:50},{wch:16},{wch:30},{wch:40},{wch:40},{wch:10}];
+  // Freeze row 1
+  ws['!freeze'] = {xSplit:0, ySplit:1};
+  XLSX.utils.book_append_sheet(wb, ws, isEN ? "SoA - Annex A" : "DdA - Anexo A");
+
+  // Folha de cláusulas
+  const headers2 = isEN
+    ? ["Clause","Title","Item","Status","Justification (if N/A)"]
+    : ["Cláusula","Título","Item","Estado","Justificação (se N/A)"];
+  const linhas2 = [headers2];
+  CLAUSULAS.forEach(c=>{
+    const d = dadosClausula(c);
+    d.ck.forEach((item,i)=>{
+      const id = `cl_${c.num}_${i}`;
+      const st = estadoDe(id);
+      linhas2.push([c.num, tituloClausula(c), item, lbl[st], st === "na" ? (JUSTNA[id]||"") : ""]);
+    });
+  });
+  const ws2 = XLSX.utils.aoa_to_sheet(linhas2);
+  ws2['!cols'] = [{wch:10},{wch:30},{wch:60},{wch:16},{wch:40}];
+  XLSX.utils.book_append_sheet(wb, ws2, isEN ? "Clauses 4-10" : "Cláusulas 4-10");
+
+  // Folha de resumo
+  const todos = listarTodosIds();
+  const total = todos.length;
+  const f = todos.filter(x=>ehFeito(x.id)).length;
+  const resumo = [
+    [isEN ? "ISO/IEC 27001:2022 — Statement of Applicability (SoA)" : "ISO/IEC 27001:2022 — Declaração de Aplicabilidade (DdA)"],
+    [isEN ? "Organisation" : "Organização", nomeOrg],
+    [isEN ? "Generated on" : "Gerado em", new Date().toLocaleString(isEN ? "en-GB" : "pt-PT")],
+    [],
+    [isEN ? "Total items" : "Total de itens", total],
+    [isEN ? "Completed" : "Concluídos", f],
+    [isEN ? "Pending" : "Pendentes", total - f],
+    [isEN ? "Progress" : "Progresso", (total ? Math.round(f/total*100) : 0) + "%"]
+  ];
+  const ws3 = XLSX.utils.aoa_to_sheet(resumo);
+  ws3['!cols'] = [{wch:30},{wch:50}];
+  XLSX.utils.book_append_sheet(wb, ws3, isEN ? "Summary" : "Resumo");
+
+  const filename = `SoA_ISO27001_${slugify(nomeOrg)}_${new Date().toISOString().slice(0,10)}.xlsx`;
+  XLSX.writeFile(wb, filename);
+}
+
+/* ---------- Impressão PDF ---------- */
+function imprimirPDF(){
+  document.body.classList.add("modo-impressao");
+  // Expandir todos os controlos para imprimir conteúdo
+  document.querySelectorAll(".controlo").forEach(c => c.classList.add("aberto"));
+  setTimeout(()=>{
+    window.print();
+    setTimeout(()=>{
+      document.body.classList.remove("modo-impressao");
+    }, 500);
+  }, 300);
+}
+
+/* ---------- Importação SoA Excel (sincronização reversa) ---------- */
+async function importarSoA(file){
+  if(typeof XLSX === "undefined"){
+    alert(t("import_soa_xlsx_loading"));
+    return;
+  }
+  if(!confirm(t("confirm_import_soa"))) return;
+
+  try{
+    const buf = await file.arrayBuffer();
+    const wb = XLSX.read(buf, {type:"array"});
+
+    // ----- Folha do Anexo A -----
+    const folhasAnexo = ["SoA - Annex A", "DdA - Anexo A"];
+    let wsAnexo = null;
+    for(const n of folhasAnexo){ if(wb.Sheets[n]){ wsAnexo = wb.Sheets[n]; break; } }
+    // Fallback: 1ª folha
+    if(!wsAnexo) wsAnexo = wb.Sheets[wb.SheetNames[0]];
+    if(!wsAnexo){ alert(t("import_soa_no_sheet")); return; }
+
+    const dados = XLSX.utils.sheet_to_json(wsAnexo, {header:1, defval:""});
+    if(dados.length < 2){ alert(t("import_soa_no_sheet")); return; }
+
+    const cabs = dados[0].map(c => normalizar(String(c||"")));
+    const findCol = (...nomes) => {
+      for(const n of nomes){
+        const nrm = normalizar(n);
+        const i = cabs.findIndex(c => c.includes(nrm));
+        if(i >= 0) return i;
+      }
+      return -1;
+    };
+    const colId = findCol("control id","id controlo","id");
+    const colAplic = findCol("applicable","aplicavel","aplicável");
+    const colEstAgreg = findCol("aggregate state","estado agregado");
+    const colJust = findCol("justification","justificacao","justificação");
+    const colNotas = findCol("notes","notas");
+    const colEvid = findCol("evidences","evidencias","evidências");
+
+    if(colId < 0 || colEstAgreg < 0){
+      alert(t("import_soa_no_cols"));
+      return;
+    }
+
+    let controlsUpdated = 0, itemsUpdated = 0;
+
+    dados.slice(1).forEach(linha => {
+      const ctrlNum = String(linha[colId]||"").trim();
+      if(!ctrlNum || !/^[5-8]\.\d+$/.test(ctrlNum)) return;
+      let ctrlObj = null;
+      for(const g of ["org","pes","fis","tec"]){
+        ctrlObj = CONTROLOS[g].find(c => c.n === ctrlNum);
+        if(ctrlObj) break;
+      }
+      if(!ctrlObj) return;
+
+      const ids = ctrlObj.a.map((_,i)=>`ctrl_${ctrlNum.replace(".","_")}_${i}`);
+      const aplic = normalizar(colAplic >= 0 ? String(linha[colAplic]||"") : "");
+      const estAgreg = normalizar(colEstAgreg >= 0 ? String(linha[colEstAgreg]||"") : "");
+      const just = colJust >= 0 ? String(linha[colJust]||"").trim() : "";
+      const notas = colNotas >= 0 ? String(linha[colNotas]||"").trim() : "";
+      const evid = colEvid >= 0 ? String(linha[colEvid]||"").trim() : "";
+
+      // Decidir novo estado para todos os items do controlo
+      let novoEstado = null;
+      if(aplic && (aplic === "nao" || aplic === "no" || aplic === "n")){
+        novoEstado = "na";
+      } else if(estAgreg.includes("complet") || estAgreg.includes("conclui")){
+        novoEstado = "im";
+      } else if(estAgreg.includes("progress") || estAgreg.includes("curso")){
+        novoEstado = "ec";
+      } else if(estAgreg.includes("not started") || estAgreg.includes("por iniciar") || estAgreg.includes("iniciar")){
+        novoEstado = "ni";
+      }
+
+      if(novoEstado){
+        ids.forEach(id => {
+          if(novoEstado === "ni") delete estado[id]; else estado[id] = novoEstado;
+          if(novoEstado === "na"){
+            if(just) JUSTNA[id] = just; else delete JUSTNA[id];
+          } else {
+            delete JUSTNA[id];
+          }
+          itemsUpdated++;
+        });
+        controlsUpdated++;
+      }
+
+      const scope = "ctrl-" + ctrlNum;
+      if(notas){ NOTAS[scope] = notas; } else { delete NOTAS[scope]; }
+      if(evid){
+        const ll = evid.split(/[\n;|]+/).map(l => l.trim()).filter(Boolean);
+        EVID[scope] = ll.map(l => {
+          const m = l.match(/^([^:]+):\s*(.+)$/);
+          if(m) return { lab: m[1].trim(), url: m[2].trim() };
+          return { lab: "", url: l };
+        });
+        if(!EVID[scope].length) delete EVID[scope];
+      } else {
+        delete EVID[scope];
+      }
+    });
+
+    // ----- Folha das Cláusulas -----
+    const folhasClaus = ["Clauses 4-10", "Cláusulas 4-10"];
+    let wsCl = null;
+    for(const n of folhasClaus){ if(wb.Sheets[n]){ wsCl = wb.Sheets[n]; break; } }
+    if(wsCl){
+      const dadosCl = XLSX.utils.sheet_to_json(wsCl, {header:1, defval:""});
+      if(dadosCl.length >= 2){
+        // header: Clause, Title, Item, Status, Justification
+        dadosCl.slice(1).forEach(linha => {
+          const clNum = String(linha[0]||"").trim();
+          const itemTxt = String(linha[2]||"").trim();
+          const stLabel = normalizar(String(linha[3]||""));
+          const jtCl = String(linha[4]||"").trim();
+          if(!clNum || !itemTxt) return;
+
+          // Procurar match em PT e EN
+          const itemNorm = normalizar(itemTxt);
+          let itemIdx = -1;
+          const clObj = CLAUSULAS.find(c => c.num === clNum);
+          if(clObj){
+            itemIdx = clObj.checklist.findIndex(it => normalizar(it) === itemNorm);
+          }
+          if(itemIdx < 0 && CLAUSULAS_EN[clNum]){
+            itemIdx = CLAUSULAS_EN[clNum].checklist.findIndex(it => normalizar(it) === itemNorm);
+          }
+          if(itemIdx < 0) return;
+
+          const id = `cl_${clNum}_${itemIdx}`;
+          let ne = null;
+          if(stLabel.includes("implement") || stLabel.includes("complet") || stLabel.includes("conclui")) ne = "im";
+          else if(stLabel.includes("progress") || stLabel.includes("curso")) ne = "ec";
+          else if(stLabel.includes("applicable") || stLabel.includes("aplicav") || stLabel.includes("n/a")) ne = "na";
+          else if(stLabel.includes("not started") || stLabel.includes("iniciar")) ne = "ni";
+
+          if(ne){
+            if(ne === "ni") delete estado[id]; else estado[id] = ne;
+            if(ne === "na" && jtCl) JUSTNA[id] = jtCl;
+            else if(ne !== "na") delete JUSTNA[id];
+            itemsUpdated++;
+          }
+        });
+      }
+    }
+
+    guardarEstado(); guardarNotas(); guardarEvid(); guardarJustNA();
+    renderClausulas();
+    ["org","pes","fis","tec"].forEach(g => renderGrupoControlos(g, "container-"+g));
+    atualizarProgresso();
+
+    alert(t("import_soa_ok").replace("%controls%", controlsUpdated).replace("%items%", itemsUpdated));
+  }catch(e){
+    alert(t("import_soa_error") + e.message);
+  }
 }
 
 /* ---------- Navegação (highlight) ---------- */
@@ -1858,19 +3040,20 @@ function verificarHashImportar(){
 
 function aplicarImport(){
   if(!estadoImportPendente) return;
-  estado = estadoImportPendente;
-  guardarEstado();
-  // sincronizar UI
-  document.querySelectorAll('input[type="checkbox"]').forEach(c=>{
-    const checked = !!estado[c.id];
-    c.checked = checked;
-    const wrap = c.closest(".item-check");
-    if(wrap){ wrap.classList.toggle("feito", checked); }
+  // Migrar booleanos antigos para "im"
+  const novoEstado = {};
+  Object.entries(estadoImportPendente).forEach(([k,v])=>{
+    if(v === true) novoEstado[k] = "im";
+    else if(typeof v === "string") novoEstado[k] = v;
   });
+  estado = novoEstado;
+  guardarEstado();
+  // re-render para refletir
+  renderClausulas();
+  ["org","pes","fis","tec"].forEach(g => renderGrupoControlos(g, "container-"+g));
   atualizarProgresso();
   estadoImportPendente = null;
   document.getElementById("bannerImportar").classList.remove("visivel");
-  // limpar hash
   history.replaceState(null, "", location.pathname);
 }
 
@@ -2378,6 +3561,8 @@ function activarNomeOrganizacao(){
 document.addEventListener("DOMContentLoaded", ()=>{
   carregarEstado();
   carregarDocsRiscos();
+  activarToggleIdioma();
+  aplicarTraducao(); // Aplica i18n nos elementos estáticos antes do render dinâmico
   renderClausulas();
   renderGrupoControlos("org","container-org");
   renderGrupoControlos("pes","container-pes");
