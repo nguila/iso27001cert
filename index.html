@@ -1,9 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guia ISO/IEC 27001:2022 — DataCoLAB | SGSI Cloud & DevSecOps</title>
+<title>Guia ISO/IEC 27001:2022 | Implementação SGSI Cloud & DevSecOps</title>
+<!-- CDNs para parsing de ficheiros (apenas quando o utilizador importa documentos) -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
 <style>
   /* ============================== RESET & BASE ============================== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -345,6 +350,129 @@
   .banner-importar button{border:none;cursor:pointer;font-weight:600;font-size:12.5px;padding:7px 14px;border-radius:6px;font-family:inherit;}
   .banner-importar .btn-aceitar{background:var(--azul-600);color:#fff;}
   .banner-importar .btn-rejeitar{background:#fff;color:var(--cinza-700);border:1px solid var(--cinza-300);}
+
+  /* ============================== UPLOAD / IMPORTAÇÃO ============================== */
+  .grelha-upload{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  @media (max-width:880px){ .grelha-upload{grid-template-columns:1fr;} }
+  .cartao-upload{
+    background:var(--branco);border:2px dashed var(--cinza-300);
+    border-radius:var(--raio);padding:24px;text-align:center;
+    cursor:pointer;transition:border-color .2s,background .2s;
+  }
+  .cartao-upload:hover{border-color:var(--azul-500);background:var(--azul-50);}
+  .cartao-upload.arrastando{border-color:var(--azul-600);background:var(--azul-50);transform:scale(1.01);}
+  .cartao-upload .icone-big{font-size:36px;color:var(--azul-500);margin-bottom:8px;display:block;}
+  .cartao-upload h3{font-size:15px;margin-bottom:6px;color:var(--azul-800);}
+  .cartao-upload p{font-size:13px;color:var(--cinza-600);margin-bottom:8px;}
+  .cartao-upload .tipos{font-size:11px;color:var(--cinza-500);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
+  .cartao-upload input[type="file"]{display:none;}
+
+  .lista-docs{
+    background:var(--branco);border:1px solid var(--cinza-200);border-radius:var(--raio);
+    margin-bottom:18px;overflow:hidden;
+  }
+  .lista-docs .cab-doc{
+    padding:12px 16px;background:var(--cinza-50);
+    border-bottom:1px solid var(--cinza-200);font-weight:600;color:var(--cinza-700);font-size:13px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .doc-item{
+    padding:14px 16px;border-bottom:1px solid var(--cinza-100);
+    display:flex;align-items:flex-start;gap:14px;
+  }
+  .doc-item:last-child{border-bottom:none;}
+  .doc-item .doc-icone{
+    font-size:22px;flex-shrink:0;width:42px;height:42px;
+    background:var(--azul-50);border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .doc-item .doc-info{flex:1;min-width:0;}
+  .doc-item .doc-info .doc-nome{font-weight:600;color:var(--cinza-900);font-size:14px;margin-bottom:2px;word-break:break-all;}
+  .doc-item .doc-info .doc-meta{font-size:12px;color:var(--cinza-500);}
+  .doc-item .doc-cover{
+    background:var(--verde-100);color:#065f46;font-size:12px;font-weight:700;
+    padding:4px 10px;border-radius:999px;flex-shrink:0;
+  }
+  .doc-item .doc-cover.medio{background:var(--laranja-100);color:#92400e;}
+  .doc-item .doc-cover.baixo{background:var(--vermelho-100);color:#991b1b;}
+  .doc-item .doc-rem{
+    background:none;border:none;cursor:pointer;color:var(--cinza-400);font-size:18px;
+    padding:4px 8px;border-radius:4px;
+  }
+  .doc-item .doc-rem:hover{background:var(--vermelho-100);color:var(--vermelho-500);}
+  .doc-controlos{
+    margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;
+  }
+  .doc-controlos .pill{
+    background:var(--azul-50);color:var(--azul-700);font-size:11px;font-weight:600;
+    padding:3px 8px;border-radius:999px;border:1px solid var(--azul-100);
+  }
+  .doc-controlos .pill.match-forte{background:#dcfce7;color:#166534;border-color:#86efac;}
+
+  /* Tabela de riscos */
+  .tabela-riscos{
+    width:100%;background:var(--branco);border:1px solid var(--cinza-200);
+    border-radius:var(--raio);overflow:hidden;font-size:13px;border-collapse:collapse;
+  }
+  .tabela-riscos th{
+    background:var(--cinza-50);color:var(--cinza-700);font-weight:700;text-align:left;
+    padding:10px 12px;border-bottom:2px solid var(--cinza-200);font-size:11px;
+    text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0;
+  }
+  .tabela-riscos td{padding:10px 12px;border-bottom:1px solid var(--cinza-100);vertical-align:top;}
+  .tabela-riscos tr:hover td{background:var(--azul-50);}
+  .tabela-riscos .nivel{
+    display:inline-block;padding:3px 8px;border-radius:6px;font-weight:700;font-size:11px;text-transform:uppercase;
+  }
+  .nivel.critico{background:#7f1d1d;color:#fff;}
+  .nivel.alto{background:var(--vermelho-500);color:#fff;}
+  .nivel.medio{background:var(--laranja-500);color:#fff;}
+  .nivel.baixo{background:#84cc16;color:#fff;}
+  .nivel.muito-baixo{background:#a7f3d0;color:#065f46;}
+
+  .resumo-riscos{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:10px;margin-bottom:14px;
+  }
+  .resumo-riscos .card{
+    background:var(--branco);border:1px solid var(--cinza-200);border-radius:6px;
+    padding:12px 14px;text-align:center;
+  }
+  .resumo-riscos .card .v{font-size:22px;font-weight:800;}
+  .resumo-riscos .card .l{font-size:11px;color:var(--cinza-500);text-transform:uppercase;letter-spacing:.04em;font-weight:600;}
+
+  .scroll-tabela{max-height:520px;overflow:auto;border-radius:var(--raio);border:1px solid var(--cinza-200);}
+
+  /* Análise resumo cobertura */
+  .analise-cobertura{
+    background:var(--branco);border:1px solid var(--cinza-200);border-radius:var(--raio);
+    padding:16px 18px;margin-bottom:18px;
+  }
+  .analise-cobertura h4{font-size:14px;color:var(--azul-800);margin-bottom:10px;}
+  .analise-cobertura .barra-cov{
+    background:var(--cinza-100);height:10px;border-radius:999px;overflow:hidden;margin:6px 0 4px;
+  }
+  .analise-cobertura .barra-cov>span{display:block;height:100%;background:linear-gradient(90deg,var(--verde-500),#34d399);width:0;transition:width .4s;}
+  .analise-cobertura .legenda-cov{display:flex;justify-content:space-between;font-size:11px;color:var(--cinza-500);}
+  .analise-cobertura .lista-gap{
+    margin-top:14px;font-size:13px;
+  }
+  .analise-cobertura .lista-gap strong{color:var(--vermelho-500);}
+  .analise-cobertura .lista-gap .gap-pill{
+    display:inline-block;background:var(--vermelho-100);color:var(--vermelho-500);
+    font-weight:600;padding:2px 8px;border-radius:999px;font-size:11px;margin:2px 4px 2px 0;
+  }
+
+  .alerta-template{
+    background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;
+    padding:12px 14px;font-size:13px;color:var(--azul-800);margin-bottom:14px;
+  }
+  .alerta-template code{background:var(--azul-100);color:var(--azul-800);}
+  .alerta-template .btn-mini{
+    background:var(--azul-600);color:#fff;border:none;border-radius:4px;
+    padding:5px 12px;font-weight:600;font-size:12px;cursor:pointer;margin-left:8px;font-family:inherit;
+  }
+  .alerta-template .btn-mini:hover{background:var(--azul-700);}
 </style>
 </head>
 <body>
@@ -383,10 +511,11 @@
 <!-- ============================== CABEÇALHO ============================== -->
 <header class="topo">
   <div class="marca">
-    <div class="logo">DC</div>
+    <div class="logo">27K</div>
     <div>
-      <div class="nome">DataCoLAB</div>
-      <div class="sub">Guia ISO/IEC 27001:2022 — SGSI Cloud & DevSecOps</div>
+      <input type="text" id="campoOrganizacao" placeholder="Nome da sua organização" data-testid="campo-organizacao"
+             style="background:transparent;border:none;color:#fff;font-weight:700;font-size:18px;width:240px;padding:2px 4px;border-bottom:1px dashed rgba(255,255,255,.25);outline:none;font-family:inherit;">
+      <div class="sub">Guia ISO/IEC 27001:2022 — Implementação SGSI Cloud & DevSecOps</div>
     </div>
   </div>
   <div class="pesquisa">
@@ -424,6 +553,10 @@
     <a href="#grupo-fis" class="link" data-alvo="grupo-fis">🏢 Físicos (7.1–7.14) <span class="contagem" id="cnt-fis"></span></a>
     <a href="#grupo-tec" class="link" data-alvo="grupo-tec">⚙ Tecnológicos (8.1–8.34) <span class="contagem" id="cnt-tec"></span></a>
 
+    <h4>Evidências Documentais</h4>
+    <a href="#seccao-docs" class="link" data-alvo="seccao-docs">📁 Documentos & Políticas <span class="contagem" id="cnt-docs"></span></a>
+    <a href="#seccao-riscos" class="link" data-alvo="seccao-riscos">📊 Matriz de Riscos <span class="contagem" id="cnt-riscos"></span></a>
+
     <h4>Filtros Rápidos</h4>
     <a href="#" class="link" id="filtroNovo">⭐ Apenas Novos 2022</a>
     <a href="#" class="link" id="filtroCritico">⚡ Apenas Críticos Cloud/DevSecOps</a>
@@ -439,7 +572,7 @@
       <div class="cabeca">
         <div>
           <h2>📊 Dashboard de Conformidade</h2>
-          <p class="descricao">Visão consolidada do progresso de implementação do SGSI no âmbito certificável do DataCoLAB: <em>desenvolvimento, implementação e manutenção de software em ambiente Cloud (AWS, Google Cloud, Render, Vercel) e ferramentas DevSecOps associadas</em>.</p>
+          <p class="descricao">Visão consolidada do progresso de implementação do SGSI no âmbito típico de uma organização de desenvolvimento de software cloud-native: <em>desenvolvimento, implementação e manutenção de software em ambientes Cloud (AWS, Google Cloud, Azure, Render, Vercel, etc.) e ferramentas DevSecOps associadas</em>.</p>
         </div>
       </div>
 
@@ -495,7 +628,7 @@
       <div class="cabeca">
         <div>
           <h2>📚 Componente 2 — Anexo A (ISO/IEC 27002:2022): 93 Controlos</h2>
-          <p class="descricao">Catálogo de referência para a Declaração de Aplicabilidade (DdA / SoA). Cada controlo aplicado ao DataCoLAB deve estar justificado pelo resultado da apreciação de riscos.</p>
+          <p class="descricao">Catálogo de referência para a Declaração de Aplicabilidade (DdA / SoA). Cada controlo aplicado pela organização deve estar justificado pelo resultado da apreciação de riscos.</p>
         </div>
       </div>
 
@@ -544,11 +677,73 @@
       </div>
     </section>
 
+    <!-- ===== DOCUMENTOS / POLÍTICAS ===== -->
+    <section class="seccao" id="seccao-docs">
+      <div class="cabeca">
+        <div>
+          <h2>📁 Importação de Documentos & Políticas</h2>
+          <p class="descricao">Faça upload de políticas, procedimentos e evidências documentais (TXT, PDF, DOCX). O sistema analisa o conteúdo através de <em>keyword matching</em> e mapeia automaticamente cada documento aos controlos do Anexo A que aparenta cobrir — facilitando a deteção de lacunas documentais para a certificação.</p>
+        </div>
+      </div>
+
+      <div class="grelha-upload">
+        <label class="cartao-upload" id="dropDocs" for="inputDocs" data-testid="drop-docs">
+          <span class="icone-big">📄</span>
+          <h3>Arrastar documentos ou clicar aqui</h3>
+          <p>Políticas, procedimentos, manuais, atas, evidências de auditoria</p>
+          <span class="tipos">TXT · MD · PDF · DOCX</span>
+          <input type="file" id="inputDocs" accept=".txt,.md,.pdf,.docx" multiple data-testid="input-docs">
+        </label>
+        <div class="alerta-template" style="display:flex;flex-direction:column;justify-content:center;">
+          <strong style="display:block;margin-bottom:6px;">ℹ Como funciona a análise?</strong>
+          O texto extraído é comparado com um dicionário de palavras-chave por controlo (PT/EN). Cada documento recebe uma <strong>lista de controlos prováveis</strong> que aparenta cobrir. <em>Não substitui revisão humana</em> — serve como ponto de partida para auditoria documental.
+        </div>
+      </div>
+
+      <div id="analiseCob"></div>
+
+      <div class="lista-docs" id="listaDocs" style="display:none;">
+        <div class="cab-doc">
+          <span>📋 Documentos importados</span>
+          <button class="botao botao-perigo" id="btnLimparDocs" style="font-size:11px;padding:5px 10px;" data-testid="btn-limpar-docs">↺ Limpar todos</button>
+        </div>
+        <div id="containerDocs"></div>
+      </div>
+    </section>
+
+    <!-- ===== MATRIZ DE RISCOS ===== -->
+    <section class="seccao" id="seccao-riscos">
+      <div class="cabeca">
+        <div>
+          <h2>📊 Matriz de Riscos (ISO/IEC 27005)</h2>
+          <p class="descricao">Importe a matriz de riscos da organização em formato Excel (XLSX) ou CSV. O sistema deteta automaticamente as colunas, calcula níveis de risco e relaciona com os controlos do Anexo A indicados.</p>
+        </div>
+      </div>
+
+      <div class="grelha-upload">
+        <label class="cartao-upload" id="dropRiscos" for="inputRiscos" data-testid="drop-riscos">
+          <span class="icone-big">📊</span>
+          <h3>Arrastar matriz de riscos ou clicar aqui</h3>
+          <p>Excel ou CSV com riscos identificados pela organização</p>
+          <span class="tipos">XLSX · XLS · CSV</span>
+          <input type="file" id="inputRiscos" accept=".xlsx,.xls,.csv" data-testid="input-riscos">
+        </label>
+        <div class="alerta-template" style="display:flex;flex-direction:column;justify-content:center;">
+          <strong style="display:block;margin-bottom:6px;">📋 Template ISO 27005 esperado</strong>
+          Colunas reconhecidas (auto-deteção PT/EN, ordem flexível):
+          <code style="display:block;margin-top:6px;font-size:11.5px;line-height:1.6;">ID · Ativo · Ameaça · Vulnerabilidade · Probabilidade (1-5) · Impacto (1-5) · Tratamento · Controlos · Proprietário · Estado</code>
+          <button class="btn-mini" id="btnDownloadTemplate" data-testid="btn-template" style="margin-top:8px;align-self:flex-start;">⬇ Descarregar template CSV</button>
+        </div>
+      </div>
+
+      <div id="resumoRiscos"></div>
+      <div id="containerRiscos"></div>
+    </section>
+
   </main>
 </div>
 
 <footer class="rodape">
-  Guia ISO/IEC 27001:2022 — gerado para o âmbito certificável do <strong>DataCoLAB</strong>.<br>
   Conteúdo baseado nas normas ISO/IEC 27001:2022 e ISO/IEC 27002:2022. Documento de apoio à implementação — não substitui o texto normativo oficial.<br>
   Estado de progresso guardado no navegador (localStorage). Use o botão <em>Exportar Relatório</em> para evidência documental.
 </footer>
@@ -562,7 +757,7 @@ const CLAUSULAS = [
   {
     id:"clausula-4", num:"4", titulo:"Contexto da Organização",
     requisitos:[
-      "Determinar as questões internas e externas relevantes para o SGSI do DataCoLAB (cláusula 4.1).",
+      "Determinar as questões internas e externas relevantes para o SGSI (cláusula 4.1).",
       "Identificar as partes interessadas (clientes, parceiros cloud, reguladores, equipa) e os seus requisitos relevantes (4.2).",
       "Determinar o âmbito do SGSI documentado, incluindo interfaces e dependências com serviços cloud externos (4.3).",
       "Estabelecer, implementar, manter e melhorar continuamente o SGSI (4.4)."
@@ -744,7 +939,7 @@ const CONTROLOS = {
     {n:"5.1", t:"Políticas de segurança da informação",
       d:"Política de SI e políticas específicas por tema devem ser definidas, aprovadas pela Direção, publicadas, comunicadas e revistas em intervalos planeados ou quando ocorrem alterações significativas.",
       a:["Política mestra de SI aprovada e versionada.","Políticas temáticas (acessos, criptografia, cloud, backups, desenvolvimento seguro, BYOD, teletrabalho) publicadas.","Plano de comunicação a colaboradores.","Revisão anual obrigatória registada."],
-      r:"O DataCoLAB deve ter políticas explícitas para uso de AWS/GCP/Render/Vercel e para o pipeline DevSecOps (SAST/DAST/SCA, gestão de segredos, IaC)."},
+      r:"A organização deve ter políticas explícitas para uso de plataformas cloud (AWS/GCP/Azure/Render/Vercel) e para o pipeline DevSecOps (SAST/DAST/SCA, gestão de segredos, IaC)."},
     {n:"5.2", t:"Papéis e responsabilidades de segurança da informação",
       d:"Papéis e responsabilidades de SI devem ser definidos e atribuídos de acordo com as necessidades da organização.",
       a:["Matriz RACI de segurança.","Descrição de funções com responsabilidades de SI.","Nomeação formal de proprietários de ativos e riscos."],
@@ -760,7 +955,7 @@ const CONTROLOS = {
     {n:"5.5", t:"Contacto com autoridades",
       d:"Manter contactos apropriados com autoridades relevantes.",
       a:["Lista de contactos (CNPD, CNCS/CERT.PT, autoridades judiciais, reguladores setoriais).","Procedimento para acionar contactos em incidente.","Atualização anual."],
-      r:"Para o DataCoLAB: CNPD (RGPD), CNCS/CERT.PT (NIS2/incidentes), Polícia Judiciária (cibercrime)."},
+      r:"Em Portugal: CNPD (RGPD), CNCS/CERT.PT (NIS2/incidentes), Polícia Judiciária (cibercrime). Adapte conforme a jurisdição da organização."},
     {n:"5.6", t:"Contacto com grupos de interesse especial",
       d:"Manter contactos apropriados com grupos de interesse especial, fóruns e associações profissionais.",
       a:["Subscrição a CERT, OWASP, CSA, ISACA, ENISA.","Participação em comunidades técnicas (DevSecOps Lisboa, OWASP Portugal).","Partilha controlada de informação de ameaças."],
@@ -923,7 +1118,7 @@ const CONTROLOS = {
     {n:"6.8", t:"Reporte de eventos de segurança da informação",
       d:"A organização deve disponibilizar um mecanismo para o pessoal reportar eventos de SI observados ou suspeitados, através de canais apropriados em tempo hábil.",
       a:["Canal de reporte (e-mail dedicado, formulário, Slack).","Procedimento simples e conhecido.","Reporte anónimo possível.","Tempo de resposta definido.","Não retaliação garantida."],
-      r:"⚡ CRÍTICO: Canal #security-incidents no Slack/Teams + e-mail seguranca@datacolab; cultura de blameless reporting. Bug bounty ou VDP (Vulnerability Disclosure Program) público para investigadores externos."}
+      r:"⚡ CRÍTICO: Canal #security-incidents no Slack/Teams + e-mail security@empresa.com; cultura de blameless reporting. Bug bounty ou VDP (Vulnerability Disclosure Program) público para investigadores externos."}
   ],
 
   fis:[
@@ -1129,7 +1324,7 @@ const CONTROLOS = {
    RENDER DOS COMPONENTES
    ============================================================================ */
 
-const STORAGE_KEY = "iso27001_datacolab_v1";
+const STORAGE_KEY = "iso27001_sgsi_v1";
 let estado = {};
 
 function carregarEstado(){
@@ -1157,7 +1352,7 @@ function renderClausulas(){
         </header>
         <div class="corpo">
           <div class="bloco">
-            <h4>📋 Requisitos obrigatórios que o DataCoLAB deve demonstrar</h4>
+            <h4>📋 Requisitos obrigatórios a demonstrar</h4>
             <ul>${c.requisitos.map(r=>`<li>${r}</li>`).join("")}</ul>
           </div>
           <div class="bloco">
@@ -1178,7 +1373,7 @@ function renderClausulas(){
             </div>
           </div>
           <div class="bloco">
-            <h4>☁ Aplicação ao contexto Cloud/DevSecOps do DataCoLAB</h4>
+            <h4>☁ Aplicação ao contexto Cloud / DevSecOps</h4>
             <div class="nota-cloud"><strong>Nota:</strong> ${c.nota}</div>
           </div>
         </div>
@@ -1230,7 +1425,7 @@ function renderGrupoControlos(grupo, containerId){
               </div>`;
             }).join("")}
           </div>
-          <div class="relev"><strong>Relevância para o DataCoLAB:</strong> ${c.r}</div>
+          <div class="relev"><strong>Relevância Cloud / DevSecOps:</strong> ${c.r}</div>
         </div>
       </article>
     `;
@@ -1436,6 +1631,7 @@ function activarBotoesTopo(){
 /* ---------- Exportação TXT ---------- */
 function exportarRelatorio(){
   const dataHoje = new Date().toLocaleString("pt-PT");
+  const nomeOrg = (document.getElementById("campoOrganizacao").value || "[Nome da Organização]").trim();
   const todos = listarTodosIds();
   const total = todos.length;
   const feitos = todos.filter(x=>!!estado[x.id]).length;
@@ -1444,9 +1640,9 @@ function exportarRelatorio(){
   let txt = "";
   txt += "================================================================\n";
   txt += "  RELATÓRIO DE PROGRESSO — ISO/IEC 27001:2022\n";
-  txt += "  Organização: DataCoLAB\n";
+  txt += "  Organização: " + nomeOrg + "\n";
   txt += "  Âmbito: Desenvolvimento, implementação e manutenção de software\n";
-  txt += "          em ambiente Cloud (AWS, GCP, Render, Vercel) + DevSecOps.\n";
+  txt += "          em ambientes Cloud + ferramentas DevSecOps associadas.\n";
   txt += "  Gerado em: " + dataHoje + "\n";
   txt += "================================================================\n\n";
   txt += `RESUMO GLOBAL\n  Total de itens: ${total}\n  Concluídos:     ${feitos}\n  Pendentes:      ${total-feitos}\n  Progresso:      ${pct}%\n\n`;
@@ -1529,14 +1725,15 @@ function exportarRelatorio(){
   if(!countPend) txt += "  Nenhum item pendente. Excelente trabalho!\n";
 
   txt += "\n================================================================\n";
-  txt += "  Fim do relatório — DataCoLAB / SGSI ISO/IEC 27001:2022\n";
+  txt += "  Fim do relatório — " + nomeOrg + " / SGSI ISO/IEC 27001:2022\n";
   txt += "================================================================\n";
 
   const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
   const url = URL.createObjectURL(blob);
+  const slug = nomeOrg.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"") || "SGSI";
   const a = document.createElement("a");
   a.href = url;
-  a.download = `Relatorio_ISO27001_DataCoLAB_${new Date().toISOString().slice(0,10)}.txt`;
+  a.download = `Relatorio_ISO27001_${slug}_${new Date().toISOString().slice(0,10)}.txt`;
   document.body.appendChild(a); a.click();
   document.body.removeChild(a); URL.revokeObjectURL(url);
 }
@@ -1704,10 +1901,483 @@ function activarPartilha(){
 }
 
 /* ============================================================================
+   IMPORTAÇÃO DE DOCUMENTOS — Keyword matching contra controlos
+   ============================================================================ */
+
+// Keywords por controlo (PT/EN). Pelo menos 2 matches ⇒ cobertura forte.
+const KW_CTRL = {
+  "5.1":["política de segurança","information security policy","políticas","policy","psi","aprovada pela direção"],
+  "5.2":["papéis","responsabilidades","roles","responsibilities","ciso","raci","organograma"],
+  "5.3":["segregação de funções","segregation of duties","sod","conflito de funções"],
+  "5.4":["responsabilidades da gestão","management responsibilities","compromisso da direção"],
+  "5.5":["contacto com autoridades","cnpd","cncs","authorities","cert.pt","regulador"],
+  "5.6":["grupos de interesse","interest groups","owasp","csa","isaca","enisa","comunidade"],
+  "5.7":["threat intelligence","informações sobre ameaças","cti","ioc","feed de ameaças","threat feed"],
+  "5.8":["gestão de projetos","project management","privacy by design","security by design","threat modeling"],
+  "5.9":["inventário de ativos","asset inventory","cmdb","ativos de informação","asset register"],
+  "5.10":["uso aceitável","acceptable use","aup","byod"],
+  "5.11":["devolução de ativos","return of assets","offboarding","quitação"],
+  "5.12":["classificação da informação","information classification","confidencial","público","restrito"],
+  "5.13":["etiquetagem","labelling","labeling","tags","etiquetas","tagging"],
+  "5.14":["transferência de informação","information transfer","sftp","nda","cifragem em trânsito","tls"],
+  "5.15":["controlo de acessos","access control","rbac","abac","menor privilégio","least privilege"],
+  "5.16":["gestão de identidade","identity management","scim","workload identity","federação"],
+  "5.17":["informação de autenticação","authentication information","palavra-passe","mfa","fido","cofre de palavras"],
+  "5.18":["direitos de acesso","access rights","access review","revisão de acessos","provisionamento"],
+  "5.19":["relações com fornecedores","supplier relationships","due diligence","fornecedor","vendor"],
+  "5.20":["acordos com fornecedores","supplier agreements","cláusulas contratuais","dpa","subprocessador"],
+  "5.21":["cadeia de fornecimento","supply chain","sbom","cyclonedx","spdx","sigstore","cosign"],
+  "5.22":["monitorização de fornecedores","supplier monitoring","sla","kpi de fornecedor"],
+  "5.23":["serviços em nuvem","cloud services","cloud security","aws","gcp","azure","csp","landing zone","cspm","shared responsibility"],
+  "5.24":["gestão de incidentes","incident management","csirt","playbook","tabletop"],
+  "5.25":["avaliação de eventos","event assessment","triagem","siem"],
+  "5.26":["resposta a incidentes","incident response","contenção","erradicação","recuperação","rgpd 72h"],
+  "5.27":["lições aprendidas","lessons learned","post-mortem","postmortem","blameless"],
+  "5.28":["recolha de evidências","evidence collection","forensics","cadeia de custódia","chain of custody","object lock"],
+  "5.29":["disrupção","disruption","continuidade","business continuity","bcp","disaster recovery"],
+  "5.30":["prontidão tic","ict readiness","rto","rpo","disaster recovery","failover","multi-região"],
+  "5.31":["requisitos legais","legal requirements","rgpd","nis2","gdpr","compliance legal"],
+  "5.32":["propriedade intelectual","intellectual property","sca","software composition analysis","licença open-source","license compliance"],
+  "5.33":["proteção de registos","protection of records","worm","retenção","retention"],
+  "5.34":["privacidade","privacy","pii","dpia","dpo","direitos dos titulares","gdpr"],
+  "5.35":["revisão independente","independent review","auditoria externa","pentest","red team"],
+  "5.36":["conformidade com políticas","compliance with policies","policy-as-code","opa","conftest","checkov"],
+  "5.37":["procedimentos operacionais","operational procedures","runbook","wiki","standard operating procedure","sop"],
+  "6.1":["triagem","screening","background check","verificação de antecedentes"],
+  "6.2":["termos e condições","terms and conditions","contrato de emprego","employment contract","nda"],
+  "6.3":["sensibilização","awareness","formação","training","e-learning","phishing simulado"],
+  "6.4":["processo disciplinar","disciplinary process","violação","disciplinary action"],
+  "6.5":["pós-cessação","post-termination","entrevista de saída","exit interview","confidentiality after"],
+  "6.6":["confidencialidade","confidentiality","nda","non-disclosure"],
+  "6.7":["teletrabalho","remote working","trabalho remoto","vpn","zero trust","ztna","mdm"],
+  "6.8":["reporte de eventos","event reporting","reportar incidente","bug bounty","vdp","disclosure program"],
+  "7.1":["perímetro físico","physical perimeter","controlo de entrada"],
+  "7.2":["entrada física","physical entry","cartão de acesso","biometria","visitantes"],
+  "7.3":["escritórios","offices","salas seguras","armazenamento seguro"],
+  "7.4":["monitorização física","physical monitoring","cctv","alarme"],
+  "7.5":["ameaças físicas","physical threats","ambientais","environmental","incêndio","fire"],
+  "7.6":["trabalho em áreas seguras","secure areas working"],
+  "7.7":["secretária limpa","clean desk","ecrã limpo","clear screen","bloqueio automático","auto-lock"],
+  "7.8":["localização de equipamento","equipment siting","privacy filter","cabo de segurança"],
+  "7.9":["ativos fora","equipment off-premises","cifragem de disco","filevault","bitlocker","find my"],
+  "7.10":["suportes de armazenamento","storage media","usb","disco externo"],
+  "7.11":["serviços de apoio","supporting utilities","ups","energia"],
+  "7.12":["cabeamento","cabling","cabos"],
+  "7.13":["manutenção de equipamento","equipment maintenance"],
+  "7.14":["eliminação segura","secure disposal","wipe","crypto-erase","destruição física","nist 800-88"],
+  "8.1":["dispositivos de utilizador","end point","endpoint","mdm","edr","antivirus","kandji","jamf","intune"],
+  "8.2":["acesso privilegiado","privileged access","pam","jit","just-in-time","just in time"],
+  "8.3":["restrição de acesso","access restriction","bucket policy","iam","least-privilege"],
+  "8.4":["acesso ao código-fonte","source code access","branch protection","codeowners","signed commits"],
+  "8.5":["autenticação segura","secure authentication","fido2","webauthn","sso","saml","oidc"],
+  "8.6":["gestão de capacidade","capacity management","auto-scaling","autoscaling","cost explorer"],
+  "8.7":["proteção contra malware","malware protection","antivirus","edr","crowdstrike","sentinelone","trivy","grype"],
+  "8.8":["gestão de vulnerabilidades","vulnerability management","cve","sca","snyk","mend","dependabot","wiz","prisma","security hub"],
+  "8.9":["gestão de configuração","configuration management","cis benchmark","iac","terraform","cloudformation","checkov","tfsec","drift"],
+  "8.10":["eliminação de informação","information deletion","right to be forgotten","crypto-erase","data deletion"],
+  "8.11":["mascaramento","data masking","anonimização","pseudonimização","tokenização","faker","synthea"],
+  "8.12":["prevenção de fuga","data leakage prevention","dlp","secret scanning","gitguardian","trufflehog","casb"],
+  "8.13":["cópias de segurança","backup","3-2-1","object lock","bucket lock","restore"],
+  "8.14":["redundância","redundancy","ha","high availability","multi-az","multi-região"],
+  "8.15":["logging","registos","logs","cloudtrail","cloud audit","siem","retenção de logs"],
+  "8.16":["monitorização","monitoring","sigma rules","ueba","soar","mdr","soc","guardduty"],
+  "8.17":["sincronização do relógio","clock synchronization","ntp","chrony","time sync"],
+  "8.18":["programas utilitários","utility programs","bastion","session manager","session recording"],
+  "8.19":["instalação de software","software installation","imagens imutáveis","golden ami","allowlist"],
+  "8.20":["segurança das redes","network security","vpc","security groups","firewall","network firewall"],
+  "8.21":["serviços de rede","network services","interconnect","direct connect","ddos","shield","cloud armor"],
+  "8.22":["segregação de redes","network segmentation","microsegmentation","service mesh","istio","linkerd","mtls"],
+  "8.23":["filtragem da web","web filtering","dns filtering","cloudflare gateway","umbrella","nextdns"],
+  "8.24":["criptografia","cryptography","cifragem","encryption","aes","tls","kms","hsm","vault","rotação de chaves"],
+  "8.25":["ciclo de vida de desenvolvimento","secure development life cycle","sdlc","bsimm","samm","security champion","definition of done"],
+  "8.26":["requisitos de segurança das aplicações","application security requirements","owasp asvs","asvs"],
+  "8.27":["arquitetura segura","secure architecture","defense in depth","fail securely","secure defaults","zero trust","reference architecture"],
+  "8.28":["codificação segura","secure coding","semgrep","sonarqube","codeql","bandit","eslint-plugin-security","gosec","linter"],
+  "8.29":["testes de segurança","security testing","sast","dast","sca","pentest","scanning"],
+  "8.30":["desenvolvimento subcontratado","outsourced development","freelancer","subcontratação"],
+  "8.31":["separação de ambientes","environment separation","dev","test","staging","production","prod","gitops"],
+  "8.32":["gestão de mudanças","change management","change advisory","cab","pull request","code review","aprovação de deploy"],
+  "8.33":["informação de teste","test information","dados de teste","fixtures","synthetic data"],
+  "8.34":["testes de auditoria","audit testing","auditoria operacional","read-only"]
+};
+
+let DOCS = [];   // {id, nome, tipo, tamanho, dataIso, texto, controlos:[{n, score}]}
+let RISCOS = []; // [{ID, Ativo, Ameaça, ...}]
+const KEY_DOCS = "iso27001_sgsi_docs_v1";
+const KEY_RISCOS = "iso27001_sgsi_riscos_v1";
+
+function carregarDocsRiscos(){
+  try{ DOCS = JSON.parse(localStorage.getItem(KEY_DOCS) || "[]"); }catch(e){ DOCS = []; }
+  try{ RISCOS = JSON.parse(localStorage.getItem(KEY_RISCOS) || "[]"); }catch(e){ RISCOS = []; }
+}
+function guardarDocs(){
+  try{ localStorage.setItem(KEY_DOCS, JSON.stringify(DOCS)); }
+  catch(e){ alert("Espaço de armazenamento local cheio. Considere remover documentos antigos."); }
+}
+function guardarRiscos(){
+  try{ localStorage.setItem(KEY_RISCOS, JSON.stringify(RISCOS)); }catch(e){}
+}
+
+function normalizar(txt){
+  return (txt||"").toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9\s\-\.]/g," ")
+    .replace(/\s+/g," ");
+}
+
+function analisarTextoContraControlos(texto){
+  const t = normalizar(texto);
+  const resultados = [];
+  Object.entries(KW_CTRL).forEach(([num, kws])=>{
+    let score = 0;
+    const hits = new Set();
+    kws.forEach(kw=>{
+      const k = normalizar(kw);
+      if(k && t.includes(k)){ score++; hits.add(kw); }
+    });
+    if(score > 0) resultados.push({ n: num, score, hits: Array.from(hits) });
+  });
+  resultados.sort((a,b)=>b.score-a.score);
+  return resultados;
+}
+
+/* --- Extração de texto por tipo --- */
+async function extrairTexto(file){
+  const nome = file.name.toLowerCase();
+  if(nome.endsWith(".txt") || nome.endsWith(".md")){
+    return await file.text();
+  }
+  if(nome.endsWith(".docx")){
+    if(typeof mammoth === "undefined") throw new Error("Biblioteca DOCX (mammoth) ainda a carregar — tente novamente em 2s.");
+    const buf = await file.arrayBuffer();
+    const res = await mammoth.extractRawText({arrayBuffer: buf});
+    return res.value || "";
+  }
+  if(nome.endsWith(".pdf")){
+    if(typeof pdfjsLib === "undefined" && typeof window["pdfjs-dist/build/pdf"] === "undefined"){
+      throw new Error("Biblioteca PDF.js ainda a carregar — tente novamente em 2s.");
+    }
+    const pdfjs = window.pdfjsLib || window["pdfjs-dist/build/pdf"];
+    pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    const buf = await file.arrayBuffer();
+    const pdf = await pdfjs.getDocument({data: buf}).promise;
+    let texto = "";
+    for(let p=1; p<=pdf.numPages; p++){
+      const page = await pdf.getPage(p);
+      const content = await page.getTextContent();
+      texto += content.items.map(it=>it.str).join(" ") + "\n";
+    }
+    return texto;
+  }
+  throw new Error("Tipo de ficheiro não suportado: " + nome);
+}
+
+function bytesParaTexto(b){
+  if(b < 1024) return b + " B";
+  if(b < 1024*1024) return (b/1024).toFixed(1) + " KB";
+  return (b/1024/1024).toFixed(1) + " MB";
+}
+
+async function processarDocumentos(files){
+  for(const f of files){
+    try{
+      const texto = await extrairTexto(f);
+      const controlos = analisarTextoContraControlos(texto);
+      const doc = {
+        id: "d_" + Date.now() + "_" + Math.random().toString(36).slice(2,7),
+        nome: f.name,
+        tipo: f.name.split(".").pop().toUpperCase(),
+        tamanho: f.size,
+        dataIso: new Date().toISOString(),
+        // limitar texto guardado a 80 KB por doc para evitar encher localStorage
+        texto: texto.slice(0, 80000),
+        controlos
+      };
+      DOCS.push(doc);
+    }catch(e){
+      alert(`Erro ao processar "${f.name}": ${e.message}`);
+    }
+  }
+  guardarDocs();
+  renderDocs();
+  renderAnaliseCobertura();
+}
+
+function renderDocs(){
+  const lista = document.getElementById("listaDocs");
+  const cont = document.getElementById("containerDocs");
+  if(!DOCS.length){ lista.style.display = "none"; return; }
+  lista.style.display = "block";
+  cont.innerHTML = DOCS.map(d=>{
+    const top = d.controlos.slice(0, 12);
+    const totalCtrl = d.controlos.length;
+    const nivelCobertura = totalCtrl >= 5 ? "" : (totalCtrl >= 2 ? "medio" : "baixo");
+    const rotulo = totalCtrl >= 5 ? "Forte" : (totalCtrl >= 2 ? "Médio" : "Baixo");
+    const icone = ({"PDF":"📕","DOCX":"📘","TXT":"📄","MD":"📝"})[d.tipo] || "📄";
+    return `<div class="doc-item">
+      <div class="doc-icone">${icone}</div>
+      <div class="doc-info">
+        <div class="doc-nome">${d.nome}</div>
+        <div class="doc-meta">${d.tipo} · ${bytesParaTexto(d.tamanho)} · ${new Date(d.dataIso).toLocaleString("pt-PT")} · <strong>${totalCtrl} controlos detetados</strong></div>
+        <div class="doc-controlos">${top.map(c=>`<span class="pill ${c.score>=3?"match-forte":""}" title="${c.hits.join(', ')}">${c.n} (${c.score})</span>`).join("")}${totalCtrl>12?`<span class="pill">+${totalCtrl-12}</span>`:""}</div>
+      </div>
+      <div class="doc-cover ${nivelCobertura}">${rotulo}</div>
+      <button class="doc-rem" data-rem="${d.id}" title="Remover documento">✕</button>
+    </div>`;
+  }).join("");
+  document.querySelectorAll("[data-rem]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-rem");
+      DOCS = DOCS.filter(d=>d.id !== id);
+      guardarDocs(); renderDocs(); renderAnaliseCobertura();
+    });
+  });
+  // contadores sidebar
+  const cnt = document.getElementById("cnt-docs");
+  if(cnt) cnt.textContent = DOCS.length || "";
+}
+
+function renderAnaliseCobertura(){
+  const div = document.getElementById("analiseCob");
+  if(!DOCS.length){ div.innerHTML = ""; return; }
+  // agregar: para cada controlo, quantos documentos o cobrem
+  const cobertura = {};
+  Object.keys(KW_CTRL).forEach(n=>cobertura[n]=0);
+  DOCS.forEach(d=>d.controlos.forEach(c=>{
+    if(c.score >= 1) cobertura[c.n] = (cobertura[c.n]||0) + 1;
+  }));
+  const totalCtrls = Object.keys(KW_CTRL).length;
+  const cobertos = Object.values(cobertura).filter(v=>v>0).length;
+  const pct = Math.round(cobertos/totalCtrls*100);
+  const gaps = Object.entries(cobertura).filter(([_,v])=>v===0).map(([n])=>n);
+
+  div.innerHTML = `<div class="analise-cobertura">
+    <h4>📈 Análise de cobertura documental</h4>
+    <div style="font-size:13px;color:var(--cinza-600);margin-bottom:4px;">
+      <strong>${cobertos}</strong> de <strong>${totalCtrls}</strong> controlos do Anexo A são mencionados em pelo menos um documento (${pct}%).
+    </div>
+    <div class="barra-cov"><span style="width:${pct}%"></span></div>
+    <div class="legenda-cov"><span>0%</span><span>${pct}% cobertura documental</span><span>100%</span></div>
+    ${gaps.length ? `<div class="lista-gap"><strong>⚠ Controlos sem evidência documental detetada (${gaps.length}):</strong><div style="margin-top:6px;">${gaps.slice(0,30).map(n=>`<span class="gap-pill">${n}</span>`).join("")}${gaps.length>30?`<span class="gap-pill">+${gaps.length-30}</span>`:""}</div><div style="margin-top:8px;font-size:12px;color:var(--cinza-500);">⚠ Esta análise é heurística (keyword matching). Um controlo "não detetado" pode estar coberto sem usar os termos esperados — revisão humana necessária.</div></div>` : '<div style="margin-top:10px;font-size:13px;color:var(--verde-500);font-weight:600;">✓ Todos os controlos têm pelo menos uma menção documental.</div>'}
+  </div>`;
+}
+
+/* ============================================================================
+   MATRIZ DE RISCOS — Parser XLSX/CSV
+   ============================================================================ */
+
+// Mapeamento de nomes de colunas para campos canónicos
+const MAPA_COLUNAS = {
+  id: ["id","id risco","id do risco","risk id","código","codigo","ref"],
+  ativo: ["ativo","asset","ativos","recurso"],
+  categoria: ["categoria","category","tipo de ativo","asset category"],
+  ameaca: ["ameaça","ameaca","threat","ameaças","threats"],
+  vulnerabilidade: ["vulnerabilidade","vulnerability","vulnerabilidades","weakness"],
+  probabilidade: ["probabilidade","probability","likelihood","prob","ocorrência"],
+  impacto: ["impacto","impact","severidade","severity"],
+  nivel: ["nível","nivel","nível de risco","nivel de risco","risk level","risco"],
+  tratamento: ["tratamento","treatment","resposta","response","plano"],
+  controlos: ["controlos","controls","controlos aplicáveis","anexo a","annex a","mitigações"],
+  proprietario: ["proprietário","proprietario","owner","responsável","responsavel","risk owner"],
+  residual: ["risco residual","residual risk","residual"],
+  estado: ["estado","status","situação","situacao"]
+};
+
+function detectarColunas(cabecalhos){
+  const map = {};
+  cabecalhos.forEach((cab, idx)=>{
+    const cn = normalizar(cab||"").trim();
+    for(const [campo, alternativas] of Object.entries(MAPA_COLUNAS)){
+      if(alternativas.some(a => cn === normalizar(a) || cn.includes(normalizar(a)))){
+        if(!(campo in map)) map[campo] = idx;
+      }
+    }
+  });
+  return map;
+}
+
+function calcularNivelRisco(prob, imp){
+  const p = Number(prob)||0, i = Number(imp)||0;
+  const v = p * i;
+  if(v >= 20) return {v, cls:"critico", t:"Crítico"};
+  if(v >= 12) return {v, cls:"alto", t:"Alto"};
+  if(v >= 6)  return {v, cls:"medio", t:"Médio"};
+  if(v >= 2)  return {v, cls:"baixo", t:"Baixo"};
+  return {v, cls:"muito-baixo", t:"Muito Baixo"};
+}
+
+async function processarFicheiroRiscos(file){
+  if(typeof XLSX === "undefined"){
+    alert("Biblioteca XLSX ainda a carregar — tente novamente em 2 segundos.");
+    return;
+  }
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, {type:"array"});
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const dados = XLSX.utils.sheet_to_json(ws, {header:1, defval:""});
+  if(dados.length < 2){
+    alert("Ficheiro vazio ou sem linhas de dados.");
+    return;
+  }
+  const cabecalhos = dados[0].map(c=>String(c||""));
+  const colMap = detectarColunas(cabecalhos);
+  if(Object.keys(colMap).length < 3){
+    alert("Não foi possível detetar colunas essenciais. Use o template fornecido ou nomes de colunas como: ID, Ativo, Ameaça, Vulnerabilidade, Probabilidade, Impacto, Tratamento, Controlos, Proprietário.");
+    return;
+  }
+  RISCOS = dados.slice(1)
+    .filter(linha => linha.some(c=>String(c).trim() !== ""))
+    .map((linha, i)=>{
+      const r = { _idx: i+1 };
+      Object.entries(colMap).forEach(([campo, idx])=>{
+        r[campo] = String(linha[idx]||"").trim();
+      });
+      return r;
+    });
+  guardarRiscos();
+  renderRiscos();
+}
+
+function renderRiscos(){
+  const resumo = document.getElementById("resumoRiscos");
+  const cont = document.getElementById("containerRiscos");
+  if(!RISCOS.length){ resumo.innerHTML = ""; cont.innerHTML = ""; return; }
+
+  // estatísticas
+  const niveis = {critico:0, alto:0, medio:0, baixo:0, "muito-baixo":0};
+  RISCOS.forEach(r=>{
+    const nv = calcularNivelRisco(r.probabilidade, r.impacto);
+    r._nivel = nv;
+    niveis[nv.cls]++;
+  });
+
+  resumo.innerHTML = `
+    <div class="resumo-riscos">
+      <div class="card" style="border-left:4px solid var(--azul-500);"><div class="v">${RISCOS.length}</div><div class="l">Total</div></div>
+      <div class="card" style="border-left:4px solid #7f1d1d;"><div class="v" style="color:#7f1d1d;">${niveis.critico}</div><div class="l">Crítico</div></div>
+      <div class="card" style="border-left:4px solid var(--vermelho-500);"><div class="v" style="color:var(--vermelho-500);">${niveis.alto}</div><div class="l">Alto</div></div>
+      <div class="card" style="border-left:4px solid var(--laranja-500);"><div class="v" style="color:var(--laranja-500);">${niveis.medio}</div><div class="l">Médio</div></div>
+      <div class="card" style="border-left:4px solid #84cc16;"><div class="v" style="color:#84cc16;">${niveis.baixo}</div><div class="l">Baixo</div></div>
+      <div class="card" style="border-left:4px solid #a7f3d0;"><div class="v" style="color:#065f46;">${niveis["muito-baixo"]}</div><div class="l">M. Baixo</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <strong style="color:var(--azul-800);">📋 ${RISCOS.length} riscos importados</strong>
+      <button class="botao botao-perigo" id="btnLimparRiscos" style="font-size:11px;padding:5px 10px;" data-testid="btn-limpar-riscos">↺ Limpar matriz</button>
+    </div>
+  `;
+
+  cont.innerHTML = `<div class="scroll-tabela"><table class="tabela-riscos">
+    <thead><tr>
+      <th>ID</th><th>Ativo</th><th>Ameaça</th><th>Vulnerabilidade</th>
+      <th>P</th><th>I</th><th>Nível</th><th>Tratamento</th><th>Controlos</th><th>Proprietário</th><th>Estado</th>
+    </tr></thead>
+    <tbody>
+      ${RISCOS.map(r=>{
+        const nv = r._nivel || calcularNivelRisco(r.probabilidade, r.impacto);
+        // tentar relacionar controlos mencionados no campo "controlos" aos controlos do Anexo A
+        const ctrls = String(r.controlos||"").match(/[5-8]\.\d+/g) || [];
+        const ctrlsHtml = ctrls.map(c=>`<a href="#ctrl-${c}" class="pill" style="display:inline-block;background:var(--azul-50);color:var(--azul-700);font-size:11px;padding:2px 7px;border-radius:999px;border:1px solid var(--azul-100);margin:1px;text-decoration:none;">${c}</a>`).join(" ");
+        return `<tr>
+          <td><strong>${r.id||"—"}</strong></td>
+          <td>${r.ativo||"—"}</td>
+          <td>${r.ameaca||"—"}</td>
+          <td>${r.vulnerabilidade||"—"}</td>
+          <td style="text-align:center;">${r.probabilidade||"—"}</td>
+          <td style="text-align:center;">${r.impacto||"—"}</td>
+          <td><span class="nivel ${nv.cls}">${nv.t}${nv.v?` (${nv.v})`:""}</span></td>
+          <td>${r.tratamento||"—"}</td>
+          <td>${ctrlsHtml || (r.controlos||"—")}</td>
+          <td>${r.proprietario||"—"}</td>
+          <td>${r.estado||"—"}</td>
+        </tr>`;
+      }).join("")}
+    </tbody>
+  </table></div>`;
+
+  document.getElementById("btnLimparRiscos").addEventListener("click", ()=>{
+    if(!confirm("Limpar toda a matriz de riscos importada?")) return;
+    RISCOS = []; guardarRiscos(); renderRiscos();
+    document.getElementById("cnt-riscos").textContent = "";
+  });
+  const cnt = document.getElementById("cnt-riscos");
+  if(cnt) cnt.textContent = RISCOS.length || "";
+}
+
+function descarregarTemplateRiscos(){
+  const csv = [
+    ["ID","Ativo","Categoria","Ameaça","Vulnerabilidade","Probabilidade","Impacto","Tratamento","Controlos","Proprietário","Estado"],
+    ["R-001","Repositório GitHub (código-fonte)","Aplicação","Fuga de credenciais em commit","Falta de secret scanning automático","4","5","Mitigar","8.12, 5.17","DevSecOps Lead","Em tratamento"],
+    ["R-002","Bucket S3 (backups)","Dados","Exposição pública por configuração incorreta","Ausência de política de bloqueio público","3","5","Mitigar","5.23, 8.3, 8.9","Cloud Eng","Mitigado"],
+    ["R-003","Pipeline CI/CD","Processo","Injeção de dependência maliciosa","Ausência de SCA + assinatura","3","4","Mitigar","5.21, 8.8, 8.28","AppSec","Aberto"],
+    ["R-004","Serviço Vercel (frontend)","Aplicação","Indisponibilidade prolongada","Sem failover entre fornecedores","2","3","Aceitar","5.30, 8.14","SRE","Aceite"],
+    ["R-005","Identidades AWS IAM","Identidades","Comprometimento de chave de longa duração","Uso de chaves estáticas vs OIDC","3","5","Mitigar","5.16, 5.17, 8.2","Cloud Eng","Em tratamento"]
+  ];
+  const txt = csv.map(linha => linha.map(c=>{
+    const s = String(c);
+    return /[",\n;]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s;
+  }).join(",")).join("\n");
+  const blob = new Blob(["\ufeff" + txt], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Template_Matriz_Riscos_ISO27005.csv";
+  document.body.appendChild(a); a.click();
+  URL.revokeObjectURL(a.href); a.remove();
+}
+
+/* ---------- Wiring de upload (drag & drop + click) ---------- */
+function activarUploads(){
+  // Documentos
+  const inputDocs = document.getElementById("inputDocs");
+  inputDocs.addEventListener("change", e=>{
+    if(e.target.files.length) processarDocumentos(Array.from(e.target.files));
+    inputDocs.value = "";
+  });
+  const dropDocs = document.getElementById("dropDocs");
+  ["dragover","dragenter"].forEach(ev => dropDocs.addEventListener(ev, e=>{e.preventDefault();dropDocs.classList.add("arrastando");}));
+  ["dragleave","drop"].forEach(ev => dropDocs.addEventListener(ev, e=>{e.preventDefault();dropDocs.classList.remove("arrastando");}));
+  dropDocs.addEventListener("drop", e=>{
+    if(e.dataTransfer.files.length) processarDocumentos(Array.from(e.dataTransfer.files));
+  });
+
+  // Limpar documentos
+  document.getElementById("btnLimparDocs").addEventListener("click", ()=>{
+    if(!confirm("Remover todos os documentos importados?")) return;
+    DOCS = []; guardarDocs(); renderDocs(); renderAnaliseCobertura();
+    document.getElementById("cnt-docs").textContent = "";
+  });
+
+  // Riscos
+  const inputRiscos = document.getElementById("inputRiscos");
+  inputRiscos.addEventListener("change", e=>{
+    if(e.target.files[0]) processarFicheiroRiscos(e.target.files[0]);
+    inputRiscos.value = "";
+  });
+  const dropRiscos = document.getElementById("dropRiscos");
+  ["dragover","dragenter"].forEach(ev => dropRiscos.addEventListener(ev, e=>{e.preventDefault();dropRiscos.classList.add("arrastando");}));
+  ["dragleave","drop"].forEach(ev => dropRiscos.addEventListener(ev, e=>{e.preventDefault();dropRiscos.classList.remove("arrastando");}));
+  dropRiscos.addEventListener("drop", e=>{
+    if(e.dataTransfer.files[0]) processarFicheiroRiscos(e.dataTransfer.files[0]);
+  });
+
+  document.getElementById("btnDownloadTemplate").addEventListener("click", descarregarTemplateRiscos);
+}
+
+/* ---------- Nome da organização (persistência) ---------- */
+const KEY_ORG = "iso27001_sgsi_org_v1";
+function activarNomeOrganizacao(){
+  const campo = document.getElementById("campoOrganizacao");
+  campo.value = localStorage.getItem(KEY_ORG) || "";
+  campo.addEventListener("input", ()=>{
+    localStorage.setItem(KEY_ORG, campo.value);
+  });
+}
+
+/* ============================================================================
    BOOTSTRAP
    ============================================================================ */
 document.addEventListener("DOMContentLoaded", ()=>{
   carregarEstado();
+  carregarDocsRiscos();
   renderClausulas();
   renderGrupoControlos("org","container-org");
   renderGrupoControlos("pes","container-pes");
@@ -1720,6 +2390,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
   activarNavegacao();
   activarListenersPesquisa();
   activarPartilha();
+  activarUploads();
+  activarNomeOrganizacao();
+  renderDocs();
+  renderAnaliseCobertura();
+  renderRiscos();
   verificarHashImportar();
   atualizarProgresso();
 });
